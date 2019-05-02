@@ -9,7 +9,6 @@
  */
 
 include 'create_product.php';
-include 'create_product_default_view.php';
 
 // [create_product_gallery]
 function create_product_gallery_func( $atts ){
