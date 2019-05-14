@@ -29,7 +29,7 @@ const imagePreloader = {
             for (var i = 0; i < imagesToLoad.length; ++i) {
                 (function(src) {
                     var image = new Image();
-                    image.src = src;
+                    image.src = src.replace(window.CORSURL, '');
                     var aimage = angular.element(image);
                     imagePreloader.images.push(aimage);
                     aimage.on("load", function() {

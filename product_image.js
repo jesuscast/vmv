@@ -6,7 +6,10 @@
 // angular.module("kite-shopify")
 //     .factory("productImage", ["$q", "$http", "IMAGE_GENERATOR_ENDPOINT", "imagePreloader",
 //             function($q, $http, IMAGE_GENERATOR_ENDPOINT, imagePreloader) {
+// .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
 
+window.CORSURL="https://cors-anywhere.herokuapp.com/"
+const IMAGE_GENERATOR_ENDPOINT=`${window.CORSURL}https://image.kite.ly`
 /*
 * This function fetches the layer components for the product variant image in
 * question and preloads all the images associated ready for use with an image
@@ -51,12 +54,11 @@
 const productImage = {
     getLayerComponents: function(templateId, imageVariantName) {
         return new Promise((resolve, reject) => {
-            return $http({
-                method: "GET",
-                url: IMAGE_GENERATOR_ENDPOINT + "/product/" + templateId,
-                cache: true,
-            }).then(function success(response) {
-                var product = response.data;
+            return fetch(IMAGE_GENERATOR_ENDPOINT + "/product/" + templateId).then(function(response) {
+                return response.json();
+              }).then(function success(json) {
+
+                var product = json;
 
                 // preload all images so they're ready to be used
                 function imageURL(path) {
@@ -64,7 +66,10 @@ const productImage = {
                 }
 
                 var imageVariant = null;
+                console.log(imageVariantName);
+                console.log(product.images.length);
                 for (var i = 0; i < product.images.length; ++i) {
+                    console.log(product.images[i].name);
                     if (product.images[i].name == imageVariantName) {
                         imageVariant = product.images[i];
                     }

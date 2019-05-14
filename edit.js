@@ -1,8 +1,8 @@
 function edit() {
     const $element = $("#image-editor-container");
     const $scope = {
-        templateId: "=",
-        variant: "=",
+        templateId: "a1_poster",
+        variant: "cover",
         userImageUrl: "@",
         colorOverlay: "=",
         scale: "=",
