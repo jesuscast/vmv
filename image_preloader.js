@@ -30,7 +30,7 @@ const imagePreloader = {
                 (function(src) {
                     var image = new Image();
                     image.src = src.replace(window.CORSURL, '');
-                    var aimage = angular.element(image);
+                    var aimage = $(image);
                     imagePreloader.images.push(aimage);
                     aimage.on("load", function() {
                         results[src] = image;

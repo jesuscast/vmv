@@ -34725,7 +34725,7 @@ F=h("script,style"),n=e.extend({},z,m,k,u),y=h("background,cite,href,longdesc,sr
                 scope: {
                     templateId: "=",
                     variant: "=",
-                    userImageUrl: "@",
+                    userImageUrl: "https://yt3.ggpht.com/a/AGF-l7_Gek-5o71NvSFO8pye4YJ-A7rToQnB_nbl8Q=s900-mo-c-c0xffffffff-rj-k-no",
                     colorOverlay: "=",
                     scale: "=",
                     flipHorizontal: "=",

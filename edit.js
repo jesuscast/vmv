@@ -1,19 +1,68 @@
+function drawImage(ctx, img, fitOrFill, x, y, fitWidth, fitHeight, centre, tx, ty, scale,
+                    flipHorizontal, rotationDegrees) {
+    if (!img) {
+        return;
+    }
+
+    ctx.save();
+    var hRatio = fitWidth / img.width;
+    var vRatio = fitHeight / img.height;
+    var ratio = fitOrFill == "fit" ? Math.min(hRatio, vRatio) : Math.max(hRatio, vRatio);
+
+    var w = img.width * ratio * scale;
+    var h = img.height * ratio * scale;
+    var xoff = Math.round(x + tx + (centre ? ((fitWidth - w) / 2) : 0));
+    var yoff = Math.round(y + ty + (centre ? ((fitHeight - h) / 2) : 0));
+
+    ctx.translate(xoff + w / 2, yoff + h / 2); // Set the origin to the center of the image
+    if (flipHorizontal) {
+        ctx.scale(-1, 1);
+    }
+
+    ctx.rotate(rotationDegrees * (Math.PI / 180));
+    ctx.drawImage(img, -w / 2, -h / 2, w, h);
+    ctx.restore();
+}
+
+function getScaledEnclosingQuad(canvas, mask) {
+    var hRatio = canvas.width / mask.mask.width;
+    var vRatio = canvas.height / mask.mask.height;
+    var scale = Math.min(hRatio, vRatio);
+
+    var q = mask.enclosing_quadrilateral;
+
+    // flip coord system too as pillow in python is opposite to html5 canvas
+    var xoff = (canvas.width - (mask.mask.width * scale)) / 2;
+    var yoff = (canvas.height - (mask.mask.height * scale)) / 2;
+    var quad = {
+        bottom_left: [xoff + q.top_left[0] * scale, yoff + q.top_left[1] * scale],
+        bottom_right: [xoff + q.top_right[0] * scale, yoff + q.top_right[1] * scale],
+        top_left: [xoff + q.bottom_left[0] * scale, yoff + q.bottom_left[1] * scale],
+        top_right: [xoff + q.bottom_right[0] * scale, yoff + q.bottom_right[1] * scale],
+    };
+
+    quad.width = Math.abs(quad.bottom_right[0] - quad.top_left[0]);
+    quad.height = Math.abs(quad.bottom_right[1] - quad.top_left[1]);
+
+    return quad;
+}
+
 function edit() {
     const $element = $("#image-editor-container");
     const $scope = {
         templateId: "a1_poster",
         variant: "cover",
-        userImageUrl: "@",
+        userImageUrl: "https://yt3.ggpht.com/a/AGF-l7_Gek-5o71NvSFO8pye4YJ-A7rToQnB_nbl8Q=s900-mo-c-c0xffffffff-rj-k-no",
         colorOverlay: "=",
-        scale: "=",
-        flipHorizontal: "=",
-        rotationDegrees: "=",
-        frozen: "=",
+        scale: 1.0,
+        flipHorizontal: false,
+        rotationDegrees: 0,
+        frozen: false,
 
         // translateX, translateY are values in the product print image coord system
         // NOT the canvas coord system.
-        translateX: "=",
-        translateY: "=",
+        translateX: 0,
+        translateY: 0,
     }
     controller =  ["$window", "$element", "$scope", "$q", "$timeout", "productImage",
             "imagePreloader", "errorBar", "DEBUG"];
@@ -59,29 +108,30 @@ function edit() {
         var userImagePromise = imagePreloader.load($scope.userImageUrl);
         var layerComponentsPromise =
             productImage.getLayerComponents($scope.templateId, $scope.variant);
-        Promise.all([layerComponentsPromise, userImagePromise]).then(
-            function success(results) {
-                if (cancelObj.cancelled) {
-                    return;
-                }
+            // userImagePromise.then((json) => {
+            //     console.log(json);
+            // }).catch((err) => {
+            //     console.error(err);
+            // })
+        Promise.all([layerComponentsPromise, userImagePromise]).then(function success(results) {
+            if (cancelObj.cancelled) {
+                return;
+            }
 
-                layerComponents = results[0];
-                userImage = results[1];
-                if (!$scope.frozen)
-                    canvas.style.cursor = "move";
-                ctrl.loading = false;
-                render();
-            }, function error(err) {
-                if (cancelObj.cancelled) {
-                    return;
-                }
-                // errorBar.show(err);
-                console.log(err);
-            }).finally(function() {
-                if (cancelObj == layerComponentsLoadCancelObj) {
-                    layerComponentsLoadCancelObj = null;
-                }
-            });
+            layerComponents = results[0];
+            userImage = results[1];
+            if (!$scope.frozen)
+                canvas.style.cursor = "move";
+            ctrl.loading = false;
+            render();
+        }).catch(err => {
+            console.error(err);
+        })
+        .finally(function() {
+            if (cancelObj == layerComponentsLoadCancelObj) {
+                layerComponentsLoadCancelObj = null;
+            }
+        });
 
         layerComponentsLoadCancelObj = cancelObj;
     }

@@ -63,7 +63,7 @@
     <script async="true" type="text/javascript" src="https://d.adroll.com/pixel/T3GF5UZKG5E2TEAPSR57FE/SDXGSSU375CVXDG2XGKQGP?adroll_fpc=5b62bf917a72836c79e0fedcd1488b48-1556395417073&amp;pv=71472510768.39905&amp;cookie=TQQJLIDU3RAQRM4JQ55TTN%3A1%7CT3GF5UZKG5E2TEAPSR57FE%3A17%7CSDXGSSU375CVXDG2XGKQGP%3A17%7CPFGK37IPURCXFOBILMLZY2%3A16&amp;adroll_s_ref=&amp;keyw=&amp;arrfrr=https%3A%2F%2Fshopify.kite.ly%2F"></script>
     <link href="editor.css" rel="stylesheet">
     <script src="https://www.googleadservices.com/pagead/conversion/875977079/?random=1557845040903&amp;cv=9&amp;fst=1557845040903&amp;num=1&amp;guid=ON&amp;resp=GooglemKTybQhCsO&amp;u_h=900&amp;u_w=1440&amp;u_ah=835&amp;u_aw=1440&amp;u_cd=24&amp;u_his=7&amp;u_tz=-420&amp;u_java=false&amp;u_nplug=3&amp;u_nmime=4&amp;sendb=1&amp;frm=2&amp;url=https%3A%2F%2Fshopify.kite.ly%2F&amp;tiba=Kite.ly%3A%20viewmyvoice&amp;async=1&amp;rfmt=3&amp;fmt=4"></script>
-    
+    <link href="kitely.css" rel="stylesheet">
 </head>
 
 <body>
@@ -257,24 +257,31 @@
                         <div _ngcontent-c23="" class="c-image-editor-display">
                             <!---->
                             <!---->
-                            <canvas-image-on-mask-component _ngcontent-c23="" class="c-image-editor-display__canvas ng-tns-c23-32 ng-star-inserted" _nghost-c29="" style="">
+                            <!-- <canvas-image-on-mask-component _ngcontent-c23="" class="c-image-editor-display__canvas ng-tns-c23-32 ng-star-inserted" _nghost-c29="" style="">
                                 <div _ngcontent-c29="" class="canvas-image-on-mask">
                                     <canvas _ngcontent-c29="" class="canvas-image-on-mask__canvas" height="234" width="234"></canvas>
                                 </div>
-                            </canvas-image-on-mask-component>
+                            </canvas-image-on-mask-component> -->
                             <!---->
                             <!---->
-                            <div _ngcontent-c23="" class="c-image-editor-display__canvas ng-tns-c23-32 ng-star-inserted" style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
-                            <!---->
-                            <!---->
-                            <!---->
-                            <!---->
+                            <!-- <div _ngcontent-c23="" class="c-image-editor-display__canvas ng-tns-c23-32 ng-star-inserted" style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+                             -->
                             <!---->
                             <!---->
                             <!---->
                             <!---->
                             <!---->
                             <!---->
+                            <!---->
+                            <!---->
+                            <!---->
+                            <div id="image-editor-container" class="image-editor-container">
+                                <!-- <div ng-show="ctrl.loading" id="image-editor-progress-spinner" class="kite-spinner"></div> -->
+                                <canvas ng-hide="ctrl.loading" id="image-editor-canvas-background" class="image-editor-canvas" style="z-index: 1"></canvas>
+                                <canvas ng-hide="ctrl.loading" id="image-editor-canvas-foreground" class="image-editor-canvas" style="z-index: 2" ng-mousemove="ctrl.onMouseMove($event)" ng-mousedown="ctrl.onMouseDown($event)" ng-mouseup="ctrl.onMouseUp($event)" ng-mouseleave="ctrl.onMouseUp($event)"></canvas>
+                                <!--<div ng-show="ctrl.loading" id="image-editor-progress-spinner" class="progress-spinner"></div>-->
+                            
+                            </div>
                         </div>
                     </image-editor-display-component>
                     <print-quality-warning-component _ngcontent-c21="" class="c-product-edit__quality-warning">
@@ -299,7 +306,18 @@
             <!---->
         </div>
     </product-edit-component>
-
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="image_preloader.js"></script>
+    <script src="example_product.js"></script>
+    <script src="product_image.js"></script>
+    <script src="modify_products.js"></script>
+    <script src="edit.js"></script>
+    <script>
+        edit();
+    </script>
+    <style type="text/css">
+        #image-editor-canvas-foreground
+    </style>
 </body>
 
 </html>

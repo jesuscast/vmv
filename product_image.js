@@ -8,8 +8,9 @@
 //             function($q, $http, IMAGE_GENERATOR_ENDPOINT, imagePreloader) {
 // .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
 
-window.CORSURL="https://cors-anywhere.herokuapp.com/"
-const IMAGE_GENERATOR_ENDPOINT=`${window.CORSURL}https://image.kite.ly`
+window.CORSURL = "https://cors-anywhere.herokuapp.com/"
+window.CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
+const IMAGE_GENERATOR_ENDPOINT=`${window.CORSURL}${window.CLEAN_IMAGE_ENDPOINT}`;
 /*
 * This function fetches the layer components for the product variant image in
 * question and preloads all the images associated ready for use with an image
@@ -65,6 +66,10 @@ const productImage = {
                     return IMAGE_GENERATOR_ENDPOINT + "/" + path;
                 }
 
+                function cleanImageUrl(path){
+                    return CLEAN_IMAGE_ENDPOINT + "/" + path;
+                }
+
                 var imageVariant = null;
                 console.log(imageVariantName);
                 console.log(product.images.length);
@@ -93,19 +98,28 @@ const productImage = {
                     imagesToLoad.push(imageURL(imageVariant.masks[i].mask));
                 }
 
-                return imagePreloader.load(imagesToLoad).then(function success(images) {
+                return imagePreloader.load(imagesToLoad).then(function success(imagesRaw) {
+                    // Here we need to remove the CORSURL from the result.
+                    const imagesUrls = Object.keys(imagesRaw);
+                    const imagesUrlsCleaned = imagesUrls.map((url) => {
+                        return url.replace(CORSURL, "");
+                    });
+                    const images = {};
+                    for(let i = 0; i < imagesUrls.length; i++) {
+                        images[imagesUrlsCleaned[i]] = imagesRaw[imagesUrls[i]];
+                    }
                     if (imageVariant.background) {
-                        imageVariant.background = images[imageURL(imageVariant.background)];
+                        imageVariant.background = images[cleanImageUrl(imageVariant.background)];
                     }
 
                     if (imageVariant.foreground) {
                         imageVariant.foreground.image =
-                            images[imageURL(imageVariant.foreground.image)];
+                            images[cleanImageUrl(imageVariant.foreground.image)];
                     }
 
                     for (var i = 0; i < imageVariant.masks.length; ++i) {
                         imageVariant.masks[i].mask =
-                            images[imageURL(imageVariant.masks[i].mask)];
+                            images[cleanImageUrl(imageVariant.masks[i].mask)];
                     }
 
                     return resolve(imageVariant);
