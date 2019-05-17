@@ -12,7 +12,10 @@ function image_editor_view_func() {
 <?php
 }
 
-
 add_shortcode( 'image_editor_view', 'image_editor_view_func' );
+
+function link_js_files() {
+    
+}
 ?>
 
