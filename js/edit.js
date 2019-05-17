@@ -1,3 +1,5 @@
+
+
 function drawImage(ctx, img, fitOrFill, x, y, fitWidth, fitHeight, centre, tx, ty, scale,
                     flipHorizontal, rotationDegrees) {
     if (!img) {
@@ -69,7 +71,8 @@ function edit() {
         
     // function randomFunction($window, $element, $scope, $q, $timeout, productImage,
     //                     imagePreloader, errorBar, DEBUG) {
-    var ctrl = this;
+    // if(!window.ctrl)
+    // var ctrl = this;
     ctrl.loading = true;
 
     var background = $element.find("canvas")[0];
@@ -273,6 +276,7 @@ function edit() {
             $scope.translateY = parseInt($scope.translateY) + productDy;
             lastClientX = event.clientX;
             lastClientY = event.clientY;
+            render();
         }
     };
 

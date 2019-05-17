@@ -1,4 +1,3 @@
-const ctrl = {};
 
 ctrl.returnProductOverviewImage = function(product) {
     var coverVariant = product.variants[0];
