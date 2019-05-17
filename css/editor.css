@@ -4233,7 +4233,8 @@ tooltip-mini-component {
 
 .c-product-options {
     position: relative;
-    height: 100%
+    height: 100%;
+    top: -40px;
 }
 
 .c-product-options__tabs {
