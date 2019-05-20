@@ -277,7 +277,8 @@
         function receiveMessage(event) {
             console.log(`Received ${JSON.stringify(event.data)}`)
             if(event.data.product_id) {
-                $scope.productId = event.product_id;
+                console.log('hay');
+                $scope.productId = event.data.product_id;
                 render();
             }
         }
