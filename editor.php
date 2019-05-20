@@ -1,75 +1,6 @@
 <?php
 function get_create_editor() {
     ?>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <title>Kite.ly: viewmyvoice</title>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:500" rel="stylesheet">
-    <!-- inject:index-styles -->
-
-    <!-- segment -->
-    <script type="text/javascript" async="" src="https://widget.intercom.io/widget/ei6d07z4"></script>
-    <script type="text/javascript" async="" src="https://s.adroll.com/j/roundtrip.js"></script>
-    <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script>
-    <script type="text/javascript" async="" src="https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js"></script>
-    <script type="text/javascript" async="" src="https://www.googleadservices.com/pagead/conversion_async.js"></script>
-    <script type="text/javascript" async="" src="https://snap.licdn.com/li.lms-analytics/insight.min.js"></script>
-    <script src="https://connect.facebook.net/signals/config/1972386753003851?v=2.8.47&amp;r=stable" async=""></script>
-    <script src="https://connect.facebook.net/signals/plugins/inferredEvents.js?v=2.8.47" async=""></script>
-    <script src="https://connect.facebook.net/signals/config/1487454871284655?v=2.8.47&amp;r=stable" async=""></script>
-    <script src="https://connect.facebook.net/signals/plugins/identity.js?v=2.8.47" async=""></script>
-    <script type="text/javascript" async="" src="https://connect.facebook.net/en_US/fbevents.js"></script>
-    <script type="text/javascript" async="" src="https://cdn.segment.com/analytics.js/v1/aJAOkvqmWbCB17BlyxgZHp8VdoNzwSMy/analytics.min.js"></script>
-    <script>
-        ! function() {
-            var analytics = window.analytics = window.analytics || [];
-            if (!analytics.initialize)
-                if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice.");
-                else {
-                    analytics.invoked = !0;
-                    analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "once", "off", "on"];
-                    analytics.factory = function(t) {
-                        return function() {
-                            var e = Array.prototype.slice.call(arguments);
-                            e.unshift(t);
-                            analytics.push(e);
-                            return analytics
-                        }
-                    };
-                    for (var t = 0; t < analytics.methods.length; t++) {
-                        var e = analytics.methods[t];
-                        analytics[e] = analytics.factory(e)
-                    }
-                    analytics.load = function(t, e) {
-                        var n = document.createElement("script");
-                        n.type = "text/javascript";
-                        n.async = !0;
-                        n.src = ("https:" === document.location.protocol ? "https://" : "http://") + "cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js";
-                        var o = document.getElementsByTagName("script")[0];
-                        o.parentNode.insertBefore(n, o);
-                        analytics.integrationOptions = e
-                    };
-                    analytics.SNIPPET_VERSION = "4.0.1";
-                    analytics.load("aJAOkvqmWbCB17BlyxgZHp8VdoNzwSMy");
-                    analytics.page();
-                }
-        }();
-    </script>
-
-    <base href="/">
-    <link href="https://s3.amazonaws.com/kiteshopify/shopify/app.css" rel="stylesheet">
-    <script type="text/javascript" src="https://d.adroll.com/consent/check/T3GF5UZKG5E2TEAPSR57FE?_s=112b0fda13a0cba0892b607515f329a7&amp;adroll_fpc=5b62bf917a72836c79e0fedcd1488b48-1556395417073"></script>
-    <script src="https://www.googleadservices.com/pagead/conversion/875977079/?random=1557845040529&amp;cv=9&amp;fst=1557845040529&amp;num=1&amp;guid=ON&amp;resp=GooglemKTybQhCsO&amp;u_h=900&amp;u_w=1440&amp;u_ah=835&amp;u_aw=1440&amp;u_cd=24&amp;u_his=7&amp;u_tz=-420&amp;u_java=false&amp;u_nplug=3&amp;u_nmime=4&amp;sendb=1&amp;frm=2&amp;url=https%3A%2F%2Fshopify.kite.ly%2F&amp;tiba=Kite.ly%3A%20viewmyvoice&amp;async=1&amp;rfmt=3&amp;fmt=4"></script>
-    <script async="true" type="text/javascript" src="https://d.adroll.com/pixel/T3GF5UZKG5E2TEAPSR57FE/SDXGSSU375CVXDG2XGKQGP?adroll_fpc=5b62bf917a72836c79e0fedcd1488b48-1556395417073&amp;pv=71472510768.39905&amp;cookie=TQQJLIDU3RAQRM4JQ55TTN%3A1%7CT3GF5UZKG5E2TEAPSR57FE%3A17%7CSDXGSSU375CVXDG2XGKQGP%3A17%7CPFGK37IPURCXFOBILMLZY2%3A16&amp;adroll_s_ref=&amp;keyw=&amp;arrfrr=https%3A%2F%2Fshopify.kite.ly%2F"></script>
-    <link href="editor.css" rel="stylesheet">
-    <script src="https://www.googleadservices.com/pagead/conversion/875977079/?random=1557845040903&amp;cv=9&amp;fst=1557845040903&amp;num=1&amp;guid=ON&amp;resp=GooglemKTybQhCsO&amp;u_h=900&amp;u_w=1440&amp;u_ah=835&amp;u_aw=1440&amp;u_cd=24&amp;u_his=7&amp;u_tz=-420&amp;u_java=false&amp;u_nplug=3&amp;u_nmime=4&amp;sendb=1&amp;frm=2&amp;url=https%3A%2F%2Fshopify.kite.ly%2F&amp;tiba=Kite.ly%3A%20viewmyvoice&amp;async=1&amp;rfmt=3&amp;fmt=4"></script>
-    <link href="kitely.css" rel="stylesheet">
-</head>
-
-<body>
 
     <product-edit-component style="display:block;0:display;display:block;" _nghost-c21="" class="ng-tns-c21-28 ng-trigger ng-trigger-fadeInAnimation ng-star-inserted">
         <notice-bar-component _ngcontent-c21="" class="c-product-edit__notice-bar ng-tns-c7-29" _nghost-c7="">
@@ -310,19 +241,39 @@ function get_create_editor() {
         </div>
     </product-edit-component>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="image_preloader.js"></script>
-    <script src="example_product.js"></script>
-    <script src="product_image.js"></script>
-    <script src="modify_products.js"></script>
-    <script src="edit.js"></script>
+    <script src="<?php echo plugins_url('js/constants.js', __FILE__) ?>"></script>
+    <script src="<?php echo plugins_url('js/image_preloader.js', __FILE__) ?>"></script>
+    <script src="<?php echo plugins_url('js/example_product.js', __FILE__) ?>"></script>
+    <script src="<?php echo plugins_url('js/product_image.js', __FILE__) ?>"></script>
+    <script src="<?php echo plugins_url('js/modify_products.js', __FILE__) ?>"></script>
+    <script src="<?php echo plugins_url('js/edit.js', __FILE__) ?>"></script>
+    <!-- <script src="http://b177c3ca.ngrok.io/js/bundle.js"></script> -->
     <script>
-        edit();
-    </script>
-    <style type="text/css">
-    </style>
-</body>
 
-</html>
+    
+        edit();
+
+        let screenLog = document.querySelector('#image-editor-container');
+        document.addEventListener('mousemove', ctrl.onMouseMove);
+        document.addEventListener('mousedown', ctrl.onMouseDown);
+        document.addEventListener('mouseup', ctrl.onMouseUp);
+        
+
+        function create_link(url) {
+            /* create the link element */
+            var linkElement = document.createElement('link');
+
+            /* add attributes */
+            linkElement.setAttribute('rel', 'stylesheet');
+            linkElement.setAttribute('href', url);
+
+            /* attach to the document head */
+            document.getElementsByTagName('head')[0].appendChild(linkElement);
+        }
+
+        create_link('../css/editor.css')
+        create_link('../css/kitely.css')
+    </script>
     <?php
 }
 
