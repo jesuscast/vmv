@@ -1,13 +1,6 @@
 <?php
 function get_create_product_default_view() {
     ?>
-
-
-<iframe id="image-editor" src="https://viewmyvoice.net/wp-content/plugins/vmv/html/editor.html" style="
-    width: 100%;
-    height: 800px;
-    border: 0px;
-"/>
 <div class="kite ng-scope" ng-app="kite-shopify">
 
 <!-- ngView: -->
@@ -1944,10 +1937,12 @@ jQuery(".product-cover-image").each((i, img) => {
     const product_id = imageParams.get("product_id");
     let parent = $img.parent().parent()
     parent.find("button").on('click', function() {
-        jQuery("#image-editor").show();
-        jQuery("#image-editor")[0].contentWindow.postMessage({
-            product_id: product_id
-        }, '*')
+
+        window.location.href = `https://viewmyvoice.net/edit-product/?product_id=${product_id}`;
+        // jQuery("#image-editor").show();
+        // jQuery("#image-editor")[0].contentWindow.postMessage({
+        //     product_id: product_id
+        // }, '*')
     });
 });
 // const product_ids = jQuery(".product-cover-image").toArray().map((v) => { return jQuery(v).attr('src') }).map((src) => {

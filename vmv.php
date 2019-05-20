@@ -17,4 +17,3 @@ function create_product_gallery_func( $atts ){
 
 add_shortcode( 'create_product_gallery', 'create_product_gallery_func' );
 add_shortcode( 'image_editor_view', 'image_editor_view_func' );
-remove_action( 'login_init', 'send_frame_options_header' );
