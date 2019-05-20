@@ -1935,9 +1935,10 @@ jQuery(".product-cover-image").each((i, img) => {
     // Parent container
     // .kite-card-product
     const product_id = imageParams.get("product_id");
-    let parent = $img.parent().parent()
+    let parent = $img.parent().parent();
+    console.log(parent);
     parent.find("button").on('click', function() {
-
+        console.log('hey');
         window.location.href = `https://viewmyvoice.net/edit-product/?product_id=${product_id}`;
         // jQuery("#image-editor").show();
         // jQuery("#image-editor")[0].contentWindow.postMessage({
