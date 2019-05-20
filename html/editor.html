@@ -275,8 +275,8 @@
         window.addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event) {
-            console.log(`Received ${JSON.stringify(event)}`)
-            if(event.product_id) {
+            console.log(`Received ${JSON.stringify(event.data)}`)
+            if(event.data.product_id) {
                 $scope.productId = event.product_id;
                 render();
             }
