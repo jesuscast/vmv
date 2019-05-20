@@ -248,6 +248,7 @@ function edit() {
     var lastClientY = 0;
 
     ctrl.onMouseMove = function(event) {
+        console.log(1)
         if ($scope.frozen || layerComponents == null) return;
 
         if (ctrl.dragging) {
@@ -277,4 +278,8 @@ function edit() {
         if ($scope.frozen || layerComponents == null) return;
         ctrl.dragging = false;
     };
+
+    document.addEventListener('mousemove', ctrl.onMouseMove);
+    document.addEventListener('mousedown', ctrl.onMouseDown);
+    document.addEventListener('mouseup', ctrl.onMouseUp);
 }
