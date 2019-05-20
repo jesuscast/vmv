@@ -5,7 +5,7 @@ function get_create_editor() {
     width: 100%;
     height: 800px;
     border: 0px;
-"/>
+"></iframe>
 <script>
 setTimeout(() => {
     const params = new URLSearchParams(window.location.search);

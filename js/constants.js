@@ -1,6 +1,6 @@
 const ctrl = {};
-const $scope = {
-    templateId: "aa_mens_tshirt",
+window.$scope = {
+    templateId: "aa_fleece_pullover_hoodie",
     variant: null,
     userImageUrl: "https://yt3.ggpht.com/a/AGF-l7_Gek-5o71NvSFO8pye4YJ-A7rToQnB_nbl8Q=s900-mo-c-c0xffffffff-rj-k-no",
     colorOverlay: "=",
