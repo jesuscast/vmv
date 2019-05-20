@@ -10,8 +10,10 @@ function get_create_editor() {
 setTimeout(() => {
     const params = new URLSearchParams(window.location.search);
     const product_id = params.get("product_id");
+    const userImageUrl = params.get("img");
     jQuery("#image-editor")[0].contentWindow.postMessage({
-        product_id: product_id
+        product_id: product_id,
+        userImageUrl: userImageUrl
     }, '*')
 }, 200);
 </script>

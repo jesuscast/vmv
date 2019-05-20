@@ -277,8 +277,10 @@
         function receiveMessage(event) {
             console.log(`Received ${JSON.stringify(event.data)}`)
             if(event.data.product_id) {
-                console.log('hay');
                 $scope.templateId = event.data.product_id;
+                if (event.data.userImageUrl) {
+                    $scope.userImageUrl = event.data.userImageUrl;
+                }
                 edit();
             }
         }
