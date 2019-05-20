@@ -71,12 +71,15 @@ const productImage = {
                 }
 
                 var imageVariant = null;
-                console.log(imageVariantName);
-                console.log(product.images.length);
                 for (var i = 0; i < product.images.length; ++i) {
                     console.log(product.images[i].name);
+                    if (imageVariantName == null) {
+                        imageVariant = product.images[i];
+                        break;
+                    }
                     if (product.images[i].name == imageVariantName) {
                         imageVariant = product.images[i];
+                        break;
                     }
                 }
 

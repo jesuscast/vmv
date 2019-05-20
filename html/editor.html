@@ -270,4 +270,15 @@
 
         create_link('../css/editor.css')
         create_link('../css/kitely.css')
+
+
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event) {
+            console.log(`Received ${JSON.stringify(event)}`)
+            if(event.product_id) {
+                $scope.productId = event.product_id;
+                render();
+            }
+        }
     </script>
