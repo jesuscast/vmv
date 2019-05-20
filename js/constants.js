@@ -1,6 +1,6 @@
 const ctrl = {};
 const $scope = {
-    templateId: "a1_poster",
+    templateId: "aa_mens_tshirt",
     variant: "cover",
     userImageUrl: "https://yt3.ggpht.com/a/AGF-l7_Gek-5o71NvSFO8pye4YJ-A7rToQnB_nbl8Q=s900-mo-c-c0xffffffff-rj-k-no",
     colorOverlay: "=",
