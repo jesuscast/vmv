@@ -3,7 +3,7 @@ include 'create_product_default_view.php';
 
 function image_editor_view_func() {
 ?>
- <div> Random test</div>
+ <div> Random test <?php plugins_url('js/edit.js', __FILE__) ?></div>
 <?php
 }
 
