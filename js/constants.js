@@ -16,5 +16,7 @@ const $scope = {
 }
 
 let windowParams = new URLSearchParams(location.search);
-$scope.userImageUrl = windowParams.get("img")
+if (windowParams.get("img")) {
+    $scope.userImageUrl = windowParams.get("img")
+}
 // imageParams.set("image", windowParams.get("img"));
