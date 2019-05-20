@@ -271,8 +271,8 @@ function get_create_editor() {
             document.getElementsByTagName('head')[0].appendChild(linkElement);
         }
 
-        create_link('../css/editor.css')
-        create_link('../css/kitely.css')
+        create_link('<?php echo plugins_url('css/editor.css', __FILE__) ?>')
+        create_link('<?php echo plugins_url('css/kitely.css', __FILE__) ?>')
     </script>
     <?php
 }
