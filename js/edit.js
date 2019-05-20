@@ -48,6 +48,11 @@ function getScaledEnclosingQuad(canvas, mask) {
 
     return quad;
 }
+function toCanvasCoordinateSystem(coord) {
+    var quad = getScaledEnclosingQuad(canvas, layerComponents.masks[0]);
+    var scale = quad.width / layerComponents.asset_size.width;
+    return Math.round(scale * coord);
+}
 
 function render() {
     if (!ctrl.loading && layerComponents != null) {
@@ -234,11 +239,6 @@ function edit() {
         return Math.round(scale * coord);
     }
 
-    function toCanvasCoordinateSystem(coord) {
-        var quad = getScaledEnclosingQuad(canvas, layerComponents.masks[0]);
-        var scale = quad.width / layerComponents.asset_size.width;
-        return Math.round(scale * coord);
-    }
 
     /*
         * Handle user dragging/reposition their image on the product
