@@ -4881,3 +4881,8 @@ tooltip-mini-component {
     top: 0;
     left: 0
 }
+
+
+#slider {
+    width: 300px;
+}

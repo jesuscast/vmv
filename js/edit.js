@@ -8,6 +8,8 @@ function loading(value) {
     }
 }
 
+
+
 function drawImage(ctx, img, fitOrFill, x, y, fitWidth, fitHeight, centre, tx, ty, scale,
                     flipHorizontal, rotationDegrees) {
     if (!img) {
@@ -63,7 +65,7 @@ function toCanvasCoordinateSystem(coord) {
 }
 
 function render() {
-    if (!ctrl.loading && layerComponents != null) {
+    if (!ctrl.loading && window.layerComponents) {
         if (canvas.width == 0 || canvas.height == 0) {
             canvas.width = canvas.offsetWidth;
             canvas.height = canvas.offsetHeight;
@@ -290,3 +292,5 @@ function edit() {
     document.addEventListener('mousedown', ctrl.onMouseDown);
     document.addEventListener('mouseup', ctrl.onMouseUp);
 }
+
+
