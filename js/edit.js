@@ -1,4 +1,12 @@
 
+function loading(value) {
+    ctrl.loading = value;
+    if (value) {
+        $("#image-editor-progress-spinner").show();
+    } else {
+        $("#image-editor-progress-spinner").hide();
+    }
+}
 
 function drawImage(ctx, img, fitOrFill, x, y, fitWidth, fitHeight, centre, tx, ty, scale,
                     flipHorizontal, rotationDegrees) {
@@ -145,7 +153,7 @@ function edit() {
     //                     imagePreloader, errorBar, DEBUG) {
     // if(!window.ctrl)
     // var ctrl = this;
-    ctrl.loading = true;
+    loading(true);
 
     window.background = $element.find("canvas")[0];
     window.canvas = $element.find("canvas")[1];
@@ -174,7 +182,7 @@ function edit() {
             },
         };
 
-        ctrl.loading = true;
+        loading(true);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         btx.clearRect(0, 0, canvas.width, canvas.height);
         layerComponents = null;
@@ -197,7 +205,7 @@ function edit() {
             userImage = results[1];
             if (!$scope.frozen)
                 canvas.style.cursor = "move";
-            ctrl.loading = false;
+            loading(false);
             render();
         }).catch(err => {
             console.error(err);
@@ -248,7 +256,6 @@ function edit() {
     var lastClientY = 0;
 
     ctrl.onMouseMove = function(event) {
-        console.log(1)
         if ($scope.frozen || layerComponents == null) return;
 
         if (ctrl.dragging) {

@@ -8,7 +8,7 @@
             <div ng-show="ctrl.loading" id="image-editor-progress-spinner" class="kite-spinner"></div>
             <canvas ng-hide="ctrl.loading" id="image-editor-canvas-background" class="image-editor-canvas" style="z-index: 1"></canvas>
             <canvas ng-hide="ctrl.loading" id="image-editor-canvas-foreground" class="image-editor-canvas" style="z-index: 2" ng-mousemove="ctrl.onMouseMove($event)" ng-mousedown="ctrl.onMouseDown($event)" ng-mouseup="ctrl.onMouseUp($event)" ng-mouseleave="ctrl.onMouseUp($event)"></canvas>
-            <!--<div ng-show="ctrl.loading" id="image-editor-progress-spinner" class="progress-spinner"></div>-->
+            <div ng-show="ctrl.loading" id="image-editor-progress-spinner" class="progress-spinner"></div>
         
         </div>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
