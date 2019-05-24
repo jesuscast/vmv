@@ -4886,3 +4886,12 @@ tooltip-mini-component {
 #slider {
     width: 300px;
 }
+
+#checkout-btn {
+    color: #1E1E1E;
+    border-color: #1E1E1E;
+    border: 1px solid rgba(30, 30, 30, 0.1);
+    background: #ffc200;
+    border-radius: 5px;
+    width: 100%;
+}
