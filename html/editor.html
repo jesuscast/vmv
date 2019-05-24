@@ -1,7 +1,10 @@
-<html><head>
-        <link rel="stylesheet" href="./nouislider.css">
-  
+<html>
+
+<head>
+    <link rel="stylesheet" href="../css/nouislider.css">
+
 </head>
+
 <body>
     <product-edit-component style="display:block;0:display;display:block;" _nghost-c21="" class="ng-tns-c21-28 ng-trigger ng-trigger-fadeInAnimation ng-star-inserted">
         <notice-bar-component _ngcontent-c21="" class="c-product-edit__notice-bar ng-tns-c7-29" _nghost-c7="">
@@ -162,12 +165,11 @@
                                             </div>
                                         </fulfilment-field-control-component>
                                         <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component">
-                                                        <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted"><span _ngcontent-c34="" class="c-text-m">Scale</span></div>
+                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component">
+                                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted"><span _ngcontent-c34="" class="c-text-m">Scale</span></div>
 
-                                               
-                                                        <div id="slider"></div>
-                                                </div>
+                                                <div id="slider"></div>
+                                            </div>
                                         </fulfilment-field-control-component>
                                     </div>
                                 </fulfilment-field-control-list-component>
@@ -223,7 +225,7 @@
                                 <canvas ng-hide="ctrl.loading" id="image-editor-canvas-background" class="image-editor-canvas" style="z-index: 1"></canvas>
                                 <canvas ng-hide="ctrl.loading" id="image-editor-canvas-foreground" class="image-editor-canvas" style="z-index: 2" ng-mousemove="ctrl.onMouseMove($event)" ng-mousedown="ctrl.onMouseDown($event)" ng-mouseup="ctrl.onMouseUp($event)" ng-mouseleave="ctrl.onMouseUp($event)"></canvas>
                                 <div ng-show="ctrl.loading" id="image-editor-progress-spinner" class="progress-spinner"></div>
-                            
+
                             </div>
                         </div>
                     </image-editor-display-component>
@@ -249,9 +251,9 @@
             <!---->
         </div>
     </product-edit-component>
-    
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="./nouislider.js"></script>
+    <script src="../js/nouislider.js"></script>
     <script src="../js/constants.js"></script>
     <script src="../js/image_preloader.js"></script>
     <script src="../js/example_product.js"></script>
@@ -260,11 +262,7 @@
     <script src="../js/edit.js"></script>
     <!-- <script src="http://b177c3ca.ngrok.io/js/bundle.js"></script> -->
     <script>
-
-    
         // edit();
-
-        
 
         function create_link(url) {
             /* create the link element */
@@ -281,12 +279,11 @@
         create_link('../css/editor.css')
         create_link('../css/kitely.css')
 
-
         window.addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event) {
             console.log(`Received ${JSON.stringify(event.data)}`)
-            if(event.data.product_id) {
+            if (event.data.product_id) {
                 $scope.templateId = event.data.product_id;
                 if (event.data.userImageUrl) {
                     $scope.userImageUrl = event.data.userImageUrl;
@@ -295,37 +292,40 @@
             }
         }
 
-   $( function() {
+        $(function() {
 
-        // edit();
+            // edit();
 
-        var slider = document.getElementById('slider');
+            var slider = document.getElementById('slider');
 
-        noUiSlider.create(slider, {
-            start: [1],
-            connect: true,
-            range: {
-                'min': 0.3,
-                'max': 3
+            noUiSlider.create(slider, {
+                start: [1],
+                connect: true,
+                range: {
+                    'min': 0.3,
+                    'max': 3
+                }
+            });
+
+            function doSomething(values, handle, unencoded, tap, positions) {
+                // values: Current slider values (array);
+                // handle: Handle that caused the event (number);
+                // unencoded: Slider values without formatting (array);
+                // tap: Event was caused by the user tapping the slider (boolean);
+                // positions: Left offset of the handles (array);
+                $scope.scale = parseFloat(values[0]);
+                console.log($scope.scale);
+                render();
             }
+
+            // Binding signature
+            slider.noUiSlider.on('update', doSomething);
+
+            // Binding namespaced events
+            slider.noUiSlider.on('set.one', function() {});
         });
-        function doSomething(values, handle, unencoded, tap, positions) {
-            // values: Current slider values (array);
-            // handle: Handle that caused the event (number);
-            // unencoded: Slider values without formatting (array);
-            // tap: Event was caused by the user tapping the slider (boolean);
-            // positions: Left offset of the handles (array);
-            $scope.scale = parseFloat(values[0]);
-            console.log($scope.scale);
-            render();
-        }
-
-        // Binding signature
-        slider.noUiSlider.on('update', doSomething);
-
-        // Binding namespaced events
-        slider.noUiSlider.on('set.one', function () { });
-    } );
     </script>
 
-</body></html>
+</body>
+
+</html>
