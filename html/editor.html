@@ -329,6 +329,10 @@
 
             // Binding namespaced events
             slider.noUiSlider.on('set.one', function() {});
+
+            $("#checkout-btn").on('click', function() {
+                document.location.pathname = '/html/checkout.html';
+            });
         });
     </script>
 

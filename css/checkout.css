@@ -1,0 +1,8 @@
+.flex-column {
+    flex-direction: column;
+    align-items: flex-start !important;
+}
+
+.flex-column input {
+    width: 100%;
+}
