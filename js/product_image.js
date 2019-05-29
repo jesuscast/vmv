@@ -71,23 +71,24 @@ const productImage = {
                 }
 
                 var imageVariant = null;
+                var colors =  [];
                 for (var i = 0; i < product.images.length; ++i) {
-                    console.log(product.images[i].name);
                     if (imageVariantName == null) {
                         imageVariant = product.images[i];
-                        break;
-                    }
-                    if (product.images[i].name == imageVariantName) {
+                    } else if (imageVariant == null && product.images[i].name == imageVariantName) {
                         imageVariant = product.images[i];
-                        break;
                     }
+                    colors.push(product.images[i].name);
                 }
+
+                console.log(colors);
 
                 if (imageVariant == null) {
                     return reject("Could not find image variant '" + imageVariant
                         + "' for template_id: " + templateId);
                 }
-
+                console.log(imageVariant)
+                $scope.variant = imageVariant.name;
 
                 var imagesToLoad = [];
                 if (imageVariant.background) {
@@ -119,7 +120,6 @@ const productImage = {
                         imageVariant.foreground.image =
                             images[cleanImageUrl(imageVariant.foreground.image)];
                     }
-
                     for (var i = 0; i < imageVariant.masks.length; ++i) {
                         imageVariant.masks[i].mask =
                             images[cleanImageUrl(imageVariant.masks[i].mask)];

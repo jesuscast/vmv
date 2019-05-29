@@ -12,7 +12,7 @@
         <script type="text/javascript"> setTimeout(() => {
             const params = new URLSearchParams(window.location.search);
             const product_id = params.get("product_id");
-        console.log(product_id);
+            console.log(product_id);
             $("#image-editor")[0].contentWindow.postMessage({
                 product_id: product_id
             }, '*')

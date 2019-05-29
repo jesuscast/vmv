@@ -104,18 +104,18 @@ function render() {
                 }
 
                 // draw enclosing quad
-                if ($scope.templateId.indexOf("mug") >= 0) {
+                // if ($scope.templateId.indexOf("mug") >= 0) {
                     ctx.globalCompositeOperation = "source-over";
-                    ctx.strokeStyle = "#575656";
+                    ctx.strokeStyle = "#7879ec";
                     ctx.beginPath();
                     ctx.moveTo(quad.bottom_left[0], quad.bottom_left[1]);
                     ctx.lineTo(quad.bottom_right[0], quad.bottom_right[1]);
                     ctx.lineTo(quad.top_right[0], quad.top_right[1]);
                     ctx.lineTo(quad.top_left[0], quad.top_left[1]);
                     ctx.closePath();
-                    ctx.strokeWidth = 2;
+                    ctx.strokeWidth = 8;
                     ctx.stroke();
-                }
+                // }
             }
         }
 
@@ -139,9 +139,21 @@ function render() {
 
         if (layerComponents.color_overlay) {
             btx.globalCompositeOperation="source-in";
-            btx.fillStyle=$scope.colorOverlay;
+            btx.fillStyle= $scope.colorOverlay;
             btx.fillRect(0, 0, w, h);
         };
+
+
+        if ($scope.variant !== null) {
+            const modifiedImageUrl = CLEAN_IMAGE_ENDPOINT + "/render/?image=" + $scope.userImageUrl
+            + "&product_id=" + $scope.templateId + "&variant="
+            + $scope.variant + "&format=jpg&debug=false&background="
+            + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + $scope.scale
+            + "&rotate=" + $scope.rotationDegrees + "&mirror=" + $scope.flipHorizontal
+            + "&translate=" + $scope.translateX + "," + $scope.translateY;
+
+            localStorage.setItem('modifiedImageUrl', modifiedImageUrl);
+        }
     }
 }
 

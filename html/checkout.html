@@ -72,6 +72,13 @@
                                                 <input type="number" />
                                             </div>
                                         </fulfilment-field-control-component>
+                                        <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
+                                                <div _ngcontent-c34="" class="c-fulfilment-field-control-componen flex-column">
+                                                    <img id="tiny-image" />
+                                                </div>
+
+                                        </fulfilment-field-control-component>
+
                                     </div>
                                 </fulfilment-field-control-list-component>
                             </side-selector-full-info-component>
@@ -159,6 +166,16 @@
 
         create_link('../css/editor.css')
         create_link('../css/kitely.css')
+
+
+        $(document).ready(function(){
+            const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
+            if (modifiedImageUrl) {
+                $("#tiny-image").attr('src', modifiedImageUrl);
+                $("#tiny-image").css('width', '150%');
+                $("#tiny-image").css('margin-top', '20px');
+            }
+        });
     </script>
 
 </body>

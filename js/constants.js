@@ -1,7 +1,7 @@
 const ctrl = {};
 window.$scope = {
     templateId: "aa_mens_tshirt",
-    variant: null,
+    variant: "black",
     userImageUrl: "https://s3.amazonaws.com/kiteshopify/1f65b7b0-ed5e-46f6-8e2c-e3a6dce124a1.png",
     colorOverlay: "=",
     scale: 1.0,
