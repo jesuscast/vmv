@@ -1,4 +1,20 @@
+const rawCreds = {
+    test: {
+        paypalHost: 'api.sandbox.paypal.com',
+        paypalClientId: 'AcEcBRDxqcCKiikjm05FyD4Sfi4pkNP98AYN67sr3_yZdBe23xEk0qhdhZLM',
+        pubKey: 'pk_test_6700fc5332e3d7460dc24b04f5ad77b4d74a96da',
+    },
+    prod: {
+        paypalHost: 'api.paypal.com',
+        paypalClientId: 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
+        pubKey: '',
+    },
+};
+const env = 'test';
+const creds = rawCreds[env];
+
 const ctrl = {};
+
 window.$scope = {
     templateId: "aa_mens_tshirt",
     variant: "black",
@@ -112,3 +128,23 @@ const products = [
     "square_invitations_15x15cm",
     "square_invitations_15x15cm_10pack"
 ]
+
+
+function getPrices(template_id, country_code, shipping_country_code) {
+    const body = {
+        "basket":[
+           {
+              "country_code":"USA",
+              "job_id":-1,
+              "quantity":1,
+              "template_id":"i6splus_case"
+           }
+        ],
+        "pay_in_store":0,
+        "payment_gateway":"PAYPAL",
+        "promo_code":"",
+        "ship_to_store":0,
+        "shipping_country_code":"US"
+     };
+    fetch('https://api.kite.ly/v3.0/price/')
+}
