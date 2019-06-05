@@ -98,7 +98,7 @@
                         <div _ngcontent-c23="" class="c-image-editor-display">
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
                                 <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                        <h1>Shipping address</h1>
+                                        <h1>Payment</h1>
                                     <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Recipients name</span></div>
 
                                     <input type="text" />
@@ -182,15 +182,7 @@
 
 
             $("#checkout-btn").on('click',  function() {
-                getAddress().then((address) => {
-                    getPrices(address).then((prices) => {
-                        localStorage.setItem('prices', JSON.stringify(prices));
-                        localStorage.setItem('address', JSON.stringify(address));
-                        document.location.href = document.location.href.replace('checkout.html', 'payment.html');
-                    }).catch((err) => {
-                        alert(err);
-                    });
-                });
+                getPrices(null, null);
             });
         });
     </script>

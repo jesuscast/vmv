@@ -8,8 +8,6 @@
 //             function($q, $http, IMAGE_GENERATOR_ENDPOINT, imagePreloader) {
 // .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
 
-window.CORSURL = "https://cors-anywhere.herokuapp.com/"
-window.CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
 const IMAGE_GENERATOR_ENDPOINT=`${window.CORSURL}${window.CLEAN_IMAGE_ENDPOINT}`;
 /*
 * This function fetches the layer components for the product variant image in
