@@ -1,6 +1,9 @@
+<!DOCTYPE html>
 <html>
 
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/nouislider.css" />
     <link rel="stylesheet" href="../css/checkout.css" />
 </head>
@@ -98,44 +101,29 @@
                         <div _ngcontent-c23="" class="c-image-editor-display">
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
                                 <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                        <h1>Payment</h1>
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Recipients name</span></div>
+                                    <h1>Payment</h1>
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Product cost</span></div>
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="product-cost"></span></div>
 
-                                    <input type="text" />
                                 </div>
                             </fulfilment-field-control-component>
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
                                     <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                        <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Address line 1</span></div>
-    
-                                        <input type="text" id="address-line-1" />
+                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Shipping cost</span></div>
+                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="shipping-cost"></span></div>
+        
                                     </div>
                             </fulfilment-field-control-component>
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
                                     <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                        <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Address line 2</span></div>
-    
-                                        <input type="text" id="address-line-2" />
+                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Total</span></div>
+                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="total-cost"></span></div>
+        
                                     </div>
                             </fulfilment-field-control-component>
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
                                     <div _ngcontent-c34="" class="c-fulfilment-field-control-component">
-                                        <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">City</span></div>
-    
-                                        <input type="text" id="city" />
-                                        <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Country</span></div>
-    
-                                        <select class="crs-country" id="country" data-region-id="region"></select>
-                                    </div>
-                            </fulfilment-field-control-component>
-                            <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component">
-                                        <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">State</span></div>
-    
-                                        <select id="region"></select>
-                                        <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Post code</span></div>
-    
-                                        <input type="text" id="zip" />
+                                            <div id="paypal-button-container"></div>
                                     </div>
                             </fulfilment-field-control-component>
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
@@ -153,6 +141,8 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="../js/crs.min.js"></script>
     <script src="../js/constants.js"></script>
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+    <script>paypal.Buttons().render('body');</script> -->
     <script>
         // edit();
 
@@ -167,12 +157,43 @@
             /* attach to the document head */
             document.getElementsByTagName('head')[0].appendChild(linkElement);
         }
+        function create_script(url) {
+            /* create the link element */
+            var linkElement = document.createElement('script');
+
+            /* add attributes */
+            linkElement.setAttribute('src', url);
+
+            /* attach to the document body */
+            document.getElementsByTagName('body')[0].appendChild(linkElement);
+        }
 
         create_link('../css/editor.css')
         create_link('../css/kitely.css')
 
+        function loadData(cb) {
+            return new Promise((resolve, reject) => {
+                const pricesRaw = localStorage.getItem('prices');
+                const addressRaw = localStorage.getItem('address');
+
+                if (!pricesRaw || !addressRaw) {
+                    reject('no data');
+                    return;
+                }
+                const pricesJSON = JSON.parse(pricesRaw);
+                const addressJSON = JSON.parse(addressRaw);
+
+                Address.build(addressJSON).then((address) => {
+                    resolve({prices: pricesJSON, address: addressJSON})
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        }
 
         $(document).ready(function(){
+            const currency = 'USD'// 'GBP';
+            const currencySymbol = '$'; // '&pound;';
             const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
             if (modifiedImageUrl) {
                 $("#tiny-image").attr('src', modifiedImageUrl);
@@ -180,9 +201,32 @@
                 $("#tiny-image").css('margin-top', '20px');
             }
 
+            loadData().then(({prices, address}) => {
+                console.log(prices);
+                console.log(address);
+                $("#product-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
+                $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
+                $("#total-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
 
-            $("#checkout-btn").on('click',  function() {
-                getPrices(null, null);
+                create_script(`https://www.paypal.com/sdk/js?client-id=${creds.paypalClientId}`)
+
+                setTimeout(() => {
+                    paypal.Buttons({
+                        createOrder: function(data, actions) {
+                            // Set up the transaction
+                            return actions.order.create({
+                                purchase_units: [{
+                                    amount: {
+                                        currency_code: currency,
+                                        value: prices.total_product_cost[currency]
+                                    }
+                                }]
+                            });
+                        }
+                    }).render('#paypal-button-container');
+                }, 500);
+            }).catch((err) => {
+                console.error(err);
             });
         });
     </script>

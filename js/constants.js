@@ -139,12 +139,28 @@ class Country {
         this.iso3Currency = countryElement[3];
         this.inEurope = countryElement[4];
     }
+
+    static build(fields) {
+        return new Country([
+            fields.name,
+            fields.iso2,
+            fields.iso3,
+            fields.iso3Currency,
+            fields.inEurope
+        ]);
+    }
 }
 
 class Address {
+    static requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
+
     constructor(fields) {
         this.city = fields.city;
-        this.country = findCountryByName(fields.country);
+        if (fields.country.name) {
+            this.country = Country.build(fields.country)
+        } else {
+            this.country = findCountryByName(fields.country);
+        }
         this.region = fields.region;
         this.addressLine1 = fields.addressLine1;
         this.addressLine2 = fields.addressLine2;
@@ -153,7 +169,7 @@ class Address {
 
     static build(fields) {
         return new Promise((resolve, reject) => {
-            const fieldNames = ['city', 'country', 'region', 'addressLine1', 'zip'];
+            const fieldNames = Address.requiredFields;
             let unfilledFields = [];
             for(let i = 0; i < fieldNames.length; i++) {
                 if (!fields[fieldNames[i]]) {
