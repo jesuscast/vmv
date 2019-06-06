@@ -63,22 +63,8 @@
                                          -->
                                         <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
                                             <div _ngcontent-c34="" class="c-fulfilment-field-control-componen flex-column">
-                                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted"><span _ngcontent-c34="" class="c-text-m">Customer email</span></div>
-
-                                                <input type="email" />
+                                                <img id="tiny-image" />
                                             </div>
-                                        </fulfilment-field-control-component>
-                                        <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-componen flex-column">
-                                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted"><span _ngcontent-c34="" class="c-text-m">Customer phone</span></div>
-
-                                                <input type="number" />
-                                            </div>
-                                        </fulfilment-field-control-component>
-                                        <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                                <div _ngcontent-c34="" class="c-fulfilment-field-control-componen flex-column">
-                                                    <img id="tiny-image" />
-                                                </div>
 
                                         </fulfilment-field-control-component>
 
@@ -96,7 +82,7 @@
             <div _ngcontent-c21="" class="c-product-edit__options__main ng-tns-c21-28 ng-star-inserted" style="">
                 <!---->
                 <div _ngcontent-c21="" class="c-product-edit__image-editor-wrapper">
-                    
+
                     <image-editor-display-component _ngcontent-c21="" class="c-product-edit__image-editor ng-tns-c23-32 ng-tns-c21-28 ng-star-inserted" _nghost-c23="">
                         <div _ngcontent-c23="" class="c-image-editor-display">
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
@@ -108,24 +94,20 @@
                                 </div>
                             </fulfilment-field-control-component>
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Shipping cost</span></div>
-                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="shipping-cost"></span></div>
-        
-                                    </div>
+                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Shipping cost</span></div>
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="shipping-cost"></span></div>
+
+                                </div>
                             </fulfilment-field-control-component>
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Total</span></div>
-                                            <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="total-cost"></span></div>
-        
-                                    </div>
+                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Total</span></div>
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="total-cost"></span></div>
+
+                                </div>
                             </fulfilment-field-control-component>
-                            <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component">
-                                            <div id="paypal-button-container"></div>
-                                    </div>
-                            </fulfilment-field-control-component>
+                            <div id="paypal-button-container"></div>
                         </div>
                     </image-editor-display-component>
                 </div>
@@ -152,6 +134,7 @@
             /* attach to the document head */
             document.getElementsByTagName('head')[0].appendChild(linkElement);
         }
+
         function create_script(url) {
             /* create the link element */
             var linkElement = document.createElement('script');
@@ -179,7 +162,10 @@
                 const addressJSON = JSON.parse(addressRaw);
 
                 Address.build(addressJSON).then((address) => {
-                    resolve({prices: pricesJSON, address: addressJSON})
+                    resolve({
+                        prices: pricesJSON,
+                        address: addressJSON
+                    })
                 }).catch((err) => {
                     reject(err);
                 });
@@ -224,9 +210,8 @@
             }, 500);
         }
 
-
-        $(document).ready(function(){
-            const currency = 'USD'// 'GBP';
+        $(document).ready(function() {
+            const currency = 'USD' // 'GBP';
             const currencySymbol = '$'; // '&pound;';
             const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
             if (modifiedImageUrl) {
@@ -235,7 +220,9 @@
                 $("#tiny-image").css('margin-top', '20px');
             }
 
-            loadData().then(({prices, address}) => {
+            loadData().then(({
+                prices, address
+            }) => {
                 console.log(prices);
                 console.log(address);
                 $("#product-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
@@ -245,7 +232,10 @@
                 create_script(`https://www.paypal.com/sdk/js?client-id=${creds.paypalClientId}`)
 
                 processPaypalPayment((transaction) => {
-                    placeOrder(address, {total: 1, currency }, transaction.id).then((json) => {
+                    placeOrder(address, {
+                        total: 1,
+                        currency
+                    }, transaction.id).then((json) => {
                         console.log(json);
                     }).catch((err) => {
                         console.log(err);
