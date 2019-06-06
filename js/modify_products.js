@@ -1,5 +1,6 @@
+const ctrl = require('./constants');
 
-ctrl.returnProductOverviewImage = function(product) {
+const returnProductOverviewImage = function(product) {
     var coverVariant = product.variants[0];
     for (var i = 0; i < product.variants.length; ++i) {
         if (product.variants[i].is_cover) {
@@ -25,17 +26,23 @@ ctrl.returnProductOverviewImage = function(product) {
         + "&translate=" + image.tx + "," + image.ty;
 };
 
-ctrl.returnSide = function() {
+const returnSide = function() {
     return ctrl.side == "front" ?
         ctrl.selectedVariant.image : ctrl.selectedVariant.back_image;
 };
 
 function success(files) {
-    ctrl.returnSide().url_preview = files[0].previewImageURL;
-    ctrl.returnSide().url_full = files[0].fullImageURL;
-    ctrl.returnSide().scale = 1;
-    ctrl.returnSide().mirror = false;
-    ctrl.returnSide().rotate_degrees = 0;
-    ctrl.returnSide().tx = 0;
-    ctrl.returnSide().ty = 0;
+    returnSide().url_preview = files[0].previewImageURL;
+    returnSide().url_full = files[0].fullImageURL;
+    returnSide().scale = 1;
+    returnSide().mirror = false;
+    returnSide().rotate_degrees = 0;
+    returnSide().tx = 0;
+    returnSide().ty = 0;
 }
+
+module.exports = {
+    returnProductOverviewImage,
+    returnSide,
+    success
+};

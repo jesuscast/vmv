@@ -7,8 +7,9 @@
 //     .factory("productImage", ["$q", "$http", "IMAGE_GENERATOR_ENDPOINT", "imagePreloader",
 //             function($q, $http, IMAGE_GENERATOR_ENDPOINT, imagePreloader) {
 // .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
-
-const IMAGE_GENERATOR_ENDPOINT=`${window.CORSURL}${window.CLEAN_IMAGE_ENDPOINT}`;
+const {CORSURL, CLEAN_IMAGE_ENDPOINT} =  require('./constants');
+const imagePreloader  = require('./image_preloader');
+const IMAGE_GENERATOR_ENDPOINT=`${CORSURL}${CLEAN_IMAGE_ENDPOINT}`;
 /*
 * This function fetches the layer components for the product variant image in
 * question and preloads all the images associated ready for use with an image
@@ -129,3 +130,5 @@ const productImage = {
         });
     }
 }
+
+module.exports = productImage;

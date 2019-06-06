@@ -47,3 +47,5 @@ const imagePreloader = {
         });
     },
 };
+
+module.exports = imagePreloader;

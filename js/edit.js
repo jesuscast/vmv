@@ -1,3 +1,6 @@
+const ctrl = require('./constants');
+const productImage = require('./product_image');
+const imagePreloader = require('./image_preloader');
 
 function loading(value) {
     ctrl.loading = value;
@@ -159,10 +162,6 @@ function render() {
 
 function edit() {
     const $element = $("#image-editor-container");
-
-    controller =  ["$window", "$element", "$scope", "$q", "$timeout", "productImage",
-            "imagePreloader", "errorBar", "DEBUG"];
-        
     // function randomFunction($window, $element, $scope, $q, $timeout, productImage,
     //                     imagePreloader, errorBar, DEBUG) {
     // if(!window.ctrl)
@@ -269,7 +268,7 @@ function edit() {
     var lastClientX = 0;
     var lastClientY = 0;
 
-    ctrl.onMouseMove = function(event) {
+    const onMouseMove = function(event) {
         if ($scope.frozen || layerComponents == null) return;
 
         if (ctrl.dragging) {
@@ -288,21 +287,24 @@ function edit() {
         }
     };
 
-    ctrl.onMouseDown = function(event) {
+    const onMouseDown = function(event) {
         if ($scope.frozen || layerComponents == null) return;
         ctrl.dragging = true;
         lastClientX = event.clientX;
         lastClientY = event.clientY;
     };
 
-    ctrl.onMouseUp = function(event) {
+    const onMouseUp = function(event) {
         if ($scope.frozen || layerComponents == null) return;
         ctrl.dragging = false;
     };
 
-    document.addEventListener('mousemove', ctrl.onMouseMove);
-    document.addEventListener('mousedown', ctrl.onMouseDown);
-    document.addEventListener('mouseup', ctrl.onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mouseup', onMouseUp);
 }
 
-
+module.exports = {
+    render,
+    edit
+}
