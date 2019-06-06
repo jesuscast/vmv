@@ -16,6 +16,7 @@ window.CORSURL = constants.CORSURL;
 window.CLEAN_IMAGE_ENDPOINT = constants.CLEAN_IMAGE_ENDPOINT;
 window.creds = constants.creds;
 window.env = constants.env;
+window.$scope = constants.$scope;
 window.placeOrder = utilities.placeOrder;
 window.findCountryByName = utilities.findCountryByName;
 window.getPrices = utilities.getPrices;
@@ -135,7 +136,7 @@ var ctrl = {
   side: "front",
   imageGeneratorEndpoint: CLEAN_IMAGE_ENDPOINT
 };
-window.$scope = {
+var $scope = {
   templateId: "aa_mens_tshirt",
   variant: "black",
   userImageUrl: "https://s3.amazonaws.com/kiteshopify/1f65b7b0-ed5e-46f6-8e2c-e3a6dce124a1.png",
@@ -413,13 +414,16 @@ module.exports = {
   CLEAN_IMAGE_ENDPOINT: CLEAN_IMAGE_ENDPOINT,
   CORSURL: CORSURL,
   ctrl: ctrl,
-  env: env
+  env: env,
+  $scope: $scope
 };
 
 },{}],3:[function(require,module,exports){
 "use strict";
 
-var ctrl = require('./constants');
+var _require = require('./constants'),
+    ctrl = _require.ctrl,
+    $scope = _require.$scope;
 
 var productImage = require('./product_image');
 
@@ -865,7 +869,8 @@ module.exports = {
 // .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
 var _require = require('./constants'),
     CORSURL = _require.CORSURL,
-    CLEAN_IMAGE_ENDPOINT = _require.CLEAN_IMAGE_ENDPOINT;
+    CLEAN_IMAGE_ENDPOINT = _require.CLEAN_IMAGE_ENDPOINT,
+    $scope = _require.$scope;
 
 var imagePreloader = require('./image_preloader');
 
@@ -1001,7 +1006,8 @@ module.exports = productImage;
 var _require = require('./constants'),
     CORSURL = _require.CORSURL,
     creds = _require.creds,
-    countriesRaw = _require.countriesRaw;
+    countriesRaw = _require.countriesRaw,
+    $scope = _require.$scope;
 
 var _require2 = require('./models'),
     Country = _require2.Country,

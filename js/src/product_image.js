@@ -7,7 +7,7 @@
 //     .factory("productImage", ["$q", "$http", "IMAGE_GENERATOR_ENDPOINT", "imagePreloader",
 //             function($q, $http, IMAGE_GENERATOR_ENDPOINT, imagePreloader) {
 // .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
-const {CORSURL, CLEAN_IMAGE_ENDPOINT} =  require('./constants');
+const {CORSURL, CLEAN_IMAGE_ENDPOINT, $scope} =  require('./constants');
 const imagePreloader  = require('./image_preloader');
 const IMAGE_GENERATOR_ENDPOINT=`${CORSURL}${CLEAN_IMAGE_ENDPOINT}`;
 /*

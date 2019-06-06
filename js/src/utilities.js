@@ -1,4 +1,4 @@
-const {CORSURL, creds, countriesRaw}  = require('./constants');
+const {CORSURL, creds, countriesRaw, $scope}  = require('./constants');
 const {
     Country,
     Address

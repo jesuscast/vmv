@@ -11,6 +11,7 @@ window.CORSURL = constants.CORSURL;
 window.CLEAN_IMAGE_ENDPOINT = constants.CLEAN_IMAGE_ENDPOINT;
 window.creds = constants.creds;
 window.env = constants.env;
+window.$scope = constants.$scope;
 
 window.placeOrder = utilities.placeOrder;
 window.findCountryByName = utilities.findCountryByName;
