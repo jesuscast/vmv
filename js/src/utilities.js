@@ -1,58 +1,8 @@
 const {CORSURL, creds, countriesRaw}  = require('./constants');
-
-class Country {
-    constructor(countryElement) {
-        this.name = countryElement[0];
-        this.iso2 = countryElement[1];
-        this.iso3 = countryElement[2];
-        this.iso3Currency = countryElement[3];
-        this.inEurope = countryElement[4];
-    }
-
-    static build(fields) {
-        return new Country([
-            fields.name,
-            fields.iso2,
-            fields.iso3,
-            fields.iso3Currency,
-            fields.inEurope
-        ]);
-    }
-}
-
-class Address {
-    static requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
-
-    constructor(fields) {
-        this.city = fields.city;
-        if (fields.country.name) {
-            this.country = Country.build(fields.country)
-        } else {
-            this.country = findCountryByName(fields.country);
-        }
-        this.region = fields.region;
-        this.addressLine1 = fields.addressLine1;
-        this.addressLine2 = fields.addressLine2;
-        this.zip = fields.zip;
-    }
-
-    static build(fields) {
-        return new Promise((resolve, reject) => {
-            const fieldNames = Address.requiredFields;
-            let unfilledFields = [];
-            for(let i = 0; i < fieldNames.length; i++) {
-                if (!fields[fieldNames[i]]) {
-                    unfilledFields.push(fieldNames[i])
-                }
-            }
-
-            if (unfilledFields.length > 0) {
-                return reject(`Please fill out the field ${unfilledFields.join(', ')}`);
-            }
-            return resolve(new Address(fields))
-        });
-    }
-}
+const {
+    Country,
+    Address
+} = require('./models');
 
 const countries = [];
 
@@ -127,7 +77,7 @@ function getPrices(address) {
             "shipping_country_code": address.country.iso2
         };
 
-        fetch(`${window.CORSURL}https://api.kite.ly/v3.0/price/`, {
+        fetch(`${CORSURL}https://api.kite.ly/v3.0/price/`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
@@ -171,7 +121,7 @@ function placeOrder(address, price, paypalId) {
                 "template_id": "i6_case"
             }]
         };
-        fetch(`${window.CORSURL}https://api.kite.ly/v4.0/print/`, {
+        fetch(`${CORSURL}https://api.kite.ly/v4.0/print/`, {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {

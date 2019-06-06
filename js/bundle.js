@@ -7,6 +7,10 @@ var utilities = require('./src/utilities');
 
 var edit = require('./src/edit');
 
+var _require = require('./src/models'),
+    Country = _require.Country,
+    Address = _require.Address;
+
 window.sampleTransaction = constants.sampleTransaction;
 window.CORSURL = constants.CORSURL;
 window.CLEAN_IMAGE_ENDPOINT = constants.CLEAN_IMAGE_ENDPOINT;
@@ -16,11 +20,12 @@ window.placeOrder = utilities.placeOrder;
 window.findCountryByName = utilities.findCountryByName;
 window.getPrices = utilities.getPrices;
 window.getAddress = utilities.getAddress;
-window.Address = utilities.Address;
 window.render = edit.render;
 window.edit = edit.edit;
+window.Country = Country;
+window.Address = Address;
 
-},{"./src/constants":2,"./src/edit":3,"./src/utilities":6}],2:[function(require,module,exports){
+},{"./src/constants":2,"./src/edit":3,"./src/models":7,"./src/utilities":9}],2:[function(require,module,exports){
 "use strict";
 
 var CORSURL = "https://cors-anywhere.herokuapp.com/";
@@ -689,7 +694,7 @@ module.exports = {
   edit: edit
 };
 
-},{"./constants":2,"./image_preloader":4,"./product_image":5}],4:[function(require,module,exports){
+},{"./constants":2,"./image_preloader":4,"./product_image":8}],4:[function(require,module,exports){
 "use strict";
 
 var imagePreloader = {
@@ -725,7 +730,7 @@ var imagePreloader = {
       for (var i = 0; i < imagesToLoad.length; ++i) {
         (function (src) {
           var image = new Image();
-          image.src = src.replace(window.CORSURL, '');
+          image.src = src.replace(CORSURL, '');
           var aimage = $(image);
           imagePreloader.images.push(aimage);
           aimage.on("load", function () {
@@ -746,6 +751,109 @@ var imagePreloader = {
 module.exports = imagePreloader;
 
 },{}],5:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Address =
+/*#__PURE__*/
+function () {
+  function Address(fields) {
+    _classCallCheck(this, Address);
+
+    this.city = fields.city;
+
+    if (fields.country.name) {
+      this.country = Country.build(fields.country);
+    } else {
+      this.country = findCountryByName(fields.country);
+    }
+
+    this.region = fields.region;
+    this.addressLine1 = fields.addressLine1;
+    this.addressLine2 = fields.addressLine2;
+    this.zip = fields.zip;
+  }
+
+  _createClass(Address, null, [{
+    key: "build",
+    value: function build(fields) {
+      return new Promise(function (resolve, reject) {
+        var fieldNames = Address.requiredFields;
+        var unfilledFields = [];
+
+        for (var i = 0; i < fieldNames.length; i++) {
+          if (!fields[fieldNames[i]]) {
+            unfilledFields.push(fieldNames[i]);
+          }
+        }
+
+        if (unfilledFields.length > 0) {
+          return reject("Please fill out the field ".concat(unfilledFields.join(', ')));
+        }
+
+        return resolve(new Address(fields));
+      });
+    }
+  }]);
+
+  return Address;
+}();
+
+Address.requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
+module.exports = Address;
+
+},{}],6:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Country =
+/*#__PURE__*/
+function () {
+  function Country(countryElement) {
+    _classCallCheck(this, Country);
+
+    this.name = countryElement[0];
+    this.iso2 = countryElement[1];
+    this.iso3 = countryElement[2];
+    this.iso3Currency = countryElement[3];
+    this.inEurope = countryElement[4];
+  }
+
+  _createClass(Country, null, [{
+    key: "build",
+    value: function build(fields) {
+      return new Country([fields.name, fields.iso2, fields.iso3, fields.iso3Currency, fields.inEurope]);
+    }
+  }]);
+
+  return Country;
+}();
+
+module.exports = Country;
+
+},{}],7:[function(require,module,exports){
+"use strict";
+
+var Country = require('./country');
+
+var Address = require('./address');
+
+module.exports = {
+  Country: Country,
+  Address: Address
+};
+
+},{"./address":5,"./country":6}],8:[function(require,module,exports){
 "use strict";
 
 /**
@@ -887,89 +995,18 @@ var productImage = {
 };
 module.exports = productImage;
 
-},{"./constants":2,"./image_preloader":4}],6:[function(require,module,exports){
+},{"./constants":2,"./image_preloader":4}],9:[function(require,module,exports){
 "use strict";
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var _require = require('./constants'),
     CORSURL = _require.CORSURL,
     creds = _require.creds,
     countriesRaw = _require.countriesRaw;
 
-var Country =
-/*#__PURE__*/
-function () {
-  function Country(countryElement) {
-    _classCallCheck(this, Country);
+var _require2 = require('./models'),
+    Country = _require2.Country,
+    Address = _require2.Address;
 
-    this.name = countryElement[0];
-    this.iso2 = countryElement[1];
-    this.iso3 = countryElement[2];
-    this.iso3Currency = countryElement[3];
-    this.inEurope = countryElement[4];
-  }
-
-  _createClass(Country, null, [{
-    key: "build",
-    value: function build(fields) {
-      return new Country([fields.name, fields.iso2, fields.iso3, fields.iso3Currency, fields.inEurope]);
-    }
-  }]);
-
-  return Country;
-}();
-
-var Address =
-/*#__PURE__*/
-function () {
-  function Address(fields) {
-    _classCallCheck(this, Address);
-
-    this.city = fields.city;
-
-    if (fields.country.name) {
-      this.country = Country.build(fields.country);
-    } else {
-      this.country = findCountryByName(fields.country);
-    }
-
-    this.region = fields.region;
-    this.addressLine1 = fields.addressLine1;
-    this.addressLine2 = fields.addressLine2;
-    this.zip = fields.zip;
-  }
-
-  _createClass(Address, null, [{
-    key: "build",
-    value: function build(fields) {
-      return new Promise(function (resolve, reject) {
-        var fieldNames = Address.requiredFields;
-        var unfilledFields = [];
-
-        for (var i = 0; i < fieldNames.length; i++) {
-          if (!fields[fieldNames[i]]) {
-            unfilledFields.push(fieldNames[i]);
-          }
-        }
-
-        if (unfilledFields.length > 0) {
-          return reject("Please fill out the field ".concat(unfilledFields.join(', ')));
-        }
-
-        return resolve(new Address(fields));
-      });
-    }
-  }]);
-
-  return Address;
-}();
-
-Address.requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
 var countries = [];
 var countriesKeys = Object.keys(countriesRaw);
 
@@ -1042,7 +1079,7 @@ function getPrices(address) {
       "ship_to_store": 0,
       "shipping_country_code": address.country.iso2
     };
-    fetch("".concat(window.CORSURL, "https://api.kite.ly/v3.0/price/"), {
+    fetch("".concat(CORSURL, "https://api.kite.ly/v3.0/price/"), {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -1086,7 +1123,7 @@ function placeOrder(address, price, paypalId) {
         "template_id": "i6_case"
       }]
     };
-    fetch("".concat(window.CORSURL, "https://api.kite.ly/v4.0/print/"), {
+    fetch("".concat(CORSURL, "https://api.kite.ly/v4.0/print/"), {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -1114,4 +1151,4 @@ module.exports = {
   getAddress: getAddress
 };
 
-},{"./constants":2}]},{},[1]);
+},{"./constants":2,"./models":7}]},{},[1]);
