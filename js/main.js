@@ -1,6 +1,6 @@
-const constants = require('./constants');
-const utilities = require('./utilities');
-const edit = require('./edit');
+const constants = require('./src/constants');
+const utilities = require('./src/utilities');
+const edit = require('./src/edit');
 
 window.sampleTransaction = constants.sampleTransaction;
 window.CORSURL = constants.CORSURL;
