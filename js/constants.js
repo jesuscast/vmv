@@ -12,6 +12,104 @@ const rawCreds = {
         pubKey: '',
     },
 };
+const sampleTransaction = {
+    "create_time":"2019-06-06T00:19:46Z",
+    "update_time":"2019-06-06T00:19:46Z",
+    "id":"8B2968046V6357949",
+    "intent":"CAPTURE",
+    "status":"COMPLETED",
+    "payer":{
+       "email_address":"jesus.cast.sosa@gmail.com",
+       "payer_id":"S2V2YVZ7LR9Q6",
+       "address":{
+          "country_code":"US"
+       },
+       "name":{
+          "given_name":"Jesus",
+          "surname":"Castaneda"
+       }
+    },
+    "purchase_units":[
+       {
+          "reference_id":"default",
+          "soft_descriptor":"PAYPAL *CHARLIECARP",
+          "amount":{
+             "value":"1.00",
+             "currency_code":"USD"
+          },
+          "payee":{
+             "email_address":"sandbox-merchant@kite.ly",
+             "merchant_id":"D5JH5T7M8JMBU"
+          },
+          "shipping":{
+             "name":{
+                "full_name":"Jesus Castaneda"
+             },
+             "address":{
+                "address_line_1":"33 8th St",
+                "address_line_2":"701",
+                "admin_area_2":"San Francisco",
+                "admin_area_1":"CA",
+                "postal_code":"94103",
+                "country_code":"US"
+             }
+          },
+          "payments":{
+             "captures":[
+                {
+                   "status":"PENDING",
+                   "id":"5YW653669E606423P",
+                   "final_capture":true,
+                   "create_time":"2019-06-06T00:19:46Z",
+                   "update_time":"2019-06-06T00:19:46Z",
+                   "amount":{
+                      "value":"1.00",
+                      "currency_code":"USD"
+                   },
+                   "seller_protection":{
+                      "status":"ELIGIBLE",
+                      "dispute_categories":[
+                         "ITEM_NOT_RECEIVED",
+                         "UNAUTHORIZED_TRANSACTION"
+                      ]
+                   },
+                   "status_details":{
+                      "reason":"RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION"
+                   },
+                   "links":[
+                      {
+                         "href":"https://api.sandbox.paypal.com/v2/payments/captures/5YW653669E606423P",
+                         "rel":"self",
+                         "method":"GET",
+                         "title":"GET"
+                      },
+                      {
+                         "href":"https://api.sandbox.paypal.com/v2/payments/captures/5YW653669E606423P/refund",
+                         "rel":"refund",
+                         "method":"POST",
+                         "title":"POST"
+                      },
+                      {
+                         "href":"https://api.sandbox.paypal.com/v2/checkout/orders/8B2968046V6357949",
+                         "rel":"up",
+                         "method":"GET",
+                         "title":"GET"
+                      }
+                   ]
+                }
+             ]
+          }
+       }
+    ],
+    "links":[
+       {
+          "href":"https://api.sandbox.paypal.com/v2/checkout/orders/8B2968046V6357949",
+          "rel":"self",
+          "method":"GET",
+          "title":"GET"
+       }
+    ]
+ };
 const env = 'test';
 const creds = rawCreds[env];
 
@@ -528,3 +626,45 @@ function getPrices(address) {
     });
 }
 
+function placeOrder(address, price, paypalId) {
+    return new Promise((resolve, reject) => {
+        const body = {
+            "proof_of_payment": paypalId,
+            "shipping_address": {
+                "recipient_name": "Deon Botha",
+                "address_line_1": address.addressLine1,
+                "address_line_2": address.addressLine2,
+                "city": address.city,
+                "county_state": address.region,
+                "postcode": address.zip,
+                "country_code": address.country.iso3
+            },
+            "customer_email": "andres@iisac.mx",
+            "customer_phone": "+44 (0)784297 1234",
+            "customer_payment": {
+                "amount": price.total,
+                "currency": price.currency
+            },
+            "jobs": [{
+                "assets": ["http://psps.s3.amazonaws.com/sdk_static/1.jpg"],
+                "template_id": "i6_case"
+            }]
+        };
+        fetch(`${window.CORSURL}https://api.kite.ly/v4.0/print/`, {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+                'Authorization': `ApiKey ${creds.pubKey}`,
+                'Content-Type': 'application/json',
+                "User-Agent": "Kite SDK Android v5.8.9"
+            },
+            referrer: 'no-referrer',
+            redirect: 'follow', 
+            cache: 'no-cache', 
+        }).then((response) => {
+            response.json().then(json => {
+                resolve(json);
+            });
+        }).catch(reject);
+    });
+}

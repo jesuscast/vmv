@@ -126,11 +126,6 @@
                                             <div id="paypal-button-container"></div>
                                     </div>
                             </fulfilment-field-control-component>
-                            <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component">
-                                        <button id="checkout-btn" _ngcontent-c27="" class="c-btn c-btn--bare c-basic-tabs-component__view c-basic-tabs-component__view--selected ng-star-inserted">Buy now</button>
-                                    </div>
-                            </fulfilment-field-control-component>
                         </div>
                     </image-editor-display-component>
                 </div>
@@ -171,7 +166,7 @@
         create_link('../css/editor.css')
         create_link('../css/kitely.css')
 
-        function loadData(cb) {
+        function loadData() {
             return new Promise((resolve, reject) => {
                 const pricesRaw = localStorage.getItem('prices');
                 const addressRaw = localStorage.getItem('address');
@@ -190,6 +185,45 @@
                 });
             });
         }
+
+        function processPaypalPayment(callback) {
+            setTimeout(() => {
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        // Set up the transaction
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    currency_code: currency,
+                                    value: '1', // prices.total_product_cost[currency]
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            // alert('Transaction completed by ' + details.payer.name.given_name);
+                            // window.deets = details;
+                            callback(details);
+                            // Call your server to save the transaction
+                            // return fetch('/paypal-transaction-complete', {
+                            //     method: 'post',
+                            //     headers: {
+                            //         'content-type': 'application/json'
+                            //     },
+                            //     body: JSON.stringify({
+                            //         orderID: data.orderID
+                            //     })
+                            // });
+                        });
+                    }
+                }).render('#paypal-button-container');
+                if (env === 'test') {
+                    return callback(sampleTransaction);
+                }
+            }, 500);
+        }
+
 
         $(document).ready(function(){
             const currency = 'USD'// 'GBP';
@@ -210,21 +244,13 @@
 
                 create_script(`https://www.paypal.com/sdk/js?client-id=${creds.paypalClientId}`)
 
-                setTimeout(() => {
-                    paypal.Buttons({
-                        createOrder: function(data, actions) {
-                            // Set up the transaction
-                            return actions.order.create({
-                                purchase_units: [{
-                                    amount: {
-                                        currency_code: currency,
-                                        value: prices.total_product_cost[currency]
-                                    }
-                                }]
-                            });
-                        }
-                    }).render('#paypal-button-container');
-                }, 500);
+                processPaypalPayment((transaction) => {
+                    placeOrder(address, {total: 1, currency }, transaction.id).then((json) => {
+                        console.log(json);
+                    }).catch((err) => {
+                        console.log(err);
+                    })
+                });
             }).catch((err) => {
                 console.error(err);
             });
