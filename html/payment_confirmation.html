@@ -87,27 +87,12 @@
                         <div _ngcontent-c23="" class="c-image-editor-display">
                             <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
                                 <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                    <h1>Payment</h1>
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Product cost</span></div>
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="product-cost"></span></div>
+                                    <h1>Thank you for your order!</h1>
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">You'll receive an email with the confirmation and tracking information</span></div>
+                                
 
                                 </div>
                             </fulfilment-field-control-component>
-                            <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Shipping cost</span></div>
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="shipping-cost"></span></div>
-
-                                </div>
-                            </fulfilment-field-control-component>
-                            <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
-                                <div _ngcontent-c34="" class="c-fulfilment-field-control-component flex-column">
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Total</span></div>
-                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m" id="total-cost"></span></div>
-
-                                </div>
-                            </fulfilment-field-control-component>
-                            <div id="paypal-button-container"></div>
                         </div>
                     </image-editor-display-component>
                 </div>
@@ -229,19 +214,6 @@
                 $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
                 $("#total-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
 
-                create_script(`https://www.paypal.com/sdk/js?client-id=${creds.paypalClientId}`)
-
-                processPaypalPayment((transaction) => {
-                    placeOrder(address, {
-                        total: 1,
-                        currency
-                    }, transaction.id).then((json) => {
-                        console.log(json);
-                        document.location.href = document.location.href.replace('payment.html', 'payment_confirmation.html');
-                    }).catch((err) => {
-                        console.log(err);
-                    })
-                });
             }).catch((err) => {
                 console.error(err);
             });
