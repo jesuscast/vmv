@@ -1,16 +1,4 @@
-const {loadData} = require('../utilities');
-
-
-function create_script(url) {
-    /* create the link element */
-    var linkElement = document.createElement('script');
-
-    /* add attributes */
-    linkElement.setAttribute('src', url);
-
-    /* attach to the document body */
-    document.getElementsByTagName('body')[0].appendChild(linkElement);
-}
+const {loadData, processPaypalPayment, create_script} = require('../utilities');
 
 class Payment {
     static run() {

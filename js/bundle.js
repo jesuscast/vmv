@@ -1175,6 +1175,56 @@ function loadData() {
   });
 }
 
+function processPaypalPayment(callback) {
+  setTimeout(function () {
+    paypal.Buttons({
+      createOrder: function createOrder(data, actions) {
+        // Set up the transaction
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              currency_code: currency,
+              value: '1' // prices.total_product_cost[currency]
+
+            }
+          }]
+        });
+      },
+      onApprove: function onApprove(data, actions) {
+        return actions.order.capture().then(function (details) {
+          // alert('Transaction completed by ' + details.payer.name.given_name);
+          // window.deets = details;
+          callback(details); // Call your server to save the transaction
+          // return fetch('/paypal-transaction-complete', {
+          //     method: 'post',
+          //     headers: {
+          //         'content-type': 'application/json'
+          //     },
+          //     body: JSON.stringify({
+          //         orderID: data.orderID
+          //     })
+          // });
+        });
+      }
+    }).render('#paypal-button-container');
+
+    if (env === 'test') {
+      return callback(sampleTransaction);
+    }
+  }, 500);
+}
+
+function create_script(url) {
+  /* create the link element */
+  var linkElement = document.createElement('script');
+  /* add attributes */
+
+  linkElement.setAttribute('src', url);
+  /* attach to the document body */
+
+  document.getElementsByTagName('body')[0].appendChild(linkElement);
+}
+
 module.exports = {
   Country: Country,
   Address: Address,
@@ -1182,7 +1232,9 @@ module.exports = {
   placeOrder: placeOrder,
   getPrices: getPrices,
   getAddress: getAddress,
-  loadData: loadData
+  loadData: loadData,
+  processPaypalPayment: processPaypalPayment,
+  create_script: create_script
 };
 
 },{"./constants":2,"./models":7}],10:[function(require,module,exports){
@@ -1361,18 +1413,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var _require = require('../utilities'),
-    loadData = _require.loadData;
-
-function create_script(url) {
-  /* create the link element */
-  var linkElement = document.createElement('script');
-  /* add attributes */
-
-  linkElement.setAttribute('src', url);
-  /* attach to the document body */
-
-  document.getElementsByTagName('body')[0].appendChild(linkElement);
-}
+    loadData = _require.loadData,
+    processPaypalPayment = _require.processPaypalPayment,
+    create_script = _require.create_script;
 
 var Payment =
 /*#__PURE__*/

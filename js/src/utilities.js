@@ -162,6 +162,54 @@ function loadData() {
         });
     });
 }
+function processPaypalPayment(callback) {
+    setTimeout(() => {
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                // Set up the transaction
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            currency_code: currency,
+                            value: '1', // prices.total_product_cost[currency]
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // alert('Transaction completed by ' + details.payer.name.given_name);
+                    // window.deets = details;
+                    callback(details);
+                    // Call your server to save the transaction
+                    // return fetch('/paypal-transaction-complete', {
+                    //     method: 'post',
+                    //     headers: {
+                    //         'content-type': 'application/json'
+                    //     },
+                    //     body: JSON.stringify({
+                    //         orderID: data.orderID
+                    //     })
+                    // });
+                });
+            }
+        }).render('#paypal-button-container');
+        if (env === 'test') {
+            return callback(sampleTransaction);
+        }
+    }, 500);
+}
+
+function create_script(url) {
+    /* create the link element */
+    var linkElement = document.createElement('script');
+
+    /* add attributes */
+    linkElement.setAttribute('src', url);
+
+    /* attach to the document body */
+    document.getElementsByTagName('body')[0].appendChild(linkElement);
+}
 
 module.exports = {
     Country,
@@ -170,5 +218,7 @@ module.exports = {
     placeOrder,
     getPrices,
     getAddress,
-    loadData
+    loadData,
+    processPaypalPayment,
+    create_script
 }
