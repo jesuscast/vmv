@@ -5,6 +5,7 @@ const {
     Country,
     Address
 } = require('./src/models');
+const {runView} = require('./src/views');
 
 window.sampleTransaction = constants.sampleTransaction;
 window.CORSURL = constants.CORSURL;
@@ -17,6 +18,7 @@ window.placeOrder = utilities.placeOrder;
 window.findCountryByName = utilities.findCountryByName;
 window.getPrices = utilities.getPrices;
 window.getAddress = utilities.getAddress;
+window.runView = runView;
 
 window.render = edit.render;
 window.edit = edit.edit;

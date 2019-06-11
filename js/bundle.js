@@ -11,6 +11,9 @@ var _require = require('./src/models'),
     Country = _require.Country,
     Address = _require.Address;
 
+var _require2 = require('./src/views'),
+    runView = _require2.runView;
+
 window.sampleTransaction = constants.sampleTransaction;
 window.CORSURL = constants.CORSURL;
 window.CLEAN_IMAGE_ENDPOINT = constants.CLEAN_IMAGE_ENDPOINT;
@@ -21,12 +24,13 @@ window.placeOrder = utilities.placeOrder;
 window.findCountryByName = utilities.findCountryByName;
 window.getPrices = utilities.getPrices;
 window.getAddress = utilities.getAddress;
+window.runView = runView;
 window.render = edit.render;
 window.edit = edit.edit;
 window.Country = Country;
 window.Address = Address;
 
-},{"./src/constants":2,"./src/edit":3,"./src/models":7,"./src/utilities":9}],2:[function(require,module,exports){
+},{"./src/constants":2,"./src/edit":3,"./src/models":7,"./src/utilities":9,"./src/views":12}],2:[function(require,module,exports){
 "use strict";
 
 var CORSURL = "https://cors-anywhere.herokuapp.com/";
@@ -1148,13 +1152,332 @@ function placeOrder(address, price, paypalId) {
   });
 }
 
+function loadData() {
+  return new Promise(function (resolve, reject) {
+    var pricesRaw = localStorage.getItem('prices');
+    var addressRaw = localStorage.getItem('address');
+
+    if (!pricesRaw || !addressRaw) {
+      reject('no data');
+      return;
+    }
+
+    var pricesJSON = JSON.parse(pricesRaw);
+    var addressJSON = JSON.parse(addressRaw);
+    Address.build(addressJSON).then(function (address) {
+      resolve({
+        prices: pricesJSON,
+        address: addressJSON
+      });
+    })["catch"](function (err) {
+      reject(err);
+    });
+  });
+}
+
 module.exports = {
   Country: Country,
   Address: Address,
   findCountryByName: findCountryByName,
   placeOrder: placeOrder,
   getPrices: getPrices,
-  getAddress: getAddress
+  getAddress: getAddress,
+  loadData: loadData
 };
 
-},{"./constants":2,"./models":7}]},{},[1]);
+},{"./constants":2,"./models":7}],10:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Checkout =
+/*#__PURE__*/
+function () {
+  function Checkout() {
+    _classCallCheck(this, Checkout);
+  }
+
+  _createClass(Checkout, null, [{
+    key: "run",
+    value: function run() {
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
+
+      if (modifiedImageUrl) {
+        $("#tiny-image").attr('src', modifiedImageUrl);
+        $("#tiny-image").css('width', '150%');
+        $("#tiny-image").css('margin-top', '20px');
+      }
+
+      $("#checkout-btn").on('click', function () {
+        getAddress().then(function (address) {
+          getPrices(address).then(function (prices) {
+            localStorage.setItem('prices', JSON.stringify(prices));
+            localStorage.setItem('address', JSON.stringify(address));
+            document.location.href = document.location.href.replace('checkout.html', 'payment.html');
+          })["catch"](function (err) {
+            alert(err);
+          });
+        });
+      });
+    }
+  }]);
+
+  return Checkout;
+}();
+
+module.exports = Checkout;
+
+},{}],11:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Editor =
+/*#__PURE__*/
+function () {
+  function Editor() {
+    _classCallCheck(this, Editor);
+  }
+
+  _createClass(Editor, null, [{
+    key: "run",
+    value: function run() {
+      console.log('wtf');
+      window.addEventListener("message", receiveMessage, false);
+
+      function receiveMessage(event) {
+        console.log("Received ".concat(JSON.stringify(event.data)));
+
+        if (event.data.product_id) {
+          $scope.templateId = event.data.product_id;
+
+          if (event.data.userImageUrl) {
+            $scope.userImageUrl = event.data.userImageUrl;
+          }
+
+          edit();
+        }
+      }
+
+      var slider = document.getElementById('slider');
+      noUiSlider.create(slider, {
+        start: [1],
+        connect: true,
+        range: {
+          'min': 0.3,
+          'max': 3
+        }
+      });
+
+      function doSomething(values, handle, unencoded, tap, positions) {
+        // values: Current slider values (array);
+        // handle: Handle that caused the event (number);
+        // unencoded: Slider values without formatting (array);
+        // tap: Event was caused by the user tapping the slider (boolean);
+        // positions: Left offset of the handles (array);
+        $scope.scale = parseFloat(values[0]);
+        console.log($scope.scale);
+        render();
+      } // Binding signature
+
+
+      slider.noUiSlider.on('update', doSomething); // Binding namespaced events
+
+      slider.noUiSlider.on('set.one', function () {});
+      $("#checkout-btn").on('click', function () {
+        document.location.href = document.location.href.replace('editor.html', 'checkout.html');
+      });
+    }
+  }]);
+
+  return Editor;
+}();
+
+module.exports = Editor;
+
+},{}],12:[function(require,module,exports){
+"use strict";
+
+var Checkout = require('./checkout');
+
+var Editor = require('./editor');
+
+var PaymentConfirmation = require('./payment_confirmation');
+
+var Payment = require('./payment');
+
+var viewMappings = {
+  'checkout': Checkout,
+  'editor': Editor,
+  'payment_confirmation': PaymentConfirmation,
+  'payment': Payment
+};
+
+function create_link(url) {
+  /* create the link element */
+  var linkElement = document.createElement('link');
+  /* add attributes */
+
+  linkElement.setAttribute('rel', 'stylesheet');
+  linkElement.setAttribute('href', url);
+  /* attach to the document head */
+
+  document.getElementsByTagName('head')[0].appendChild(linkElement);
+}
+
+function runView(viewName) {
+  if (!viewMappings[viewName]) {
+    console.error("".concat(viewName, " is not a valid view"));
+    return;
+  }
+
+  var view = viewMappings[viewName];
+  create_link('../css/editor.css');
+  create_link('../css/kitely.css');
+  $(document).ready(function () {
+    view.run();
+  });
+}
+
+module.exports = {
+  runView: runView
+};
+
+},{"./checkout":10,"./editor":11,"./payment":13,"./payment_confirmation":14}],13:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _require = require('../utilities'),
+    loadData = _require.loadData;
+
+function create_script(url) {
+  /* create the link element */
+  var linkElement = document.createElement('script');
+  /* add attributes */
+
+  linkElement.setAttribute('src', url);
+  /* attach to the document body */
+
+  document.getElementsByTagName('body')[0].appendChild(linkElement);
+}
+
+var Payment =
+/*#__PURE__*/
+function () {
+  function Payment() {
+    _classCallCheck(this, Payment);
+  }
+
+  _createClass(Payment, null, [{
+    key: "run",
+    value: function run() {
+      var currency = 'USD'; // 'GBP';
+
+      var currencySymbol = '$'; // '&pound;';
+
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
+
+      if (modifiedImageUrl) {
+        $("#tiny-image").attr('src', modifiedImageUrl);
+        $("#tiny-image").css('width', '150%');
+        $("#tiny-image").css('margin-top', '20px');
+      }
+
+      loadData().then(function (_ref) {
+        var prices = _ref.prices,
+            address = _ref.address;
+        console.log(prices);
+        console.log(address);
+        $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
+        $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
+        $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
+        create_script("https://www.paypal.com/sdk/js?client-id=" + creds.paypalClientId);
+        processPaypalPayment(function (transaction) {
+          placeOrder(address, {
+            total: 1,
+            currency: currency
+          }, transaction.id).then(function (json) {
+            console.log(json);
+            document.location.href = document.location.href.replace('payment.html', 'payment_confirmation.html');
+          })["catch"](function (err) {
+            console.log(err);
+          });
+        });
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    }
+  }]);
+
+  return Payment;
+}();
+
+module.exports = Payment;
+
+},{"../utilities":9}],14:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _require = require('../utilities'),
+    loadData = _require.loadData;
+
+var PaymentConfirmation =
+/*#__PURE__*/
+function () {
+  function PaymentConfirmation() {
+    _classCallCheck(this, PaymentConfirmation);
+  }
+
+  _createClass(PaymentConfirmation, null, [{
+    key: "run",
+    value: function run() {
+      var currency = 'USD'; // 'GBP';
+
+      var currencySymbol = '$'; // '&pound;';
+
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
+
+      if (modifiedImageUrl) {
+        $("#tiny-image").attr('src', modifiedImageUrl);
+        $("#tiny-image").css('width', '150%');
+        $("#tiny-image").css('margin-top', '20px');
+      }
+
+      loadData().then(function (_ref) {
+        var prices = _ref.prices,
+            address = _ref.address;
+        console.log(prices);
+        console.log(address);
+        $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
+        $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
+        $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    }
+  }]);
+
+  return PaymentConfirmation;
+}();
+
+module.exports = PaymentConfirmation;
+
+},{"../utilities":9}]},{},[1]);

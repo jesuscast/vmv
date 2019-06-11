@@ -140,11 +140,35 @@ function placeOrder(address, price, paypalId) {
     });
 }
 
+function loadData() {
+    return new Promise((resolve, reject) => {
+        const pricesRaw = localStorage.getItem('prices');
+        const addressRaw = localStorage.getItem('address');
+
+        if (!pricesRaw || !addressRaw) {
+            reject('no data');
+            return;
+        }
+        const pricesJSON = JSON.parse(pricesRaw);
+        const addressJSON = JSON.parse(addressRaw);
+
+        Address.build(addressJSON).then((address) => {
+            resolve({
+                prices: pricesJSON,
+                address: addressJSON
+            })
+        }).catch((err) => {
+            reject(err);
+        });
+    });
+}
+
 module.exports = {
     Country,
     Address,
     findCountryByName,
     placeOrder,
     getPrices,
-    getAddress
+    getAddress,
+    loadData
 }

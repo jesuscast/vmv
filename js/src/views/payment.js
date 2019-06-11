@@ -1,3 +1,6 @@
+const {loadData} = require('../utilities');
+
+
 function create_script(url) {
     /* create the link element */
     var linkElement = document.createElement('script');
@@ -29,7 +32,7 @@ class Payment {
             $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
             $("#total-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
 
-            create_script(`https://www.paypal.com/sdk/js?client-id=${creds.paypalClientId}`)
+            create_script("https://www.paypal.com/sdk/js?client-id="+creds.paypalClientId)
 
             processPaypalPayment((transaction) => {
                 placeOrder(address, {
@@ -47,3 +50,5 @@ class Payment {
         });
     }
 }
+
+module.exports = Payment;

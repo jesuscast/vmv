@@ -154,45 +154,7 @@
     <script src="../js/lib/crs.min.js"></script>
     <script src="../js/bundle.js"></script>
     <script>
-        // edit();
-
-        function create_link(url) {
-            /* create the link element */
-            var linkElement = document.createElement('link');
-
-            /* add attributes */
-            linkElement.setAttribute('rel', 'stylesheet');
-            linkElement.setAttribute('href', url);
-
-            /* attach to the document head */
-            document.getElementsByTagName('head')[0].appendChild(linkElement);
-        }
-
-        create_link('../css/editor.css')
-        create_link('../css/kitely.css')
-
-
-        $(document).ready(function(){
-            const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
-            if (modifiedImageUrl) {
-                $("#tiny-image").attr('src', modifiedImageUrl);
-                $("#tiny-image").css('width', '150%');
-                $("#tiny-image").css('margin-top', '20px');
-            }
-
-
-            $("#checkout-btn").on('click',  function() {
-                getAddress().then((address) => {
-                    getPrices(address).then((prices) => {
-                        localStorage.setItem('prices', JSON.stringify(prices));
-                        localStorage.setItem('address', JSON.stringify(address));
-                        document.location.href = document.location.href.replace('checkout.html', 'payment.html');
-                    }).catch((err) => {
-                        alert(err);
-                    });
-                });
-            });
-        });
+        runView('checkout');
     </script>
 
 </body>
