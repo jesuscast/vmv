@@ -1,3 +1,13 @@
+const {CORSURL, creds, countriesRaw, $scope, sampleTransaction}  = require('./constants');
+const countries = [];
+
+const countriesKeys = Object.keys(countriesRaw);
+for(let i = 0; i < countriesKeys.length; i++) {
+    const country = countriesRaw[countriesKeys[i]];
+    countries.push(new Country(country))
+}
+
+
 function findCountryByName(countryName) {
     const countriesKeys = Object.keys(countries);
     for(let i = 0; i < countriesKeys.length; i++) {
