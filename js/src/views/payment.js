@@ -19,9 +19,9 @@ class Payment {
             console.log(address);
             $("#product-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
             $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
-            $("#total-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
+            $("#total-cost").html(`${currencySymbol} ${prices.total[currency]}`);
 
-            create_script("https://www.paypal.com/sdk/js?client-id="+creds.paypalClientId)
+            create_script("https://www.paypal.com/sdk/js?client-id  ="+creds.paypalClientId)
 
             processPaypalPayment((transaction) => {
                 placeOrder(address, {

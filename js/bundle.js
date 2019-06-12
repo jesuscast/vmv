@@ -1479,8 +1479,8 @@ function () {
         console.log(address);
         $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
-        $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
-        create_script("https://www.paypal.com/sdk/js?client-id=" + creds.paypalClientId);
+        $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total[currency]));
+        create_script("https://www.paypal.com/sdk/js?client-id  =" + creds.paypalClientId);
         processPaypalPayment(function (transaction) {
           placeOrder(address, {
             total: 1,
