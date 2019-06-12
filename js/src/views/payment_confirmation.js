@@ -5,11 +5,11 @@ class PaymentConfirmation {
         const currency = 'USD' // 'GBP';
         const currencySymbol = '$'; // '&pound;';
         const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
-        if (modifiedImageUrl) {
-            $("#tiny-image").attr('src', modifiedImageUrl);
-            $("#tiny-image").css('width', '150%');
-            $("#tiny-image").css('margin-top', '20px');
-        }
+        // if (modifiedImageUrl) {
+        //     $("#tiny-image").attr('src', modifiedImageUrl);
+        //     $("#tiny-image").css('width', '150%');
+        //     $("#tiny-image").css('margin-top', '20px');
+        // }
 
         loadData().then(({
             prices, address

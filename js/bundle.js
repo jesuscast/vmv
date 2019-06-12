@@ -1248,13 +1248,11 @@ function () {
   _createClass(Checkout, null, [{
     key: "run",
     value: function run() {
-      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
-
-      if (modifiedImageUrl) {
-        $("#tiny-image").attr('src', modifiedImageUrl);
-        $("#tiny-image").css('width', '150%');
-        $("#tiny-image").css('margin-top', '20px');
-      }
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl'); // if (modifiedImageUrl) {
+      //     $("#tiny-image").attr('src', modifiedImageUrl);
+      //     $("#tiny-image").css('width', '150%');
+      //     $("#tiny-image").css('margin-top', '20px');
+      // }
 
       $("#checkout-btn").on('click', function () {
         getAddress().then(function (address) {
@@ -1503,13 +1501,11 @@ function () {
 
       var currencySymbol = '$'; // '&pound;';
 
-      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
-
-      if (modifiedImageUrl) {
-        $("#tiny-image").attr('src', modifiedImageUrl);
-        $("#tiny-image").css('width', '150%');
-        $("#tiny-image").css('margin-top', '20px');
-      }
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl'); // if (modifiedImageUrl) {
+      //     $("#tiny-image").attr('src', modifiedImageUrl);
+      //     $("#tiny-image").css('width', '150%');
+      //     $("#tiny-image").css('margin-top', '20px');
+      // }
 
       loadData().then(function (_ref) {
         var prices = _ref.prices,

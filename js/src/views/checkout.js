@@ -3,11 +3,11 @@ const {getPrices, getAddress} = require("../utilities");
 class Checkout {
     static run() {
         const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
-        if (modifiedImageUrl) {
-            $("#tiny-image").attr('src', modifiedImageUrl);
-            $("#tiny-image").css('width', '150%');
-            $("#tiny-image").css('margin-top', '20px');
-        }
+        // if (modifiedImageUrl) {
+        //     $("#tiny-image").attr('src', modifiedImageUrl);
+        //     $("#tiny-image").css('width', '150%');
+        //     $("#tiny-image").css('margin-top', '20px');
+        // }
 
 
         $("#checkout-btn").on('click',  function() {
