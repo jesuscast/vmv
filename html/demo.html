@@ -12,9 +12,11 @@
         <script type="text/javascript"> setTimeout(() => {
             const params = new URLSearchParams(window.location.search);
             const product_id = params.get("product_id");
-            console.log(product_id);
+            const userImageUrl = params.get("img");
+
             $("#image-editor")[0].contentWindow.postMessage({
-                product_id: product_id
+                product_id: product_id,
+                userImageUrl: userImageUrl
             }, '*')
         }, 200); </script>
         
