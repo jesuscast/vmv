@@ -750,8 +750,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var _require = require("../utilities"),
-    findCountryByName = _require.findCountryByName;
+function findCountryByName(countryName) {
+  var countriesKeys = Object.keys(countries);
+
+  for (var i = 0; i < countriesKeys.length; i++) {
+    var country = countries[countriesKeys[i]];
+
+    if (country.name === countryName) {
+      return country;
+    }
+  }
+
+  return null;
+}
 
 var Address =
 /*#__PURE__*/
@@ -801,7 +812,7 @@ function () {
 Address.requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
 module.exports = Address;
 
-},{"../utilities":9}],6:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

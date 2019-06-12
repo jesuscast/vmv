@@ -1,5 +1,13 @@
-const {findCountryByName} = require("../utilities");
-
+function findCountryByName(countryName) {
+    const countriesKeys = Object.keys(countries);
+    for(let i = 0; i < countriesKeys.length; i++) {
+        const country = countries[countriesKeys[i]];
+        if (country.name === countryName) {
+            return country;
+        }
+    }
+    return null;
+}
 class Address {
     static requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
 
