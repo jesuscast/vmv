@@ -1,3 +1,5 @@
+const {CORSURL} =  require('./constants');
+
 const imagePreloader = {
 
     // expose list of images that were created to facilitate the load for unit testing

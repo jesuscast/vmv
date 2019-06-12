@@ -3,34 +3,13 @@
 
 var constants = require('./src/constants');
 
-var utilities = require('./src/utilities');
+var _require = require('./src/views'),
+    runView = _require.runView;
 
-var edit = require('./src/edit');
-
-var _require = require('./src/models'),
-    Country = _require.Country,
-    Address = _require.Address;
-
-var _require2 = require('./src/views'),
-    runView = _require2.runView;
-
-window.sampleTransaction = constants.sampleTransaction;
-window.CORSURL = constants.CORSURL;
-window.CLEAN_IMAGE_ENDPOINT = constants.CLEAN_IMAGE_ENDPOINT;
-window.creds = constants.creds;
 window.env = constants.env;
-window.$scope = constants.$scope;
-window.placeOrder = utilities.placeOrder;
-window.findCountryByName = utilities.findCountryByName;
-window.getPrices = utilities.getPrices;
-window.getAddress = utilities.getAddress;
 window.runView = runView;
-window.render = edit.render;
-window.edit = edit.edit;
-window.Country = Country;
-window.Address = Address;
 
-},{"./src/constants":2,"./src/edit":3,"./src/models":7,"./src/utilities":9,"./src/views":12}],2:[function(require,module,exports){
+},{"./src/constants":2,"./src/views":12}],2:[function(require,module,exports){
 "use strict";
 
 var CORSURL = "https://cors-anywhere.herokuapp.com/";
@@ -142,7 +121,7 @@ var ctrl = {
 };
 var $scope = {
   templateId: "aa_mens_tshirt",
-  variant: "black",
+  variant: null,
   userImageUrl: "https://s3.amazonaws.com/kiteshopify/1f65b7b0-ed5e-46f6-8e2c-e3a6dce124a1.png",
   colorOverlay: "=",
   scale: 1.0,
@@ -427,7 +406,8 @@ module.exports = {
 
 var _require = require('./constants'),
     ctrl = _require.ctrl,
-    $scope = _require.$scope;
+    $scope = _require.$scope,
+    CLEAN_IMAGE_ENDPOINT = _require.CLEAN_IMAGE_ENDPOINT;
 
 var productImage = require('./product_image');
 
@@ -705,6 +685,9 @@ module.exports = {
 },{"./constants":2,"./image_preloader":4,"./product_image":8}],4:[function(require,module,exports){
 "use strict";
 
+var _require = require('./constants'),
+    CORSURL = _require.CORSURL;
+
 var imagePreloader = {
   // expose list of images that were created to facilitate the load for unit testing
   // purposes
@@ -758,7 +741,7 @@ var imagePreloader = {
 };
 module.exports = imagePreloader;
 
-},{}],5:[function(require,module,exports){
+},{"./constants":2}],5:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -766,6 +749,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _require = require("../utilities"),
+    findCountryByName = _require.findCountryByName;
 
 var Address =
 /*#__PURE__*/
@@ -815,7 +801,7 @@ function () {
 Address.requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
 module.exports = Address;
 
-},{}],6:[function(require,module,exports){
+},{"../utilities":9}],6:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1011,7 +997,8 @@ var _require = require('./constants'),
     CORSURL = _require.CORSURL,
     creds = _require.creds,
     countriesRaw = _require.countriesRaw,
-    $scope = _require.$scope;
+    $scope = _require.$scope,
+    sampleTransaction = _require.sampleTransaction;
 
 var _require2 = require('./models'),
     Country = _require2.Country,
@@ -1246,6 +1233,10 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var _require = require("../utilities"),
+    getPrices = _require.getPrices,
+    getAddress = _require.getAddress;
+
 var Checkout =
 /*#__PURE__*/
 function () {
@@ -1283,7 +1274,7 @@ function () {
 
 module.exports = Checkout;
 
-},{}],11:[function(require,module,exports){
+},{"../utilities":9}],11:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1291,6 +1282,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var _require = require('../constants'),
+    $scope = _require.$scope;
+
+var _require2 = require("../edit"),
+    render = _require2.render,
+    edit = _require2.edit;
 
 var Editor =
 /*#__PURE__*/
@@ -1302,7 +1300,6 @@ function () {
   _createClass(Editor, null, [{
     key: "run",
     value: function run() {
-      console.log('wtf');
       window.addEventListener("message", receiveMessage, false);
 
       function receiveMessage(event) {
@@ -1355,7 +1352,7 @@ function () {
 
 module.exports = Editor;
 
-},{}],12:[function(require,module,exports){
+},{"../constants":2,"../edit":3}],12:[function(require,module,exports){
 "use strict";
 
 var Checkout = require('./checkout');
@@ -1415,7 +1412,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var _require = require('../utilities'),
     loadData = _require.loadData,
     processPaypalPayment = _require.processPaypalPayment,
-    create_script = _require.create_script;
+    create_script = _require.create_script,
+    placeOrder = _require.placeOrder;
+
+var _require2 = require("../constants"),
+    creds = _require2.creds;
 
 var Payment =
 /*#__PURE__*/
@@ -1470,7 +1471,7 @@ function () {
 
 module.exports = Payment;
 
-},{"../utilities":9}],14:[function(require,module,exports){
+},{"../constants":2,"../utilities":9}],14:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

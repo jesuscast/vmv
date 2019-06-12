@@ -1,3 +1,5 @@
+const {getPrices, getAddress} = require("../utilities");
+
 class Checkout {
     static run() {
         const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');

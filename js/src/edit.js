@@ -1,4 +1,4 @@
-const {ctrl, $scope} = require('./constants');
+const {ctrl, $scope, CLEAN_IMAGE_ENDPOINT} = require('./constants');
 const productImage = require('./product_image');
 const imagePreloader = require('./image_preloader');
 
