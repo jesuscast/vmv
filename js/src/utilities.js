@@ -118,7 +118,10 @@ function placeOrder(address, price, paypalId) {
             },
             "jobs": [{
                 "assets": ["http://psps.s3.amazonaws.com/sdk_static/1.jpg"],
-                "template_id": "i6_case"
+                "template_id": "i6_case",
+                "options": {
+                    "garment_color": "red"
+                }
             }]
         };
         fetch(`${CORSURL}https://api.kite.ly/v4.0/print/`, {
@@ -194,9 +197,9 @@ function processPaypalPayment(callback) {
                 });
             }
         }).render('#paypal-button-container');
-        if (env === 'test') {
-            return callback(sampleTransaction);
-        }
+        // if (env === 'test') {
+        //     return callback(sampleTransaction);
+        // }
     }, 500);
 }
 

@@ -47,6 +47,12 @@ class Editor {
         $("#checkout-btn").on('click', function() {
             document.location.href = document.location.href.replace('editor.html', 'checkout.html');
         });
+
+        $(".c-product-options-edit__variants__colors__btn").on('click', function(el) {
+            console.log($(this).attr('data-color'))
+            $scope.colorOverlay = $(this).attr('data-color');
+            render();
+        });
     }
 }
 

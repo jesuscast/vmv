@@ -121,9 +121,9 @@ var ctrl = {
 };
 var $scope = {
   templateId: "aa_mens_tshirt",
-  variant: null,
+  variant: "sorbet",
   userImageUrl: "https://s3.amazonaws.com/kiteshopify/1f65b7b0-ed5e-46f6-8e2c-e3a6dce124a1.png",
-  colorOverlay: "=",
+  colorOverlay: "#000000",
   scale: 1.0,
   flipHorizontal: false,
   rotationDegrees: 0,
@@ -530,15 +530,15 @@ function render() {
     }
 
     btx.globalCompositeOperation = "source-over";
-    drawImage(btx, layerComponents.background, "fit", 0, 0, w, h, true, 0, 0, 1, false, 0);
+    drawImage(btx, layerComponents.background, "fit", 0, 0, w, h, true, 0, 0, 1, false, 0); // if (layerComponents.color_overlay) {
+    //     btx.globalCompositeOperation="source-in";
+    //     btx.fillStyle= $scope.colorOverlay;
+    //     btx.fillRect(0, 0, w, h);
+    // };
 
-    if (layerComponents.color_overlay) {
-      btx.globalCompositeOperation = "source-in";
-      btx.fillStyle = $scope.colorOverlay;
-      btx.fillRect(0, 0, w, h);
-    }
-
-    ;
+    btx.globalCompositeOperation = "source-in";
+    btx.fillStyle = $scope.colorOverlay;
+    btx.fillRect(0, 0, w, h);
 
     if ($scope.variant !== null) {
       var modifiedImageUrl = CLEAN_IMAGE_ENDPOINT + "/render/?image=" + $scope.userImageUrl + "&product_id=" + $scope.templateId + "&variant=" + $scope.variant + "&format=jpg&debug=false&background=" + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + $scope.scale + "&rotate=" + $scope.rotationDegrees + "&mirror=" + $scope.flipHorizontal + "&translate=" + $scope.translateX + "," + $scope.translateY;
@@ -1117,7 +1117,10 @@ function placeOrder(address, price, paypalId) {
       },
       "jobs": [{
         "assets": ["http://psps.s3.amazonaws.com/sdk_static/1.jpg"],
-        "template_id": "i6_case"
+        "template_id": "i6_case",
+        "options": {
+          "garment_color": "red"
+        }
       }]
     };
     fetch("".concat(CORSURL, "https://api.kite.ly/v4.0/print/"), {
@@ -1193,11 +1196,9 @@ function processPaypalPayment(callback) {
           // });
         });
       }
-    }).render('#paypal-button-container');
-
-    if (env === 'test') {
-      return callback(sampleTransaction);
-    }
+    }).render('#paypal-button-container'); // if (env === 'test') {
+    //     return callback(sampleTransaction);
+    // }
   }, 500);
 }
 
@@ -1343,6 +1344,11 @@ function () {
       slider.noUiSlider.on('set.one', function () {});
       $("#checkout-btn").on('click', function () {
         document.location.href = document.location.href.replace('editor.html', 'checkout.html');
+      });
+      $(".c-product-options-edit__variants__colors__btn").on('click', function (el) {
+        console.log($(this).attr('data-color'));
+        $scope.colorOverlay = $(this).attr('data-color');
+        render();
       });
     }
   }]);

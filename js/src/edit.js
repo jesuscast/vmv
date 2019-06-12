@@ -140,12 +140,15 @@ function render() {
         drawImage(btx, layerComponents.background, "fit", 0, 0, w, h, true, 0,
             0, 1, false, 0);
 
-        if (layerComponents.color_overlay) {
-            btx.globalCompositeOperation="source-in";
-            btx.fillStyle= $scope.colorOverlay;
-            btx.fillRect(0, 0, w, h);
-        };
+        // if (layerComponents.color_overlay) {
+        //     btx.globalCompositeOperation="source-in";
+        //     btx.fillStyle= $scope.colorOverlay;
+        //     btx.fillRect(0, 0, w, h);
+        // };
 
+        btx.globalCompositeOperation="source-in";
+        btx.fillStyle= $scope.colorOverlay;
+        btx.fillRect(0, 0, w, h);
 
         if ($scope.variant !== null) {
             const modifiedImageUrl = CLEAN_IMAGE_ENDPOINT + "/render/?image=" + $scope.userImageUrl
