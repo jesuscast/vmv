@@ -165,7 +165,7 @@ function loadData() {
         });
     });
 }
-function processPaypalPayment(callback) {
+function processPaypalPayment(callback, currency) {
     setTimeout(() => {
         paypal.Buttons({
             createOrder: function(data, actions) {

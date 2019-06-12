@@ -1193,7 +1193,7 @@ function loadData() {
   });
 }
 
-function processPaypalPayment(callback) {
+function processPaypalPayment(callback, currency) {
   setTimeout(function () {
     paypal.Buttons({
       createOrder: function createOrder(data, actions) {
@@ -1491,7 +1491,7 @@ function () {
           })["catch"](function (err) {
             console.log(err);
           });
-        });
+        }, currency);
       })["catch"](function (err) {
         console.error(err);
       });

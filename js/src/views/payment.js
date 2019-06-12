@@ -33,7 +33,7 @@ class Payment {
                 }).catch((err) => {
                     console.log(err);
                 })
-            });
+            }, currency);
         }).catch((err) => {
             console.error(err);
         });
