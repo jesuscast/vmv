@@ -757,6 +757,8 @@ var _require = require('../constants'),
     $scope = _require.$scope,
     sampleTransaction = _require.sampleTransaction;
 
+var Country = require('./country');
+
 var countries = [];
 var countriesKeys = Object.keys(countriesRaw);
 
@@ -827,7 +829,7 @@ function () {
 Address.requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
 module.exports = Address;
 
-},{"../constants":2}],6:[function(require,module,exports){
+},{"../constants":2,"./country":6}],6:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }

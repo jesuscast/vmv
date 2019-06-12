@@ -1,4 +1,5 @@
 const {CORSURL, creds, countriesRaw, $scope, sampleTransaction}  = require('../constants');
+const Country = require('./country')
 const countries = [];
 
 const countriesKeys = Object.keys(countriesRaw);
