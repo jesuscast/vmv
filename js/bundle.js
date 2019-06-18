@@ -1348,7 +1348,7 @@ function () {
         start: [1],
         connect: true,
         range: {
-          'min': 0.3,
+          'min': 0.1,
           'max': 3
         }
       });
