@@ -1926,7 +1926,7 @@ jQuery(".product-cover-image").each((i, img) => {
 
     let windowParams = new URLSearchParams(location.search);
 
-    imageParams.set("image", windowParams.get("img"));
+    imageParams.set("image", localStorage.getItem('img') || windowParams.get("img"));
 
     imageUrl.search = imageParams;
 
