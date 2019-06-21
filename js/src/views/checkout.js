@@ -3,6 +3,7 @@ const {getPrices, getAddress} = require("../utilities");
 class Checkout {
     static run() {
         const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
+        console.log(modifiedImageUrl);
         // if (modifiedImageUrl) {
         //     $("#tiny-image").attr('src', modifiedImageUrl);
         //     $("#tiny-image").css('width', '150%');

@@ -23,12 +23,14 @@ const returnProductOverviewImage = function(product) {
         + variantName + "&format=jpg&debug=false&background="
         + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + image.scale
         + "&rotate=" + image.rotate_degrees + "&mirror=" + image.mirror
-        + "&translate=" + image.tx + "," + image.ty;
+        + "&translate=" + image.tx + "," + image.ty + "&print_image="+ image.print_image;
 };
 
 const returnSide = function() {
-    return ctrl.side == "front" ?
+    const side = ctrl.side == "front" ?
         ctrl.selectedVariant.image : ctrl.selectedVariant.back_image;
+    console.log(side);
+    return side;
 };
 
 function success(files) {

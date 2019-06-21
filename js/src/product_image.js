@@ -7,7 +7,7 @@
 //     .factory("productImage", ["$q", "$http", "IMAGE_GENERATOR_ENDPOINT", "imagePreloader",
 //             function($q, $http, IMAGE_GENERATOR_ENDPOINT, imagePreloader) {
 // .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
-const {CORSURL, CLEAN_IMAGE_ENDPOINT, $scope} =  require('./constants');
+const {CORSURL, CLEAN_IMAGE_ENDPOINT, $scope, ctrl} =  require('./constants');
 const imagePreloader  = require('./image_preloader');
 const IMAGE_GENERATOR_ENDPOINT=`${CORSURL}${CLEAN_IMAGE_ENDPOINT}`;
 /*
@@ -71,15 +71,23 @@ const productImage = {
 
                 var imageVariant = null;
                 var colors =  [];
-                for (var i = 0; i < product.images.length; ++i) {
-                    if (imageVariantName == null) {
-                        imageVariant = product.images[i];
-                    } else if (imageVariant == null && product.images[i].name == imageVariantName) {
-                        imageVariant = product.images[i];
-                    }
-                    colors.push(product.images[i].name);
-                }
 
+                // grab the images that match gthe position
+                const images = product.images.filter((img) => {
+                    if ($scope.side === "back") {
+                        return img.name.indexOf("back") !== -1;
+                    }
+                    return img.name.indexOf("back") === -1;
+                });
+
+                imageVariant = images.find(elem => {
+                    if (imageVariant === null) {
+                        return true;
+                    }
+                    return elem.name.indexOf(imageVariant) !== -1;
+                });
+
+                window.productDebug = product;
                 console.log(colors);
 
                 if (imageVariant == null) {

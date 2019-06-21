@@ -128,6 +128,7 @@ var $scope = {
   flipHorizontal: false,
   rotationDegrees: 0,
   frozen: false,
+  side: "front",
   // translateX, translateY are values in the product print image coord system
   // NOT the canvas coord system.
   translateX: 0,
@@ -389,6 +390,7 @@ var countriesRaw = {
   ZAMBIA: ["Zambia", "ZM", "ZMB", "ZMW", false],
   ZIMBABWE: ["Zimbabwe", "ZW", "ZWE", "ZWL", false]
 };
+var colorMappings = {};
 module.exports = {
   creds: creds,
   products: products,
@@ -888,7 +890,8 @@ module.exports = {
 var _require = require('./constants'),
     CORSURL = _require.CORSURL,
     CLEAN_IMAGE_ENDPOINT = _require.CLEAN_IMAGE_ENDPOINT,
-    $scope = _require.$scope;
+    $scope = _require.$scope,
+    ctrl = _require.ctrl;
 
 var imagePreloader = require('./image_preloader');
 
@@ -952,18 +955,23 @@ var productImage = {
         }
 
         var imageVariant = null;
-        var colors = [];
+        var colors = []; // grab the images that match gthe position
 
-        for (var i = 0; i < product.images.length; ++i) {
-          if (imageVariantName == null) {
-            imageVariant = product.images[i];
-          } else if (imageVariant == null && product.images[i].name == imageVariantName) {
-            imageVariant = product.images[i];
+        var images = product.images.filter(function (img) {
+          if ($scope.side === "back") {
+            return img.name.indexOf("back") !== -1;
           }
 
-          colors.push(product.images[i].name);
-        }
+          return img.name.indexOf("back") === -1;
+        });
+        imageVariant = images.find(function (elem) {
+          if (imageVariant === null) {
+            return true;
+          }
 
+          return elem.name.indexOf(imageVariant) !== -1;
+        });
+        window.productDebug = product;
         console.log(colors);
 
         if (imageVariant == null) {
@@ -1276,7 +1284,8 @@ function () {
   _createClass(Checkout, null, [{
     key: "run",
     value: function run() {
-      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl'); // if (modifiedImageUrl) {
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
+      console.log(modifiedImageUrl); // if (modifiedImageUrl) {
       //     $("#tiny-image").attr('src', modifiedImageUrl);
       //     $("#tiny-image").css('width', '150%');
       //     $("#tiny-image").css('margin-top', '20px');
@@ -1376,6 +1385,13 @@ function () {
         $scope.colorOverlay = $(this).attr('data-color');
         render();
       });
+      $(".side-btn").on('click', function (btn) {
+        var $btn = $(this);
+        $scope.side = $btn.attr("data-side");
+        $(".side-btn").toggleClass("c-basic-tabs-component__view--selected");
+        edit();
+      });
+      $("[data-side='".concat($scope.side, "']")).addClass("c-basic-tabs-component__view--selected");
     }
   }]);
 

@@ -53,6 +53,15 @@ class Editor {
             $scope.colorOverlay = $(this).attr('data-color');
             render();
         });
+
+        $(".side-btn").on('click', function(btn) {
+            const $btn = $(this);
+            $scope.side = $btn.attr("data-side");
+            $(".side-btn").toggleClass("c-basic-tabs-component__view--selected");
+            edit();
+        });
+
+        $(`[data-side='${$scope.side}']`).addClass("c-basic-tabs-component__view--selected");
     }
 }
 

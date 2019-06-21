@@ -129,7 +129,7 @@ const $scope = {
     flipHorizontal: false,
     rotationDegrees: 0,
     frozen: false,
-
+    side: "front",
     // translateX, translateY are values in the product print image coord system
     // NOT the canvas coord system.
     translateX: 0,
@@ -484,6 +484,9 @@ const countriesRaw = {
     ZIMBABWE                          : ["Zimbabwe", "ZW", "ZWE", "ZWL", false],
 };
 
+const colorMappings = {
+    
+}
 
 module.exports = {
     creds,
