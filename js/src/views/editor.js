@@ -9,7 +9,7 @@ class Editor {
             console.log(`Received ${JSON.stringify(event.data)}`)
             if (event.data.product_id) {
                 $scope.templateId = event.data.product_id;
-                if (event.data.userImageUrl) {
+                if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
                     $scope.userImageUrl = event.data.userImageUrl;
                 }
                 edit();
