@@ -123,7 +123,6 @@ var $scope = {
   templateId: "aa_mens_tshirt",
   variant: null,
   userImageUrl: "https://s3.amazonaws.com/kiteshopify/1f65b7b0-ed5e-46f6-8e2c-e3a6dce124a1.png",
-  colorOverlay: "#000000",
   scale: 1.0,
   flipHorizontal: false,
   rotationDegrees: 0,
@@ -132,7 +131,11 @@ var $scope = {
   // translateX, translateY are values in the product print image coord system
   // NOT the canvas coord system.
   translateX: 0,
-  translateY: 0
+  translateY: 0,
+  selectedColor: {
+    name: "black",
+    code: "25282B"
+  }
 };
 var windowParams = new URLSearchParams(location.search);
 
@@ -390,13 +393,42 @@ var countriesRaw = {
   ZAMBIA: ["Zambia", "ZM", "ZMB", "ZMW", false],
   ZIMBABWE: ["Zimbabwe", "ZW", "ZWE", "ZWL", false]
 };
-var colorMappings = {};
+var colorMappings = {
+  "brown": '560B14',
+  // Brick Red
+  "heather_grey": "ADBDBF",
+  "asphalt": "353146",
+  "sorbet": 'AC2B37',
+  // AC2B37
+  "kelly_green": "00805E",
+  "black": "25282B",
+  "navy": "263147",
+  "truffle": "6C333A",
+  "royal_blue": '004EA8',
+  'charcoal': '66676C',
+  'pink': 'E8BCD1',
+  'turquoise': null,
+  'purple': '531D8A',
+  'aqua': null,
+  'sunshine': 'FBDE4A',
+  'fuchsia': null,
+  'olive': null,
+  'raspberry': null,
+  'grass': '5AAD52',
+  'gold': 'EEAD1A',
+  'soft_pink': 'E8BCD1',
+  "ash": "D4D3D9",
+  "white": "FFFFFF",
+  "red": "D60024",
+  "digital blue": "#283352"
+};
 module.exports = {
   creds: creds,
   products: products,
   countriesRaw: countriesRaw,
   sampleTransaction: sampleTransaction,
   CLEAN_IMAGE_ENDPOINT: CLEAN_IMAGE_ENDPOINT,
+  colorMappings: colorMappings,
   CORSURL: CORSURL,
   ctrl: ctrl,
   env: env,
@@ -409,7 +441,8 @@ module.exports = {
 var _require = require('./constants'),
     ctrl = _require.ctrl,
     $scope = _require.$scope,
-    CLEAN_IMAGE_ENDPOINT = _require.CLEAN_IMAGE_ENDPOINT;
+    CLEAN_IMAGE_ENDPOINT = _require.CLEAN_IMAGE_ENDPOINT,
+    colorMappings = _require.colorMappings;
 
 var productImage = require('./product_image');
 
@@ -423,6 +456,35 @@ function loading(value) {
   } else {
     $("#image-editor-progress-spinner").hide();
   }
+}
+
+function setColors(colors) {
+  var selectedClass = 'c-product-options-edit__variants__colors__btn--selected';
+  var colorsNotFound = [];
+  var colorsArrayHTML = colors.map(function (color, i) {
+    if (!colorMappings[color]) {
+      colorsNotFound.push(color);
+      return '';
+    }
+
+    return "\n    <div _ngcontent-c24=\"\" class=\"c-product-options-edit__variants__colors__btn-wrapper ng-star-inserted\">\n        <button _ngcontent-c24=\"\" class=\"".concat($scope.selectedColor.name === color ? selectedClass : '', " c-product-options-edit__variants__colors__btn\" data-color-name=\"").concat(color, "\" data-color=\"#").concat(colorMappings[color], "\" aria-label=\"Select color ").concat(color, "\" style=\"background-color: #").concat(colorMappings[color], ";\"></button>\n    </div>");
+  });
+  console.log(colorsNotFound);
+  var colorContainerHTML = "\n    <div _ngcontent-c24=\"\" class=\"c-product-options-edit__variants__colors ng-star-inserted\" style=\"\">\n        <div _ngcontent-c24=\"\" class=\"c-tool-text-xs c-product-options-edit__variants__title\">Select colour</div>\n        ".concat(colorsArrayHTML.join(' '), "\n    </div>\n    ");
+  $("#colorContainer").html(colorContainerHTML);
+  setTimeout(function () {
+    $(".c-product-options-edit__variants__colors__btn").on('click', function (el) {
+      var colorName = $(this).attr('data-color-name');
+      var colorCode = $(this).attr('data-color');
+      $("[data-color-name=\"".concat($scope.selectedColor.name, "\"]")).removeClass(selectedClass);
+      $(this).addClass(selectedClass);
+      $scope.selectedColor = {
+        name: colorName,
+        code: colorCode
+      };
+      render();
+    });
+  }, 100);
 }
 
 function drawImage(ctx, img, fitOrFill, x, y, fitWidth, fitHeight, centre, tx, ty, scale, flipHorizontal, rotationDegrees) {
@@ -534,12 +596,12 @@ function render() {
     btx.globalCompositeOperation = "source-over";
     drawImage(btx, layerComponents.background, "fit", 0, 0, w, h, true, 0, 0, 1, false, 0); // if (layerComponents.color_overlay) {
     //     btx.globalCompositeOperation="source-in";
-    //     btx.fillStyle= $scope.colorOverlay;
+    //     btx.fillStyle= $scope.selectedColor.code;
     //     btx.fillRect(0, 0, w, h);
     // };
 
     btx.globalCompositeOperation = "source-in";
-    btx.fillStyle = $scope.colorOverlay;
+    btx.fillStyle = $scope.selectedColor.code;
     btx.fillRect(0, 0, w, h);
 
     if ($scope.variant !== null) {
@@ -586,7 +648,7 @@ function edit() {
     layerComponents = null;
     userImage = null;
     var userImagePromise = imagePreloader.load($scope.userImageUrl);
-    var layerComponentsPromise = productImage.getLayerComponents($scope.templateId, $scope.variant); // userImagePromise.then((json) => {
+    var layerComponentsPromise = productImage.getLayerComponents($scope.templateId, $scope.variant, setColors); // userImagePromise.then((json) => {
     //     console.log(json);
     // }).catch((err) => {
     //     console.error(err);
@@ -890,8 +952,7 @@ module.exports = {
 var _require = require('./constants'),
     CORSURL = _require.CORSURL,
     CLEAN_IMAGE_ENDPOINT = _require.CLEAN_IMAGE_ENDPOINT,
-    $scope = _require.$scope,
-    ctrl = _require.ctrl;
+    $scope = _require.$scope;
 
 var imagePreloader = require('./image_preloader');
 
@@ -939,7 +1000,7 @@ var IMAGE_GENERATOR_ENDPOINT = "".concat(CORSURL).concat(CLEAN_IMAGE_ENDPOINT);
 */
 
 var productImage = {
-  getLayerComponents: function getLayerComponents(templateId, imageVariantName) {
+  getLayerComponents: function getLayerComponents(templateId, imageVariantName, colorCallback) {
     return new Promise(function (resolve, reject) {
       return fetch(IMAGE_GENERATOR_ENDPOINT + "/product/" + templateId).then(function (response) {
         return response.json();
@@ -955,7 +1016,10 @@ var productImage = {
         }
 
         var imageVariant = null;
-        var colors = []; // grab the images that match gthe position
+        var colors = Array.from(new Set(product.images.map(function (e) {
+          return e.name.replace("back_", '');
+        })));
+        colorCallback(colors); // grab the images that match gthe position
 
         var images = product.images.filter(function (img) {
           if ($scope.side === "back") {
@@ -971,14 +1035,11 @@ var productImage = {
 
           return elem.name.indexOf(imageVariant) !== -1;
         });
-        window.productDebug = product;
-        console.log(colors);
 
         if (imageVariant == null) {
           return reject("Could not find image variant '" + imageVariant + "' for template_id: " + templateId);
         }
 
-        console.log(imageVariant);
         $scope.variant = imageVariant.name;
         var imagesToLoad = [];
 
@@ -1379,11 +1440,6 @@ function () {
       slider.noUiSlider.on('set.one', function () {});
       $("#checkout-btn").on('click', function () {
         document.location.href = document.location.href.replace('editor.html', 'checkout.html');
-      });
-      $(".c-product-options-edit__variants__colors__btn").on('click', function (el) {
-        console.log($(this).attr('data-color'));
-        $scope.colorOverlay = $(this).attr('data-color');
-        render();
       });
       $(".side-btn").on('click', function (btn) {
         var $btn = $(this);

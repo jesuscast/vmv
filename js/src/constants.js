@@ -124,7 +124,6 @@ const $scope = {
     templateId: "aa_mens_tshirt",
     variant: null,
     userImageUrl: "https://s3.amazonaws.com/kiteshopify/1f65b7b0-ed5e-46f6-8e2c-e3a6dce124a1.png",
-    colorOverlay: "#000000",
     scale: 1.0,
     flipHorizontal: false,
     rotationDegrees: 0,
@@ -134,6 +133,10 @@ const $scope = {
     // NOT the canvas coord system.
     translateX: 0,
     translateY: 0,
+    selectedColor: {
+        name: "black",
+        code: "25282B"
+    }
 }
 
 let windowParams = new URLSearchParams(location.search);
@@ -485,8 +488,32 @@ const countriesRaw = {
 };
 
 const colorMappings = {
-    
-}
+    "brown": '560B14', // Brick Red
+    "heather_grey": "ADBDBF",
+    "asphalt": "353146",
+    "sorbet": 'AC2B37', // AC2B37
+    "kelly_green": "00805E",
+    "black": "25282B",
+    "navy": "263147",
+    "truffle": "6C333A",
+    "royal_blue": '004EA8',
+    'charcoal': '66676C',
+    'pink': 'E8BCD1',
+    'turquoise': null,
+    'purple': '531D8A',
+    'aqua': null,
+    'sunshine': 'FBDE4A',
+    'fuchsia': null,
+    'olive': null,
+    'raspberry': null,
+    'grass': '5AAD52',
+    'gold': 'EEAD1A',
+    'soft_pink': 'E8BCD1',
+    "ash": "D4D3D9",
+    "white": "FFFFFF",
+    "red": "D60024",
+    "digital blue": "#283352"
+};
 
 module.exports = {
     creds,
@@ -494,6 +521,7 @@ module.exports = {
     countriesRaw,
     sampleTransaction,
     CLEAN_IMAGE_ENDPOINT,
+    colorMappings,
     CORSURL,
     ctrl,
     env,

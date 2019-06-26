@@ -7,9 +7,11 @@
 //     .factory("productImage", ["$q", "$http", "IMAGE_GENERATOR_ENDPOINT", "imagePreloader",
 //             function($q, $http, IMAGE_GENERATOR_ENDPOINT, imagePreloader) {
 // .constant("IMAGE_GENERATOR_ENDPOINT", "https://image.kite.ly/")
-const {CORSURL, CLEAN_IMAGE_ENDPOINT, $scope, ctrl} =  require('./constants');
+const {CORSURL, CLEAN_IMAGE_ENDPOINT, $scope} =  require('./constants');
 const imagePreloader  = require('./image_preloader');
 const IMAGE_GENERATOR_ENDPOINT=`${CORSURL}${CLEAN_IMAGE_ENDPOINT}`;
+
+
 /*
 * This function fetches the layer components for the product variant image in
 * question and preloads all the images associated ready for use with an image
@@ -52,7 +54,7 @@ const IMAGE_GENERATOR_ENDPOINT=`${CORSURL}${CLEAN_IMAGE_ENDPOINT}`;
 * }
 */
 const productImage = {
-    getLayerComponents: function(templateId, imageVariantName) {
+    getLayerComponents: function(templateId, imageVariantName, colorCallback) {
         return new Promise((resolve, reject) => {
             return fetch(IMAGE_GENERATOR_ENDPOINT + "/product/" + templateId).then(function(response) {
                 return response.json();
@@ -70,8 +72,9 @@ const productImage = {
                 }
 
                 var imageVariant = null;
-                var colors =  [];
+                const colors = Array.from(new Set(product.images.map(e => { return e.name.replace("back_",'') })));
 
+                colorCallback(colors);
                 // grab the images that match gthe position
                 const images = product.images.filter((img) => {
                     if ($scope.side === "back") {
@@ -87,14 +90,12 @@ const productImage = {
                     return elem.name.indexOf(imageVariant) !== -1;
                 });
 
-                window.productDebug = product;
-                console.log(colors);
 
                 if (imageVariant == null) {
                     return reject("Could not find image variant '" + imageVariant
                         + "' for template_id: " + templateId);
                 }
-                console.log(imageVariant)
+    
                 $scope.variant = imageVariant.name;
 
                 var imagesToLoad = [];

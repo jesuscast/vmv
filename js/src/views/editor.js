@@ -48,12 +48,6 @@ class Editor {
             document.location.href = document.location.href.replace('editor.html', 'checkout.html');
         });
 
-        $(".c-product-options-edit__variants__colors__btn").on('click', function(el) {
-            console.log($(this).attr('data-color'))
-            $scope.colorOverlay = $(this).attr('data-color');
-            render();
-        });
-
         $(".side-btn").on('click', function(btn) {
             const $btn = $(this);
             $scope.side = $btn.attr("data-side");

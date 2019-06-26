@@ -1,4 +1,4 @@
-const {ctrl, $scope, CLEAN_IMAGE_ENDPOINT} = require('./constants');
+const {ctrl, $scope, CLEAN_IMAGE_ENDPOINT, colorMappings} = require('./constants');
 const productImage = require('./product_image');
 const imagePreloader = require('./image_preloader');
 
@@ -12,6 +12,42 @@ function loading(value) {
 }
 
 
+function setColors(colors) {
+    const selectedClass = 'c-product-options-edit__variants__colors__btn--selected';
+    const colorsNotFound = [];
+    const colorsArrayHTML = colors.map((color, i) => {
+        if (!colorMappings[color]) {
+            colorsNotFound.push(color);
+            return '';
+        }
+        return `
+    <div _ngcontent-c24="" class="c-product-options-edit__variants__colors__btn-wrapper ng-star-inserted">
+        <button _ngcontent-c24="" class="${$scope.selectedColor.name === color ? selectedClass: ''} c-product-options-edit__variants__colors__btn" data-color-name="${color}" data-color="#${colorMappings[color]}" aria-label="Select color ${color}" style="background-color: #${colorMappings[color]};"></button>
+    </div>`;
+    });
+    console.log(colorsNotFound);
+    const colorContainerHTML = `
+    <div _ngcontent-c24="" class="c-product-options-edit__variants__colors ng-star-inserted" style="">
+        <div _ngcontent-c24="" class="c-tool-text-xs c-product-options-edit__variants__title">Select colour</div>
+        ${colorsArrayHTML.join(' ')}
+    </div>
+    `;
+    $("#colorContainer").html(colorContainerHTML);
+
+    setTimeout(() => {
+        $(".c-product-options-edit__variants__colors__btn").on('click', function(el) {
+            const colorName = $(this).attr('data-color-name');
+            const colorCode = $(this).attr('data-color');
+            $(`[data-color-name="${$scope.selectedColor.name}"]`).removeClass(selectedClass);
+            $(this).addClass(selectedClass);
+            $scope.selectedColor = {
+                name: colorName,
+                code: colorCode
+            }
+            render();
+        });
+    }, 100);
+}
 
 function drawImage(ctx, img, fitOrFill, x, y, fitWidth, fitHeight, centre, tx, ty, scale,
                     flipHorizontal, rotationDegrees) {
@@ -142,12 +178,12 @@ function render() {
 
         // if (layerComponents.color_overlay) {
         //     btx.globalCompositeOperation="source-in";
-        //     btx.fillStyle= $scope.colorOverlay;
+        //     btx.fillStyle= $scope.selectedColor.code;
         //     btx.fillRect(0, 0, w, h);
         // };
 
         btx.globalCompositeOperation="source-in";
-        btx.fillStyle= $scope.colorOverlay;
+        btx.fillStyle= $scope.selectedColor.code;
         btx.fillRect(0, 0, w, h);
 
         if ($scope.variant !== null) {
@@ -206,7 +242,7 @@ function edit() {
 
         var userImagePromise = imagePreloader.load($scope.userImageUrl);
         var layerComponentsPromise =
-            productImage.getLayerComponents($scope.templateId, $scope.variant);
+            productImage.getLayerComponents($scope.templateId, $scope.variant, setColors);
             // userImagePromise.then((json) => {
             //     console.log(json);
             // }).catch((err) => {
