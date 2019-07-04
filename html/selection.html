@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-9">
-                        <div class="row">
+                        <div class="row" id="productList">
                             <!-- ngRepeat: product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts -->
                             <div class="col-xs-12 col-sm-6 ng-scope" ng-repeat-start="product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts" style="">
                                 <div id="everything-section" class="kite-card-product safari_only" ng-class="{'disabled': !product.enabled}">
@@ -1915,7 +1915,14 @@
             max-width: 100%;
             height: auto;
         }
+
+        .visible-sm {
+            width: 50px;
+        }
         
+        .kite-card-product {
+            width: 350px;
+        }
         body {
             background: #fff;
         }

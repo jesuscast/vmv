@@ -1,7 +1,9 @@
+const Product = require('./product');
+const products = require('./products.json');
+const toIgnore = require('./toignore.json');
 
 class Selection {
-
-    static run() {
+    static oldReplacement() {
         jQuery("kite-navigation-bar").remove();
         jQuery(".row-separator").remove();
         jQuery("kite-error-bar").remove();
@@ -10,7 +12,6 @@ class Selection {
         jQuery(".row-product-range-header").remove();
         jQuery("#image-editor").hide();
         console.log("Replacing");
-        const modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
         jQuery(".product-cover-image").each((i, img) => {
             let $img = jQuery(img);
             let imageUrl = new URL($img.attr("src"))
@@ -40,6 +41,32 @@ class Selection {
                 // }, '*')
             });
         });
+    }
+    static run() {
+        const img =  localStorage.getItem('img');
+        const validProducts = products.objects.filter(product => 
+            (product.available_platforms.includes("Web") ||
+            product.available_platforms.includes("Shopify")) &&
+            !toIgnore.ignore.includes(product.available_templates[0])
+        )
+        if (validProducts.length === 0) {
+            console.error('No valid products')
+            return;
+        }
+
+        $("#productList").html("");
+        validProducts.forEach(productJson => {
+            const product = new Product(productJson, img);
+            $("#productList").append(product.getProductHTML());
+        })
+
+        window.ignoring = []
+        $(".product-cover-image-container").click(function(){
+            const t = $(this).attr('data-template');
+
+            ignoring.push(t);
+            console.log(ignoring);
+        })
     }
 }
 
