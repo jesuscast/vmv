@@ -2,12 +2,14 @@ const Checkout = require('./checkout');
 const Editor = require('./editor');
 const PaymentConfirmation = require('./payment_confirmation');
 const Payment = require('./payment');
+const Selection = require('./selection');
 
 const viewMappings = {
     'checkout': Checkout,
     'editor': Editor,
     'payment_confirmation': PaymentConfirmation,
     'payment': Payment,
+    'selection': Selection
 }
 
 function create_link(url) {

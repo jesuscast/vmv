@@ -469,7 +469,7 @@ function setColors(colors) {
 
     return "\n    <div _ngcontent-c24=\"\" class=\"c-product-options-edit__variants__colors__btn-wrapper ng-star-inserted\">\n        <button _ngcontent-c24=\"\" class=\"".concat($scope.selectedColor.name === color ? selectedClass : '', " c-product-options-edit__variants__colors__btn\" data-color-name=\"").concat(color, "\" data-color=\"#").concat(colorMappings[color], "\" aria-label=\"Select color ").concat(color, "\" style=\"background-color: #").concat(colorMappings[color], ";\"></button>\n    </div>");
   });
-  console.log(colorsNotFound);
+  console.log("colorsNotFound ".concat(JSON.stringify(colorsNotFound)));
   var colorContainerHTML = "\n    <div _ngcontent-c24=\"\" class=\"c-product-options-edit__variants__colors ng-star-inserted\" style=\"\">\n        <div _ngcontent-c24=\"\" class=\"c-tool-text-xs c-product-options-edit__variants__title\">Select colour</div>\n        ".concat(colorsArrayHTML.join(' '), "\n    </div>\n    ");
   $("#colorContainer").html(colorContainerHTML);
   setTimeout(function () {
@@ -606,6 +606,7 @@ function render() {
 
     if ($scope.variant !== null) {
       var modifiedImageUrl = CLEAN_IMAGE_ENDPOINT + "/render/?image=" + $scope.userImageUrl + "&product_id=" + $scope.templateId + "&variant=" + $scope.variant + "&format=jpg&debug=false&background=" + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + $scope.scale + "&rotate=" + $scope.rotationDegrees + "&mirror=" + $scope.flipHorizontal + "&translate=" + $scope.translateX + "," + $scope.translateY;
+      console.log(modifiedImageUrl);
       localStorage.setItem('modifiedImageUrl', modifiedImageUrl);
     }
   }
@@ -1467,11 +1468,14 @@ var PaymentConfirmation = require('./payment_confirmation');
 
 var Payment = require('./payment');
 
+var Selection = require('./selection');
+
 var viewMappings = {
   'checkout': Checkout,
   'editor': Editor,
   'payment_confirmation': PaymentConfirmation,
-  'payment': Payment
+  'payment': Payment,
+  'selection': Selection
 };
 
 function create_link(url) {
@@ -1504,7 +1508,7 @@ module.exports = {
   runView: runView
 };
 
-},{"./checkout":10,"./editor":11,"./payment":13,"./payment_confirmation":14}],13:[function(require,module,exports){
+},{"./checkout":10,"./editor":11,"./payment":13,"./payment_confirmation":14,"./selection":15}],13:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1626,4 +1630,61 @@ function () {
 
 module.exports = PaymentConfirmation;
 
-},{"../utilities":9}]},{},[1]);
+},{"../utilities":9}],15:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Selection =
+/*#__PURE__*/
+function () {
+  function Selection() {
+    _classCallCheck(this, Selection);
+  }
+
+  _createClass(Selection, null, [{
+    key: "run",
+    value: function run() {
+      jQuery("kite-navigation-bar").remove();
+      jQuery(".row-separator").remove();
+      jQuery("kite-error-bar").remove();
+      jQuery("#user_images_for_products").remove();
+      jQuery(".product-range-carousel").remove();
+      jQuery(".row-product-range-header").remove();
+      jQuery("#image-editor").hide();
+      console.log("Replacing");
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
+      jQuery(".product-cover-image").each(function (i, img) {
+        var $img = jQuery(img);
+        var imageUrl = new URL($img.attr("src"));
+        var imageParams = new URLSearchParams(imageUrl.search);
+        var windowParams = new URLSearchParams(location.search);
+        imageParams.set("image", localStorage.getItem('img') || windowParams.get("img"));
+        imageUrl.search = imageParams;
+        $img.attr("src", imageUrl.href); // Parent container
+        // .kite-card-product
+
+        var product_id = imageParams.get("product_id");
+        var parent = $img.parent().parent();
+        console.log(parent);
+        parent.find("button").on('click', function () {
+          console.log('hey');
+          window.location.href = "https://viewmyvoice.net/edit-product/?product_id=" + product_id + "&img=" + windowParams.get("img"); // jQuery("#image-editor").show();
+          // jQuery("#image-editor")[0].contentWindow.postMessage({
+          //     product_id: product_id
+          // }, '*')
+        });
+      });
+    }
+  }]);
+
+  return Selection;
+}();
+
+module.exports = Selection;
+
+},{}]},{},[1]);

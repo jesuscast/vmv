@@ -25,7 +25,7 @@ function setColors(colors) {
         <button _ngcontent-c24="" class="${$scope.selectedColor.name === color ? selectedClass: ''} c-product-options-edit__variants__colors__btn" data-color-name="${color}" data-color="#${colorMappings[color]}" aria-label="Select color ${color}" style="background-color: #${colorMappings[color]};"></button>
     </div>`;
     });
-    console.log(colorsNotFound);
+    console.log(`colorsNotFound ${JSON.stringify(colorsNotFound)}`);
     const colorContainerHTML = `
     <div _ngcontent-c24="" class="c-product-options-edit__variants__colors ng-star-inserted" style="">
         <div _ngcontent-c24="" class="c-tool-text-xs c-product-options-edit__variants__title">Select colour</div>
@@ -193,7 +193,7 @@ function render() {
             + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + $scope.scale
             + "&rotate=" + $scope.rotationDegrees + "&mirror=" + $scope.flipHorizontal
             + "&translate=" + $scope.translateX + "," + $scope.translateY;
-
+            console.log(modifiedImageUrl);
             localStorage.setItem('modifiedImageUrl', modifiedImageUrl);
         }
     }
