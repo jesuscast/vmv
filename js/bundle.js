@@ -1706,8 +1706,8 @@ function () {
       });
     }
   }, {
-    key: "run",
-    value: function run() {
+    key: "loadItemsIntoSelection",
+    value: function loadItemsIntoSelection() {
       var img = localStorage.getItem('img');
       var validProducts = products.objects.filter(function (product) {
         return (product.available_platforms.includes("Web") || product.available_platforms.includes("Shopify")) && !toIgnore.ignore.includes(product.available_templates[0]);
@@ -1750,6 +1750,22 @@ function () {
         localStorage.setItem('variant', variant);
         document.location.href = document.location.href.replace('selection.html', 'editor.html');
       });
+    }
+  }, {
+    key: "run",
+    value: function run() {
+      window.addEventListener("message", receiveMessage, false);
+
+      function receiveMessage(event) {
+        console.log("Received ".concat(JSON.stringify(event.data)));
+
+        if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
+          $scope.userImageUrl = event.data.userImageUrl;
+          Selection.loadItemsIntoSelection();
+        }
+      }
+
+      Selection.loadItemsIntoSelection();
     }
   }]);
 

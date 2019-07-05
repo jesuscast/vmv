@@ -42,7 +42,8 @@ class Selection {
             });
         });
     }
-    static run() {
+
+    static loadItemsIntoSelection() {
         const img =  localStorage.getItem('img');
         const validProducts = products.objects.filter(product => 
             (product.available_platforms.includes("Web") ||
@@ -98,6 +99,19 @@ class Selection {
             localStorage.setItem('variant', variant);
             document.location.href = document.location.href.replace('selection.html', 'editor.html');
         })
+    }
+    static run() {
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event) {
+            console.log(`Received ${JSON.stringify(event.data)}`);
+            if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
+                $scope.userImageUrl = event.data.userImageUrl;
+                Selection.loadItemsIntoSelection()
+            }
+        }
+
+        Selection.loadItemsIntoSelection()
     }
 }
 
