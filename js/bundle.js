@@ -1396,9 +1396,24 @@ function () {
   }
 
   _createClass(Editor, null, [{
+    key: "getValuesFromStorage",
+    value: function getValuesFromStorage() {
+      var template = localStorage.getItem('template');
+      var variant = localStorage.getItem('variant');
+      var image = localStorage.getItem('img');
+
+      if (template && variant && image) {
+        $scope.userImageUrl = image;
+        $scope.templateId = template;
+        $scope.variant = variant;
+        edit();
+      }
+    }
+  }, {
     key: "run",
     value: function run() {
       window.addEventListener("message", receiveMessage, false);
+      Editor.getValuesFromStorage();
 
       function receiveMessage(event) {
         console.log("Received ".concat(JSON.stringify(event.data)));
@@ -1691,6 +1706,14 @@ function () {
       var img = localStorage.getItem('img');
       var validProducts = products.objects.filter(function (product) {
         return (product.available_platforms.includes("Web") || product.available_platforms.includes("Shopify")) && !toIgnore.ignore.includes(product.available_templates[0]);
+      }).map(function (product) {
+        if (product.product_tags.length > 0) {
+          product.tag = product.product_tags[0];
+        } else {
+          product.tag = "Other";
+        }
+
+        return product;
       });
 
       if (validProducts.length === 0) {
@@ -1698,16 +1721,32 @@ function () {
         return;
       }
 
+      var organizedProducts = _.groupBy(validProducts, 'tag');
+
+      console.log(organizedProducts);
+      var categories = Object.keys(organizedProducts);
+
+      _.reverse(categories);
+
       $("#productList").html("");
-      validProducts.forEach(function (productJson) {
-        var product = new Product(productJson, img);
-        $("#productList").append(product.getProductHTML());
+      $("#products-menu").html(Product.getProductsMenuHTML(categories));
+      categories.forEach(function (category) {
+        organizedProducts[category].forEach(function (productJson, i) {
+          var product = new Product(productJson, img, category, i === 0);
+          $("#productList").append(product.getProductHTML());
+        });
       });
-      window.ignoring = [];
-      $(".product-cover-image-container").click(function () {
-        var t = $(this).attr('data-template');
-        ignoring.push(t);
-        console.log(ignoring);
+      $(".menu-item").click(function (e) {
+        $(".menu-item").removeClass("selected");
+        $(this).addClass("selected");
+      });
+      $(".kite-spinner").hide();
+      $(".kite-card-product .btn-customise").click(function () {
+        var template = $(this).attr('data-template');
+        var variant = $(this).attr('data-variant');
+        localStorage.setItem('template', template);
+        localStorage.setItem('variant', variant);
+        document.location.href = document.location.href.replace('selection.html', 'editor.html');
       });
     }
   }]);
@@ -1729,7 +1768,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Product =
 /*#__PURE__*/
 function () {
-  function Product(jsonObject, imgUrl) {
+  function Product(jsonObject, imgUrl, category, attachCategory) {
     _classCallCheck(this, Product);
 
     this.name = jsonObject.name;
@@ -1738,7 +1777,8 @@ function () {
     this.product_code = jsonObject.product_code;
     this.imgUrl = imgUrl;
     this.product_tags = jsonObject.product_tags;
-    this.category = this.product_tags.length > 0 ? this.product_tags[0] : null;
+    this.category = category;
+    this.attachCategory = attachCategory;
     this.jsonObject = jsonObject;
     this.template = this.jsonObject.available_templates[0];
   }
@@ -1757,8 +1797,23 @@ function () {
     value: function getProductHTML() {
       //  return this.jsonObject;
       var renderImgUrl = "https://image.kite.ly//render/" + "?image=" + this.imgUrl + "&amp;product_id=" + this.jsonObject.available_templates[0] + "&amp;variant=" + this.getDefaultVariant() + "&amp;" + "format=jpg&amp;debug=false&amp;background=eeedec&amp;" + "size=628x452&amp;fill_mode=fit&amp;padding=20&amp;&amp;" + "scale=1&amp;rotate=0&amp;mirror=false&amp;translate=0,0";
-      console.log(this.product_tags.length);
-      return "<div class=\"col-xs-12 col-sm-6 ng-scope\" ng-repeat-start=\"product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts\">\n            <div class=\"kite-card-product safari_only\" ng-class=\"{'disabled': !product.enabled}\">\n                <div class=\"product-cover-image-container\" data-template=\"".concat(this.template, "\" ng-click=\"ctrl.onCustomiseProductClick(product)\">\n                    <img\n                        kite-fade-in=\"\"\n                        width=\"500px\"\n                        height=\"360px\"\n                        class=\"product-cover-image ng-isolate-scope kite-fade-in-img ng-hide-remove ng-hide-add\"\n                        ng-src=\"").concat(renderImgUrl, "\"\n                        src=\"").concat(renderImgUrl, "\"\n                        pagespeed_url_hash=\"1340429420\" />\n                </div>\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <h3 ng-if=\"ctrl.selectedProductRange.titleTemp != 'Untitled Range'\" class=\"ng-binding ng-scope\">").concat(this.name, "</h3>\n                <!-- end ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp == 'Untitled Range' -->\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"visible-sm\">Price</td>\n                            <td class=\"visible-sm\">$").concat(this.prices.USD, "</td>\n                        </tr>\n                    </tbody>\n                </table>\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"left\">\n                                <button ng-click=\"ctrl.onCustomiseProductClick(product)\" class=\"btn btn-customise\">Add to Cart</button>\n                            </td>\n                            <td class=\"right\">\n\n                                <kite-toggle-button class=\"toggle-button-product-enabled ng-isolate-scope\" toggled=\"product.enabled\" button-on-style=\"green\" on-toggle=\"ctrl.onProductEnabledClick(product, toggled)\" button-off-style=\"red\">\n                                </kite-toggle-button>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>");
+      return "<div class=\"col-xs-12 col-sm-6 ng-scope\" ng-repeat-start=\"product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts\">\n            <div class=\"kite-card-product safari_only\" ng-class=\"{'disabled': !product.enabled}\">\n                <div class=\"product-cover-image-container\" id=\"".concat(this.attachCategory ? Product.categoryID(this.category) : "", "\" data-template=\"").concat(this.template, "\" ng-click=\"ctrl.onCustomiseProductClick(product)\">\n                    <img\n                        kite-fade-in=\"\"\n                        width=\"500px\"\n                        height=\"360px\"\n                        class=\"product-cover-image ng-isolate-scope kite-fade-in-img ng-hide-remove ng-hide-add\"\n                        ng-src=\"").concat(renderImgUrl, "\"\n                        src=\"").concat(renderImgUrl, "\"\n                        pagespeed_url_hash=\"1340429420\" />\n                </div>\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <h3 ng-if=\"ctrl.selectedProductRange.titleTemp != 'Untitled Range'\" class=\"ng-binding ng-scope\">").concat(this.name, "</h3>\n                <!-- end ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp == 'Untitled Range' -->\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"visible-sm\">Price</td>\n                            <td class=\"visible-sm\">$").concat(this.prices.USD, "</td>\n                        </tr>\n                    </tbody>\n                </table>\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"left\">\n                                <button ng-click=\"ctrl.onCustomiseProductClick(product)\" data-template=\"").concat(this.template, "\" data-variant=\"").concat(this.getDefaultVariant(), "\"class=\"btn btn-customise\">Add to Cart</button>\n                            </td>\n                            <td class=\"right\">\n\n                                <kite-toggle-button class=\"toggle-button-product-enabled ng-isolate-scope\" toggled=\"product.enabled\" button-on-style=\"green\" on-toggle=\"ctrl.onProductEnabledClick(product, toggled)\" button-off-style=\"red\">\n                                </kite-toggle-button>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>");
+    }
+  }], [{
+    key: "categoryID",
+    value: function categoryID(category) {
+      return category.toLowerCase().replace("& ", "").replace(/ /g, "_");
+    }
+  }, {
+    key: "getCategoryHTML",
+    value: function getCategoryHTML(category, i) {
+      var categoryId = Product.categoryID(category);
+      return "\n        <div class=\"menu-item ng-scope ".concat(i === 0 ? "selected" : "", "\"\n            ng-repeat=\"category in productCategories\"\n            ng-class=\"{'selected': ctrl.isSelected(category), 'disabled': !ctrl.isCategoryEnabled(category)}\"\n            style=\"\">\n            <a href=\"#").concat(categoryId, "\" class=\"left-menu-category ng-binding\">\n            ").concat(category, "\n            </a>\n        </div>\n        ");
+    }
+  }, {
+    key: "getProductsMenuHTML",
+    value: function getProductsMenuHTML(categories) {
+      return "<div class=\"menu-item-separator top\"></div>\n            ".concat(categories.map(Product.getCategoryHTML).join("\n"), "\n            <div class=\"menu-item-separator\"></div>");
     }
   }]);
 

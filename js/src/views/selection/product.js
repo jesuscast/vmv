@@ -1,12 +1,13 @@
 class Product {
-    constructor(jsonObject, imgUrl) {
+    constructor(jsonObject, imgUrl, category, attachCategory) {
         this.name = jsonObject.name;
         this.brand = jsonObject.product_brand;
         this.prices = jsonObject.wholesale_cost;
         this.product_code = jsonObject.product_code;
         this.imgUrl = imgUrl;
         this.product_tags = jsonObject.product_tags;
-        this.category = this.product_tags.length > 0 ? this.product_tags[0]: null;
+        this.category = category;
+        this.attachCategory = attachCategory;
         this.jsonObject = jsonObject;
         this.template = this.jsonObject.available_templates[0];
     }
@@ -16,6 +17,30 @@ class Product {
             return  "black";
         }
         return "cover"
+    }
+
+    static categoryID(category) {
+        return category.toLowerCase().replace("& ","").replace(/ /g,"_")
+    }
+
+    static getCategoryHTML(category, i) {
+        const categoryId = Product.categoryID(category);
+        return `
+        <div class="menu-item ng-scope ${i === 0? "selected":""}"
+            ng-repeat="category in productCategories"
+            ng-class="{'selected': ctrl.isSelected(category), 'disabled': !ctrl.isCategoryEnabled(category)}"
+            style="">
+            <a href="#${categoryId}" class="left-menu-category ng-binding">
+            ${category}
+            </a>
+        </div>
+        `;
+    }
+
+    static getProductsMenuHTML(categories) {
+        return `<div class="menu-item-separator top"></div>
+            ${categories.map(Product.getCategoryHTML).join("\n")}
+            <div class="menu-item-separator"></div>`;
     }
     
     getProductHTML() {
@@ -27,10 +52,9 @@ class Product {
                     "size=628x452&amp;fill_mode=fit&amp;padding=20&amp;&amp;"+
                     "scale=1&amp;rotate=0&amp;mirror=false&amp;translate=0,0";
 
-        console.log(this.product_tags.length);
         return `<div class="col-xs-12 col-sm-6 ng-scope" ng-repeat-start="product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts">
             <div class="kite-card-product safari_only" ng-class="{'disabled': !product.enabled}">
-                <div class="product-cover-image-container" data-template="${this.template}" ng-click="ctrl.onCustomiseProductClick(product)">
+                <div class="product-cover-image-container" id="${this.attachCategory ? Product.categoryID(this.category): ""}" data-template="${this.template}" ng-click="ctrl.onCustomiseProductClick(product)">
                     <img
                         kite-fade-in=""
                         width="500px"
@@ -58,7 +82,7 @@ class Product {
                     <tbody>
                         <tr>
                             <td class="left">
-                                <button ng-click="ctrl.onCustomiseProductClick(product)" class="btn btn-customise">Add to Cart</button>
+                                <button ng-click="ctrl.onCustomiseProductClick(product)" data-template="${this.template}" data-variant="${this.getDefaultVariant()}"class="btn btn-customise">Add to Cart</button>
                             </td>
                             <td class="right">
 

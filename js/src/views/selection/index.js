@@ -48,24 +48,50 @@ class Selection {
             (product.available_platforms.includes("Web") ||
             product.available_platforms.includes("Shopify")) &&
             !toIgnore.ignore.includes(product.available_templates[0])
-        )
+        ).map(product => {
+            if (product.product_tags.length > 0) {
+                product.tag = product.product_tags[0];
+            } else {
+                product.tag = "Other";
+            }
+            return product;
+        });
         if (validProducts.length === 0) {
             console.error('No valid products')
             return;
         }
 
+        const organizedProducts = _.groupBy(validProducts, 'tag');
+
+        console.log(organizedProducts);
+
+        let categories = Object.keys(organizedProducts);
+
+        _.reverse(categories);
+
         $("#productList").html("");
-        validProducts.forEach(productJson => {
-            const product = new Product(productJson, img);
-            $("#productList").append(product.getProductHTML());
+        $("#products-menu").html(Product.getProductsMenuHTML(categories))
+        categories.forEach(category => {
+            organizedProducts[category].forEach((productJson, i) => {
+                const product = new Product(productJson, img, category, i === 0);
+                $("#productList").append(product.getProductHTML());
+            })
         })
 
-        window.ignoring = []
-        $(".product-cover-image-container").click(function(){
-            const t = $(this).attr('data-template');
+        $(".menu-item").click(function(e) {
+            $(".menu-item").removeClass("selected");
+            $(this).addClass("selected");
+        })
 
-            ignoring.push(t);
-            console.log(ignoring);
+        $(".kite-spinner").hide();
+    
+        $(".kite-card-product .btn-customise").click(function(){
+            const template = $(this).attr('data-template');
+            const variant = $(this).attr('data-variant');
+
+            localStorage.setItem('template', template);
+            localStorage.setItem('variant', variant);
+            document.location.href = document.location.href.replace('selection.html', 'editor.html');
         })
     }
 }

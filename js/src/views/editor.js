@@ -2,9 +2,23 @@ const {$scope} =  require('../constants');
 const {render, edit} = require("../edit");
 
 class Editor {
+
+    static getValuesFromStorage() {
+        const template = localStorage.getItem('template');
+        const variant = localStorage.getItem('variant');
+        const image = localStorage.getItem('img');
+
+        if (template && variant && image) {
+            $scope.userImageUrl = image;
+            $scope.templateId = template;
+            $scope.variant = variant;
+            edit();
+        }
+    }
     static run() {
         window.addEventListener("message", receiveMessage, false);
 
+        Editor.getValuesFromStorage();
         function receiveMessage(event) {
             console.log(`Received ${JSON.stringify(event.data)}`)
             if (event.data.product_id) {
