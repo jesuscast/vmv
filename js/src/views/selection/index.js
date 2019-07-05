@@ -65,9 +65,14 @@ class Selection {
 
         console.log(organizedProducts);
 
-        let categories = Object.keys(organizedProducts);
-
-        _.reverse(categories);
+        let categories = [
+            "Apparel",
+            "Phone & Tablet Cases",
+            "Post & Greeting Cards",
+            "Wall Art & Posters",
+            "Homeware",
+            "Other",
+        ]
 
         $("#productList").html("");
         $("#products-menu").html(Product.getProductsMenuHTML(categories))

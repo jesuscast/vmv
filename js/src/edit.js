@@ -6,6 +6,8 @@ function loading(value) {
     ctrl.loading = value;
     if (value) {
         $("#image-editor-progress-spinner").show();
+        $(".c-product-options-edit__variants__colors").html(`<div class="kite-spinner"></div>`);
+        
     } else {
         $("#image-editor-progress-spinner").hide();
     }
@@ -44,6 +46,7 @@ function setColors(colors) {
                 name: colorName,
                 code: colorCode
             }
+            localStorage.setItem('color', $scope.selectedColor);
             render();
         });
     }, 100);

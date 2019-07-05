@@ -453,6 +453,7 @@ function loading(value) {
 
   if (value) {
     $("#image-editor-progress-spinner").show();
+    $(".c-product-options-edit__variants__colors").html("<div class=\"kite-spinner\"></div>");
   } else {
     $("#image-editor-progress-spinner").hide();
   }
@@ -482,6 +483,7 @@ function setColors(colors) {
         name: colorName,
         code: colorCode
       };
+      localStorage.setItem('color', $scope.selectedColor);
       render();
     });
   }, 100);
@@ -1020,6 +1022,7 @@ var productImage = {
         var colors = Array.from(new Set(product.images.map(function (e) {
           return e.name.replace("back_", '');
         })));
+        console.log(colors);
         colorCallback(colors); // grab the images that match gthe position
 
         var images = product.images.filter(function (img) {
@@ -1412,8 +1415,10 @@ function () {
   }, {
     key: "run",
     value: function run() {
+      setTimeout(function () {
+        Editor.getValuesFromStorage();
+      }, 200);
       window.addEventListener("message", receiveMessage, false);
-      Editor.getValuesFromStorage();
 
       function receiveMessage(event) {
         console.log("Received ".concat(JSON.stringify(event.data)));
@@ -1724,10 +1729,7 @@ function () {
       var organizedProducts = _.groupBy(validProducts, 'tag');
 
       console.log(organizedProducts);
-      var categories = Object.keys(organizedProducts);
-
-      _.reverse(categories);
-
+      var categories = ["Apparel", "Phone & Tablet Cases", "Post & Greeting Cards", "Wall Art & Posters", "Homeware", "Other"];
       $("#productList").html("");
       $("#products-menu").html(Product.getProductsMenuHTML(categories));
       categories.forEach(function (category) {
@@ -28654,7 +28656,8 @@ module.exports={
       "samsung_s6eplus_case",
       "nexus_5_case",
       "samsung_s4_case",
-      "samsung_n4_case"
+      "samsung_n4_case",
+      "fap1_25_whiteframe_12x16"
     ]
   }
 },{}]},{},[1]);

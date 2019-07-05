@@ -16,9 +16,13 @@ class Editor {
         }
     }
     static run() {
+
+        setTimeout(() => {
+            Editor.getValuesFromStorage();
+        }, 200);
+    
         window.addEventListener("message", receiveMessage, false);
 
-        Editor.getValuesFromStorage();
         function receiveMessage(event) {
             console.log(`Received ${JSON.stringify(event.data)}`)
             if (event.data.product_id) {

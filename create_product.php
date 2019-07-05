@@ -5,5 +5,9 @@ include 'editor.php';
 function image_editor_view_func() {
     return get_create_editor();
 }
+
+function product_list_view_func() {
+    return get_product_list();
+}
 ?>
 

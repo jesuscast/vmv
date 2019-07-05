@@ -20,4 +20,22 @@ function get_create_editor() {
     <?php
 }
 
+function get_product_list() {
+    ?>
+    <iframe id="image-editor" src="https://viewmyvoice.net/wp-content/plugins/vmv/html/selection.html" style="
+        width: 100%;
+        border: 0px;
+    "></iframe>
+    <script>
+        setTimeout(() => {
+            const params = new URLSearchParams(window.location.search);
+            const userImageUrl = localStorage.getItem('img');
+            jQuery("#image-editor")[0].contentWindow.postMessage({
+                userImageUrl: userImageUrl
+            }, '*')
+        }, 200);
+    </script>
+        <?php
+}
+
 ?>
