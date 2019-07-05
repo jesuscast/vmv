@@ -25,6 +25,8 @@ function get_product_list() {
     <iframe id="image-editor" src="https://viewmyvoice.net/wp-content/plugins/vmv/html/selection.html" style="
         width: 100%;
         border: 0px;
+        height: 1200px;
+        overflow: scroll;
     "></iframe>
     <script>
         setTimeout(() => {
