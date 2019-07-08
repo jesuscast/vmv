@@ -73,7 +73,7 @@ const productImage = {
 
                 var imageVariant = null;
                 const colors = Array.from(new Set(product.images.map(e => { return e.name.replace("back_",'') })));
-                console.log(colors);
+                console.log(`colors: ${JSON.stringify(colors)} for ${templateId}`);
                 colorCallback(colors);
                 // grab the images that match gthe position
                 const images = product.images.filter((img) => {

@@ -17,7 +17,7 @@ function loading(value) {
 function setColors(colors) {
     const selectedClass = 'c-product-options-edit__variants__colors__btn--selected';
     const colorsNotFound = [];
-    const colorsArrayHTML = colors.map((color, i) => {
+    let colorsArrayHTML = colors.map((color, i) => {
         if (!colorMappings[color]) {
             colorsNotFound.push(color);
             return '';
@@ -26,12 +26,17 @@ function setColors(colors) {
     <div _ngcontent-c24="" class="c-product-options-edit__variants__colors__btn-wrapper ng-star-inserted">
         <button _ngcontent-c24="" class="${$scope.selectedColor.name === color ? selectedClass: ''} c-product-options-edit__variants__colors__btn" data-color-name="${color}" data-color="#${colorMappings[color]}" aria-label="Select color ${color}" style="background-color: #${colorMappings[color]};"></button>
     </div>`;
-    });
+    }).filter(val => val !== '');
+    if (colorsArrayHTML.length === 0) {
+        colorsArrayHTML = `<div _ngcontent-c24="" class="c-tool-text-xs c-product-options-edit__variants__title">No colours available for this product</div>`;
+    } else {
+        colorsArrayHTML = colorsArrayHTML.join(' ');
+    }
     console.log(`colorsNotFound ${JSON.stringify(colorsNotFound)}`);
     const colorContainerHTML = `
     <div _ngcontent-c24="" class="c-product-options-edit__variants__colors ng-star-inserted" style="">
         <div _ngcontent-c24="" class="c-tool-text-xs c-product-options-edit__variants__title">Select colour</div>
-        ${colorsArrayHTML.join(' ')}
+        ${colorsArrayHTML}
     </div>
     `;
     $("#colorContainer").html(colorContainerHTML);
@@ -196,7 +201,7 @@ function render() {
             + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + $scope.scale
             + "&rotate=" + $scope.rotationDegrees + "&mirror=" + $scope.flipHorizontal
             + "&translate=" + $scope.translateX + "," + $scope.translateY;
-            console.log(modifiedImageUrl);
+            // console.log(modifiedImageUrl);
             localStorage.setItem('modifiedImageUrl', modifiedImageUrl);
         }
     }

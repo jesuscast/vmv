@@ -469,9 +469,18 @@ function setColors(colors) {
     }
 
     return "\n    <div _ngcontent-c24=\"\" class=\"c-product-options-edit__variants__colors__btn-wrapper ng-star-inserted\">\n        <button _ngcontent-c24=\"\" class=\"".concat($scope.selectedColor.name === color ? selectedClass : '', " c-product-options-edit__variants__colors__btn\" data-color-name=\"").concat(color, "\" data-color=\"#").concat(colorMappings[color], "\" aria-label=\"Select color ").concat(color, "\" style=\"background-color: #").concat(colorMappings[color], ";\"></button>\n    </div>");
+  }).filter(function (val) {
+    return val !== '';
   });
+
+  if (colorsArrayHTML.length === 0) {
+    colorsArrayHTML = "<div _ngcontent-c24=\"\" class=\"c-tool-text-xs c-product-options-edit__variants__title\">No colours available for this product</div>";
+  } else {
+    colorsArrayHTML = colorsArrayHTML.join(' ');
+  }
+
   console.log("colorsNotFound ".concat(JSON.stringify(colorsNotFound)));
-  var colorContainerHTML = "\n    <div _ngcontent-c24=\"\" class=\"c-product-options-edit__variants__colors ng-star-inserted\" style=\"\">\n        <div _ngcontent-c24=\"\" class=\"c-tool-text-xs c-product-options-edit__variants__title\">Select colour</div>\n        ".concat(colorsArrayHTML.join(' '), "\n    </div>\n    ");
+  var colorContainerHTML = "\n    <div _ngcontent-c24=\"\" class=\"c-product-options-edit__variants__colors ng-star-inserted\" style=\"\">\n        <div _ngcontent-c24=\"\" class=\"c-tool-text-xs c-product-options-edit__variants__title\">Select colour</div>\n        ".concat(colorsArrayHTML, "\n    </div>\n    ");
   $("#colorContainer").html(colorContainerHTML);
   setTimeout(function () {
     $(".c-product-options-edit__variants__colors__btn").on('click', function (el) {
@@ -607,8 +616,8 @@ function render() {
     btx.fillRect(0, 0, w, h);
 
     if ($scope.variant !== null) {
-      var modifiedImageUrl = CLEAN_IMAGE_ENDPOINT + "/render/?image=" + $scope.userImageUrl + "&product_id=" + $scope.templateId + "&variant=" + $scope.variant + "&format=jpg&debug=false&background=" + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + $scope.scale + "&rotate=" + $scope.rotationDegrees + "&mirror=" + $scope.flipHorizontal + "&translate=" + $scope.translateX + "," + $scope.translateY;
-      console.log(modifiedImageUrl);
+      var modifiedImageUrl = CLEAN_IMAGE_ENDPOINT + "/render/?image=" + $scope.userImageUrl + "&product_id=" + $scope.templateId + "&variant=" + $scope.variant + "&format=jpg&debug=false&background=" + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + $scope.scale + "&rotate=" + $scope.rotationDegrees + "&mirror=" + $scope.flipHorizontal + "&translate=" + $scope.translateX + "," + $scope.translateY; // console.log(modifiedImageUrl);
+
       localStorage.setItem('modifiedImageUrl', modifiedImageUrl);
     }
   }
@@ -1022,7 +1031,7 @@ var productImage = {
         var colors = Array.from(new Set(product.images.map(function (e) {
           return e.name.replace("back_", '');
         })));
-        console.log(colors);
+        console.log("colors: ".concat(JSON.stringify(colors), " for ").concat(templateId));
         colorCallback(colors); // grab the images that match gthe position
 
         var images = product.images.filter(function (img) {
@@ -1349,8 +1358,8 @@ function () {
   _createClass(Checkout, null, [{
     key: "run",
     value: function run() {
-      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
-      console.log(modifiedImageUrl); // if (modifiedImageUrl) {
+      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl'); // console.log(modifiedImageUrl);
+      // if (modifiedImageUrl) {
       //     $("#tiny-image").attr('src', modifiedImageUrl);
       //     $("#tiny-image").css('width', '150%');
       //     $("#tiny-image").css('margin-top', '20px');
@@ -28673,7 +28682,9 @@ module.exports={
       "nexus_5_case",
       "samsung_s4_case",
       "samsung_n4_case",
-      "fap1_25_whiteframe_12x16"
+      "fap1_25_whiteframe_12x16",
+      "mug_11oz_uk",
+      "mug_11oz"
     ]
   }
 },{}]},{},[1]);
