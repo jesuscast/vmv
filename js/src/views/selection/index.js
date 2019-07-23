@@ -94,9 +94,11 @@ class Selection {
         $(".kite-card-product .btn-customise").click(function(){
             const template = $(this).attr('data-template');
             const variant = $(this).attr('data-variant');
-
+            const category = $(this).attr('data-category');
+            console.log(category);
             localStorage.setItem('template', template);
             localStorage.setItem('variant', variant);
+            localStorage.setItem('category', category);
             document.location.href = document.location.href.replace('selection.html', 'editor.html');
         })
     }

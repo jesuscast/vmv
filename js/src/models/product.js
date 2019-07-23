@@ -6,12 +6,13 @@
 //         + "&translate=" + image.tx + "," + image.ty + "&print_image="+ image.print_image;
 
 class Product {
-    constructor(img, product_id, variant, scale, translate) {
+    constructor(img, product_id, variant, scale, translate, category) {
         this.img = img;
         this.product_id = product_id;
         this.variant = variant;
         this.scale = scale;
         this.translate = translate;
+        this.category = category;
     }
 
     toImg(print) {

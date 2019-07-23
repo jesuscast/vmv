@@ -54,7 +54,10 @@ class Product {
 
         return `<div class="col-xs-12 col-sm-6 ng-scope" ng-repeat-start="product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts">
             <div class="kite-card-product safari_only" ng-class="{'disabled': !product.enabled}">
-                <div class="product-cover-image-container" id="${this.attachCategory ? Product.categoryID(this.category): ""}" data-template="${this.template}" ng-click="ctrl.onCustomiseProductClick(product)">
+                <div class="product-cover-image-container"
+                    id="${this.attachCategory ? Product.categoryID(this.category): ""}"
+                    data-template="${this.template}"
+                    ng-click="ctrl.onCustomiseProductClick(product)">
                     <img
                         kite-fade-in=""
                         width="500px"
@@ -82,7 +85,7 @@ class Product {
                     <tbody>
                         <tr>
                             <td class="left">
-                                <button ng-click="ctrl.onCustomiseProductClick(product)" data-template="${this.template}" data-variant="${this.getDefaultVariant()}"class="btn btn-customise">Add to Cart</button>
+                                <button ng-click="ctrl.onCustomiseProductClick(product)" data-category="${Product.categoryID(this.category)}" data-template="${this.template}" data-variant="${this.getDefaultVariant()}"class="btn btn-customise">Add to Cart</button>
                             </td>
                             <td class="right">
 

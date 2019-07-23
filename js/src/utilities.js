@@ -129,13 +129,10 @@ function loadData() {
     return new Promise((resolve, reject) => {
         const pricesRaw = localStorage.getItem('prices');
         const addressRaw = localStorage.getItem('address');
-        // const template = localStorage.getItem('template');
-        // const variant = localStorage.getItem('variant');
-        // const colorRaw = localStorage.getItem('color');
-        // const img = localStorage.getItem('img')
+        const category = localStorage.getItem('category');
         const scopeRaw = localStorage.getItem('scope');
 
-        if (!pricesRaw || !addressRaw || !scopeRaw) {
+        if (!pricesRaw || !addressRaw || !scopeRaw || !category) {
             reject('no data');
             return;
         }
@@ -153,13 +150,16 @@ function loadData() {
             scopeJSON.selectedColor.name,
             scopeJSON.scale, {
                 x: scopeJSON.translateX, y: scopeJSON.translateY
-            });
-
+            },
+            category);
+        
+        const job = new Job(product);
         Address.build(addressJSON).then((address) => {
             resolve({
                 prices: pricesJSON,
                 address,
-                product
+                product,
+                job
             })
         }).catch((err) => {
             reject(err);

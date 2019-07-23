@@ -13,13 +13,14 @@ class Payment {
         const currencySymbol = '$'; // '&pound;';
 
         loadData().then(({
-            prices, address, product
+            prices, address, product, job
         }) => {
             console.log(prices);
             console.log(address);
             console.log(product);
             console.log(product.toImg(false));
             Payment.updateTinyImg(product.toImg(false));
+            console.log(job.toDict());
             $("#product-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
             $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
             $("#total-cost").html(`${currencySymbol} ${prices.total[currency]}`);

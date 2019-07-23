@@ -963,13 +963,85 @@ module.exports = {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Job = function Job(template, variant, colorJSON) {
-  _classCallCheck(this, Job);
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  this.template = template;
-  this.variant = variant;
-  this.colorJSON = colorJSON;
-};
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Job =
+/*#__PURE__*/
+function () {
+  function Job(product) {
+    _classCallCheck(this, Job);
+
+    this.product = product;
+  }
+
+  _createClass(Job, [{
+    key: "default",
+    value: function _default() {
+      return {
+        "assets": [this.product.toImg(true)],
+        "template_id": this.product.product_id
+      };
+    }
+  }, {
+    key: "apparel",
+    value: function apparel() {
+      return {
+        "options": {
+          // TODO: Collect and send the actual size here
+          "garment_size": "M",
+          "garment_color": this.product.variant
+        },
+        "assets": {
+          "center_chest": this.product.toImg(true)
+        },
+        "template_id": this.product.product_id
+      };
+    }
+  }, {
+    key: "posters",
+    value: function posters() {
+      return this["default"]();
+    }
+  }, {
+    key: "wallart",
+    value: function wallart() {
+      return this["default"]();
+    }
+  }, {
+    key: "homeware",
+    value: function homeware() {
+      return this["default"]();
+    }
+  }, {
+    key: "other",
+    value: function other() {
+      return this["default"]();
+    }
+  }, {
+    key: "toDict",
+    value: function toDict() {
+      var funcMappings = {
+        "apparel": this.apparel,
+        "phone_tablet_cases": this.cases,
+        "post_greeting_cards": this.posters,
+        "wall_art_posters": this.wallart,
+        "homeware": this.homeware,
+        "other": this.other
+      };
+
+      if (!funcMappings[this.product.category]) {
+        console.error("".concat(this.product.category, " not available as a category"));
+        return {};
+      }
+
+      return funcMappings[this.product.category].bind(this)();
+    }
+  }]);
+
+  return Job;
+}();
 
 module.exports = Job;
 
@@ -991,7 +1063,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Product =
 /*#__PURE__*/
 function () {
-  function Product(img, product_id, variant, scale, translate) {
+  function Product(img, product_id, variant, scale, translate, category) {
     _classCallCheck(this, Product);
 
     this.img = img;
@@ -999,6 +1071,7 @@ function () {
     this.variant = variant;
     this.scale = scale;
     this.translate = translate;
+    this.category = category;
   }
 
   _createClass(Product, [{
@@ -1301,14 +1374,11 @@ function placeOrder(address, price, paypalId) {
 function loadData() {
   return new Promise(function (resolve, reject) {
     var pricesRaw = localStorage.getItem('prices');
-    var addressRaw = localStorage.getItem('address'); // const template = localStorage.getItem('template');
-    // const variant = localStorage.getItem('variant');
-    // const colorRaw = localStorage.getItem('color');
-    // const img = localStorage.getItem('img')
-
+    var addressRaw = localStorage.getItem('address');
+    var category = localStorage.getItem('category');
     var scopeRaw = localStorage.getItem('scope');
 
-    if (!pricesRaw || !addressRaw || !scopeRaw) {
+    if (!pricesRaw || !addressRaw || !scopeRaw || !category) {
       reject('no data');
       return;
     }
@@ -1322,12 +1392,14 @@ function loadData() {
     var product = new Product(scopeJSON.userImageUrl, scopeJSON.templateId, scopeJSON.selectedColor.name, scopeJSON.scale, {
       x: scopeJSON.translateX,
       y: scopeJSON.translateY
-    });
+    }, category);
+    var job = new Job(product);
     Address.build(addressJSON).then(function (address) {
       resolve({
         prices: pricesJSON,
         address: address,
-        product: product
+        product: product,
+        job: job
       });
     })["catch"](function (err) {
       reject(err);
@@ -1638,12 +1710,14 @@ function () {
       loadData().then(function (_ref) {
         var prices = _ref.prices,
             address = _ref.address,
-            product = _ref.product;
+            product = _ref.product,
+            job = _ref.job;
         console.log(prices);
         console.log(address);
         console.log(product);
         console.log(product.toImg(false));
         Payment.updateTinyImg(product.toImg(false));
+        console.log(job.toDict());
         $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total[currency]));
@@ -1819,8 +1893,11 @@ function () {
       $(".kite-card-product .btn-customise").click(function () {
         var template = $(this).attr('data-template');
         var variant = $(this).attr('data-variant');
+        var category = $(this).attr('data-category');
+        console.log(category);
         localStorage.setItem('template', template);
         localStorage.setItem('variant', variant);
+        localStorage.setItem('category', category);
         document.location.href = document.location.href.replace('selection.html', 'editor.html');
       });
     }
@@ -1888,7 +1965,7 @@ function () {
     value: function getProductHTML() {
       //  return this.jsonObject;
       var renderImgUrl = "https://image.kite.ly//render/" + "?image=" + this.imgUrl + "&amp;product_id=" + this.jsonObject.available_templates[0] + "&amp;variant=" + this.getDefaultVariant() + "&amp;" + "format=jpg&amp;debug=false&amp;background=eeedec&amp;" + "size=628x452&amp;fill_mode=fit&amp;padding=20&amp;&amp;" + "scale=1&amp;rotate=0&amp;mirror=false&amp;translate=0,0";
-      return "<div class=\"col-xs-12 col-sm-6 ng-scope\" ng-repeat-start=\"product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts\">\n            <div class=\"kite-card-product safari_only\" ng-class=\"{'disabled': !product.enabled}\">\n                <div class=\"product-cover-image-container\" id=\"".concat(this.attachCategory ? Product.categoryID(this.category) : "", "\" data-template=\"").concat(this.template, "\" ng-click=\"ctrl.onCustomiseProductClick(product)\">\n                    <img\n                        kite-fade-in=\"\"\n                        width=\"500px\"\n                        height=\"360px\"\n                        class=\"product-cover-image ng-isolate-scope kite-fade-in-img ng-hide-remove ng-hide-add\"\n                        ng-src=\"").concat(renderImgUrl, "\"\n                        src=\"").concat(renderImgUrl, "\"\n                        pagespeed_url_hash=\"1340429420\" />\n                </div>\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <h3 ng-if=\"ctrl.selectedProductRange.titleTemp != 'Untitled Range'\" class=\"ng-binding ng-scope\">").concat(this.name, "</h3>\n                <!-- end ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp == 'Untitled Range' -->\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"visible-sm\">Price</td>\n                            <td class=\"visible-sm\">$").concat(this.prices.USD, "</td>\n                        </tr>\n                    </tbody>\n                </table>\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"left\">\n                                <button ng-click=\"ctrl.onCustomiseProductClick(product)\" data-template=\"").concat(this.template, "\" data-variant=\"").concat(this.getDefaultVariant(), "\"class=\"btn btn-customise\">Add to Cart</button>\n                            </td>\n                            <td class=\"right\">\n\n                                <kite-toggle-button class=\"toggle-button-product-enabled ng-isolate-scope\" toggled=\"product.enabled\" button-on-style=\"green\" on-toggle=\"ctrl.onProductEnabledClick(product, toggled)\" button-off-style=\"red\">\n                                </kite-toggle-button>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>");
+      return "<div class=\"col-xs-12 col-sm-6 ng-scope\" ng-repeat-start=\"product in ctrl.selectedProductRange.products | filter:ctrl.filterProducts\">\n            <div class=\"kite-card-product safari_only\" ng-class=\"{'disabled': !product.enabled}\">\n                <div class=\"product-cover-image-container\"\n                    id=\"".concat(this.attachCategory ? Product.categoryID(this.category) : "", "\"\n                    data-template=\"").concat(this.template, "\"\n                    ng-click=\"ctrl.onCustomiseProductClick(product)\">\n                    <img\n                        kite-fade-in=\"\"\n                        width=\"500px\"\n                        height=\"360px\"\n                        class=\"product-cover-image ng-isolate-scope kite-fade-in-img ng-hide-remove ng-hide-add\"\n                        ng-src=\"").concat(renderImgUrl, "\"\n                        src=\"").concat(renderImgUrl, "\"\n                        pagespeed_url_hash=\"1340429420\" />\n                </div>\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <h3 ng-if=\"ctrl.selectedProductRange.titleTemp != 'Untitled Range'\" class=\"ng-binding ng-scope\">").concat(this.name, "</h3>\n                <!-- end ngIf: ctrl.selectedProductRange.titleTemp != 'Untitled Range' -->\n                <!-- ngIf: ctrl.selectedProductRange.titleTemp == 'Untitled Range' -->\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"visible-sm\">Price</td>\n                            <td class=\"visible-sm\">$").concat(this.prices.USD, "</td>\n                        </tr>\n                    </tbody>\n                </table>\n                <hr>\n                <table>\n                    <tbody>\n                        <tr>\n                            <td class=\"left\">\n                                <button ng-click=\"ctrl.onCustomiseProductClick(product)\" data-category=\"").concat(Product.categoryID(this.category), "\" data-template=\"").concat(this.template, "\" data-variant=\"").concat(this.getDefaultVariant(), "\"class=\"btn btn-customise\">Add to Cart</button>\n                            </td>\n                            <td class=\"right\">\n\n                                <kite-toggle-button class=\"toggle-button-product-enabled ng-isolate-scope\" toggled=\"product.enabled\" button-on-style=\"green\" on-toggle=\"ctrl.onProductEnabledClick(product, toggled)\" button-off-style=\"red\">\n                                </kite-toggle-button>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>");
     }
   }], [{
     key: "categoryID",
