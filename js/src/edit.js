@@ -51,7 +51,6 @@ function setColors(colors) {
                 name: colorName,
                 code: colorCode
             }
-            localStorage.setItem('color', $scope.selectedColor);
             render();
         });
     }, 100);
@@ -112,6 +111,7 @@ function toCanvasCoordinateSystem(coord) {
 }
 
 function render() {
+    localStorage.setItem('scope', JSON.stringify($scope));
     if (!ctrl.loading && window.layerComponents) {
         if (canvas.width == 0 || canvas.height == 0) {
             canvas.width = canvas.offsetWidth;

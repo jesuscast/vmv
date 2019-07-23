@@ -1,7 +1,9 @@
 const {CORSURL, creds, countriesRaw, $scope, sampleTransaction}  = require('./constants');
 const {
     Country,
-    Address
+    Address,
+    Job,
+    Product
 } = require('./models');
 
 const countries = [];
@@ -11,7 +13,6 @@ for(let i = 0; i < countriesKeys.length; i++) {
     const country = countriesRaw[countriesKeys[i]];
     countries.push(new Country(country))
 }
-
 
 function findCountryByName(countryName) {
     const countriesKeys = Object.keys(countries);
@@ -23,25 +24,6 @@ function findCountryByName(countryName) {
     }
     return null;
 }
-
-// function getPrices(template_id, country_code, shipping_country_code) {
-//     const body = {
-//         "basket":[
-//            {
-//               "country_code":"USA",
-//               "job_id":-1,
-//               "quantity":1,
-//               "template_id":"i6splus_case"
-//            }
-//         ],
-//         "pay_in_store":0,
-//         "payment_gateway":"PAYPAL",
-//         "promo_code":"",
-//         "ship_to_store":0,
-//         "shipping_country_code":"US"
-//      };
-//     fetch('https://api.kite.ly/v3.0/price/')
-// }
 
 function getAddress() {
     return new Promise((resolve, reject) => {
@@ -147,18 +129,37 @@ function loadData() {
     return new Promise((resolve, reject) => {
         const pricesRaw = localStorage.getItem('prices');
         const addressRaw = localStorage.getItem('address');
+        // const template = localStorage.getItem('template');
+        // const variant = localStorage.getItem('variant');
+        // const colorRaw = localStorage.getItem('color');
+        // const img = localStorage.getItem('img')
+        const scopeRaw = localStorage.getItem('scope');
 
-        if (!pricesRaw || !addressRaw) {
+        if (!pricesRaw || !addressRaw || !scopeRaw) {
             reject('no data');
             return;
         }
         const pricesJSON = JSON.parse(pricesRaw);
         const addressJSON = JSON.parse(addressRaw);
+        const scopeJSON = JSON.parse(scopeRaw);
+
+        console.log(scopeJSON);
+        // const job = new Job(template, variant, colorJSON);
+
+        // // TODO: Add scale and translation here
+        const product = new Product(
+            scopeJSON.userImageUrl,
+            scopeJSON.templateId,
+            scopeJSON.selectedColor.name,
+            scopeJSON.scale, {
+                x: scopeJSON.translateX, y: scopeJSON.translateY
+            });
 
         Address.build(addressJSON).then((address) => {
             resolve({
                 prices: pricesJSON,
-                address: addressJSON
+                address,
+                product
             })
         }).catch((err) => {
             reject(err);

@@ -52,7 +52,6 @@ class Editor {
             // tap: Event was caused by the user tapping the slider (boolean);
             // positions: Left offset of the handles (array);
             $scope.scale = parseFloat(values[0]);
-            console.log($scope.scale);
             render();
         }
 

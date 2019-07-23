@@ -12,10 +12,12 @@ class PaymentConfirmation {
         // }
 
         loadData().then(({
-            prices, address
+            prices, address,
+            job
         }) => {
             console.log(prices);
             console.log(address);
+            console.log(job);
             $("#product-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
             $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
             $("#total-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);

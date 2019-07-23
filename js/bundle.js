@@ -9,7 +9,7 @@ var _require = require('./src/views'),
 window.env = constants.env;
 window.runView = runView;
 
-},{"./src/constants":2,"./src/views":12}],2:[function(require,module,exports){
+},{"./src/constants":2,"./src/views":14}],2:[function(require,module,exports){
 "use strict";
 
 var CORSURL = "https://cors-anywhere.herokuapp.com/";
@@ -492,7 +492,6 @@ function setColors(colors) {
         name: colorName,
         code: colorCode
       };
-      localStorage.setItem('color', $scope.selectedColor);
       render();
     });
   }, 100);
@@ -548,6 +547,8 @@ function toCanvasCoordinateSystem(coord) {
 }
 
 function render() {
+  localStorage.setItem('scope', JSON.stringify($scope));
+
   if (!ctrl.loading && window.layerComponents) {
     if (canvas.width == 0 || canvas.height == 0) {
       canvas.width = canvas.offsetWidth;
@@ -758,7 +759,7 @@ module.exports = {
   edit: edit
 };
 
-},{"./constants":2,"./image_preloader":4,"./product_image":8}],4:[function(require,module,exports){
+},{"./constants":2,"./image_preloader":4,"./product_image":10}],4:[function(require,module,exports){
 "use strict";
 
 var _require = require('./constants'),
@@ -946,12 +947,73 @@ var Country = require('./country');
 
 var Address = require('./address');
 
+var Job = require('./job');
+
+var Product = require('./product');
+
 module.exports = {
   Country: Country,
-  Address: Address
+  Address: Address,
+  Job: Job,
+  Product: Product
 };
 
-},{"./address":5,"./country":6}],8:[function(require,module,exports){
+},{"./address":5,"./country":6,"./job":8,"./product":9}],8:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Job = function Job(template, variant, colorJSON) {
+  _classCallCheck(this, Job);
+
+  this.template = template;
+  this.variant = variant;
+  this.colorJSON = colorJSON;
+};
+
+module.exports = Job;
+
+},{}],9:[function(require,module,exports){
+"use strict";
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+// ctrl.imageGeneratorEndpoint + "/render/?image=" + image.url_preview
+//         + "&product_id=" + coverVariant.template_id + "&variant="
+//         + variantName + "&format=jpg&debug=false&background="
+//         + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + image.scale
+//         + "&rotate=" + image.rotate_degrees + "&mirror=" + image.mirror
+//         + "&translate=" + image.tx + "," + image.ty + "&print_image="+ image.print_image;
+var Product =
+/*#__PURE__*/
+function () {
+  function Product(img, product_id, variant, scale, translate) {
+    _classCallCheck(this, Product);
+
+    this.img = img;
+    this.product_id = product_id;
+    this.variant = variant;
+    this.scale = scale;
+    this.translate = translate;
+  }
+
+  _createClass(Product, [{
+    key: "toImg",
+    value: function toImg(print) {
+      return "https://image.kite.ly/render/" + "?image=" + this.img + "&product_id=" + this.product_id + "&variant=" + this.variant + "&format=jpg" + "&debug=false" + "&background=ffffff" + "&size=628x452" + "&fill_mode=fit" + "&padding=20" + "&scale=" + this.scale + "&rotate=0" + "&mirror=false" + "&translate=".concat(this.translate.x, ",").concat(this.translate.y) + "&print_image=" + (print ? "true" : "false");
+    }
+  }]);
+
+  return Product;
+}();
+
+module.exports = Product;
+
+},{}],10:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1100,7 +1162,7 @@ var productImage = {
 };
 module.exports = productImage;
 
-},{"./constants":2,"./image_preloader":4}],9:[function(require,module,exports){
+},{"./constants":2,"./image_preloader":4}],11:[function(require,module,exports){
 "use strict";
 
 var _require = require('./constants'),
@@ -1112,7 +1174,9 @@ var _require = require('./constants'),
 
 var _require2 = require('./models'),
     Country = _require2.Country,
-    Address = _require2.Address;
+    Address = _require2.Address,
+    Job = _require2.Job,
+    Product = _require2.Product;
 
 var countries = [];
 var countriesKeys = Object.keys(countriesRaw);
@@ -1134,25 +1198,7 @@ function findCountryByName(countryName) {
   }
 
   return null;
-} // function getPrices(template_id, country_code, shipping_country_code) {
-//     const body = {
-//         "basket":[
-//            {
-//               "country_code":"USA",
-//               "job_id":-1,
-//               "quantity":1,
-//               "template_id":"i6splus_case"
-//            }
-//         ],
-//         "pay_in_store":0,
-//         "payment_gateway":"PAYPAL",
-//         "promo_code":"",
-//         "ship_to_store":0,
-//         "shipping_country_code":"US"
-//      };
-//     fetch('https://api.kite.ly/v3.0/price/')
-// }
-
+}
 
 function getAddress() {
   return new Promise(function (resolve, reject) {
@@ -1255,19 +1301,33 @@ function placeOrder(address, price, paypalId) {
 function loadData() {
   return new Promise(function (resolve, reject) {
     var pricesRaw = localStorage.getItem('prices');
-    var addressRaw = localStorage.getItem('address');
+    var addressRaw = localStorage.getItem('address'); // const template = localStorage.getItem('template');
+    // const variant = localStorage.getItem('variant');
+    // const colorRaw = localStorage.getItem('color');
+    // const img = localStorage.getItem('img')
 
-    if (!pricesRaw || !addressRaw) {
+    var scopeRaw = localStorage.getItem('scope');
+
+    if (!pricesRaw || !addressRaw || !scopeRaw) {
       reject('no data');
       return;
     }
 
     var pricesJSON = JSON.parse(pricesRaw);
     var addressJSON = JSON.parse(addressRaw);
+    var scopeJSON = JSON.parse(scopeRaw);
+    console.log(scopeJSON); // const job = new Job(template, variant, colorJSON);
+    // // TODO: Add scale and translation here
+
+    var product = new Product(scopeJSON.userImageUrl, scopeJSON.templateId, scopeJSON.selectedColor.name, scopeJSON.scale, {
+      x: scopeJSON.translateX,
+      y: scopeJSON.translateY
+    });
     Address.build(addressJSON).then(function (address) {
       resolve({
         prices: pricesJSON,
-        address: addressJSON
+        address: address,
+        product: product
       });
     })["catch"](function (err) {
       reject(err);
@@ -1335,7 +1395,7 @@ module.exports = {
   create_script: create_script
 };
 
-},{"./constants":2,"./models":7}],10:[function(require,module,exports){
+},{"./constants":2,"./models":7}],12:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1384,7 +1444,7 @@ function () {
 
 module.exports = Checkout;
 
-},{"../utilities":9}],11:[function(require,module,exports){
+},{"../utilities":11}],13:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1460,7 +1520,6 @@ function () {
         // tap: Event was caused by the user tapping the slider (boolean);
         // positions: Left offset of the handles (array);
         $scope.scale = parseFloat(values[0]);
-        console.log($scope.scale);
         render();
       } // Binding signature
 
@@ -1486,7 +1545,7 @@ function () {
 
 module.exports = Editor;
 
-},{"../constants":2,"../edit":3}],12:[function(require,module,exports){
+},{"../constants":2,"../edit":3}],14:[function(require,module,exports){
 "use strict";
 
 var Checkout = require('./checkout');
@@ -1537,7 +1596,7 @@ module.exports = {
   runView: runView
 };
 
-},{"./checkout":10,"./editor":11,"./payment":13,"./payment_confirmation":14,"./selection":15}],13:[function(require,module,exports){
+},{"./checkout":12,"./editor":13,"./payment":15,"./payment_confirmation":16,"./selection":17}],15:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1563,25 +1622,28 @@ function () {
   }
 
   _createClass(Payment, null, [{
+    key: "updateTinyImg",
+    value: function updateTinyImg(url) {
+      $("#tiny-image").attr('src', url);
+      $("#tiny-image").css('width', '150%');
+      $("#tiny-image").css('margin-top', '20px');
+    }
+  }, {
     key: "run",
     value: function run() {
       var currency = 'USD'; // 'GBP';
 
       var currencySymbol = '$'; // '&pound;';
 
-      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl');
-
-      if (modifiedImageUrl) {
-        $("#tiny-image").attr('src', modifiedImageUrl);
-        $("#tiny-image").css('width', '150%');
-        $("#tiny-image").css('margin-top', '20px');
-      }
-
       loadData().then(function (_ref) {
         var prices = _ref.prices,
-            address = _ref.address;
+            address = _ref.address,
+            product = _ref.product;
         console.log(prices);
         console.log(address);
+        console.log(product);
+        console.log(product.toImg(false));
+        Payment.updateTinyImg(product.toImg(false));
         $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total[currency]));
@@ -1608,7 +1670,7 @@ function () {
 
 module.exports = Payment;
 
-},{"../constants":2,"../utilities":9}],14:[function(require,module,exports){
+},{"../constants":2,"../utilities":11}],16:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1642,9 +1704,11 @@ function () {
 
       loadData().then(function (_ref) {
         var prices = _ref.prices,
-            address = _ref.address;
+            address = _ref.address,
+            job = _ref.job;
         console.log(prices);
         console.log(address);
+        console.log(job);
         $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
@@ -1659,7 +1723,7 @@ function () {
 
 module.exports = PaymentConfirmation;
 
-},{"../utilities":9}],15:[function(require,module,exports){
+},{"../utilities":11}],17:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1783,7 +1847,7 @@ function () {
 
 module.exports = Selection;
 
-},{"./product":16,"./products.json":17,"./toignore.json":18}],16:[function(require,module,exports){
+},{"./product":18,"./products.json":19,"./toignore.json":20}],18:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1849,7 +1913,7 @@ function () {
 
 module.exports = Product;
 
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports={
     "meta": {
         "limit": 1000,
@@ -28644,7 +28708,7 @@ module.exports={
         }
     ]
 }
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports={
     "ignore": [
       "ecocanvasstretchedlite_32x16",
