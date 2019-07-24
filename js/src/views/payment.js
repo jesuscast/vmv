@@ -27,8 +27,8 @@ class Payment {
 
             create_script("https://www.paypal.com/sdk/js?client-id  ="+creds.paypalClientId)
 
-            processPaypalPayment((transaction) => {
-                placeOrder(address, {
+            processPaypalPayment(prices, currency, (transaction) => {
+                placeOrder(address, job, {
                     total: 1,
                     currency
                 }, transaction.id).then((json) => {
@@ -37,7 +37,7 @@ class Payment {
                 }).catch((err) => {
                     console.log(err);
                 })
-            }, currency);
+            });
         }).catch((err) => {
             console.error(err);
         });

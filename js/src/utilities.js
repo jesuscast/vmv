@@ -79,12 +79,12 @@ function getPrices(address) {
     });
 }
 
-function placeOrder(address, price, paypalId) {
+function placeOrder(address, job, price, paypalId) {
     return new Promise((resolve, reject) => {
         const body = {
             "proof_of_payment": paypalId,
             "shipping_address": {
-                "recipient_name": "Deon Botha",
+                "recipient_name": "Deon Botha", // TODO: Use real costumer data
                 "address_line_1": address.addressLine1,
                 "address_line_2": address.addressLine2,
                 "city": address.city,
@@ -98,14 +98,9 @@ function placeOrder(address, price, paypalId) {
                 "amount": price.total,
                 "currency": price.currency
             },
-            "jobs": [{
-                "assets": ["http://psps.s3.amazonaws.com/sdk_static/1.jpg"],
-                "template_id": "i6_case",
-                "options": {
-                    "garment_color": "red"
-                }
-            }]
+            "jobs": [job.toDict()]
         };
+        console.log(body);
         fetch(`${CORSURL}https://api.kite.ly/v4.0/print/`, {
             method: 'POST',
             body: JSON.stringify(body),
@@ -141,9 +136,7 @@ function loadData() {
         const scopeJSON = JSON.parse(scopeRaw);
 
         console.log(scopeJSON);
-        // const job = new Job(template, variant, colorJSON);
 
-        // // TODO: Add scale and translation here
         const product = new Product(
             scopeJSON.userImageUrl,
             scopeJSON.templateId,
@@ -166,7 +159,7 @@ function loadData() {
         });
     });
 }
-function processPaypalPayment(callback, currency) {
+function processPaypalPayment(prices, currency, callback) {
     setTimeout(() => {
         paypal.Buttons({
             createOrder: function(data, actions) {
@@ -175,7 +168,7 @@ function processPaypalPayment(callback, currency) {
                     purchase_units: [{
                         amount: {
                             currency_code: currency,
-                            value: '1', // prices.total_product_cost[currency]
+                            value: prices.total[currency]
                         }
                     }]
                 });

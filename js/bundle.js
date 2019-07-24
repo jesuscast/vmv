@@ -1325,12 +1325,13 @@ function getPrices(address) {
   });
 }
 
-function placeOrder(address, price, paypalId) {
+function placeOrder(address, job, price, paypalId) {
   return new Promise(function (resolve, reject) {
     var body = {
       "proof_of_payment": paypalId,
       "shipping_address": {
         "recipient_name": "Deon Botha",
+        // TODO: Use real costumer data
         "address_line_1": address.addressLine1,
         "address_line_2": address.addressLine2,
         "city": address.city,
@@ -1344,14 +1345,9 @@ function placeOrder(address, price, paypalId) {
         "amount": price.total,
         "currency": price.currency
       },
-      "jobs": [{
-        "assets": ["http://psps.s3.amazonaws.com/sdk_static/1.jpg"],
-        "template_id": "i6_case",
-        "options": {
-          "garment_color": "red"
-        }
-      }]
+      "jobs": [job.toDict()]
     };
+    console.log(body);
     fetch("".concat(CORSURL, "https://api.kite.ly/v4.0/print/"), {
       method: 'POST',
       body: JSON.stringify(body),
@@ -1386,9 +1382,7 @@ function loadData() {
     var pricesJSON = JSON.parse(pricesRaw);
     var addressJSON = JSON.parse(addressRaw);
     var scopeJSON = JSON.parse(scopeRaw);
-    console.log(scopeJSON); // const job = new Job(template, variant, colorJSON);
-    // // TODO: Add scale and translation here
-
+    console.log(scopeJSON);
     var product = new Product(scopeJSON.userImageUrl, scopeJSON.templateId, scopeJSON.selectedColor.name, scopeJSON.scale, {
       x: scopeJSON.translateX,
       y: scopeJSON.translateY
@@ -1407,7 +1401,7 @@ function loadData() {
   });
 }
 
-function processPaypalPayment(callback, currency) {
+function processPaypalPayment(prices, currency, callback) {
   setTimeout(function () {
     paypal.Buttons({
       createOrder: function createOrder(data, actions) {
@@ -1416,8 +1410,7 @@ function processPaypalPayment(callback, currency) {
           purchase_units: [{
             amount: {
               currency_code: currency,
-              value: '1' // prices.total_product_cost[currency]
-
+              value: prices.total[currency]
             }
           }]
         });
@@ -1722,8 +1715,8 @@ function () {
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total[currency]));
         create_script("https://www.paypal.com/sdk/js?client-id  =" + creds.paypalClientId);
-        processPaypalPayment(function (transaction) {
-          placeOrder(address, {
+        processPaypalPayment(prices, currency, function (transaction) {
+          placeOrder(address, job, {
             total: 1,
             currency: currency
           }, transaction.id).then(function (json) {
@@ -1732,7 +1725,7 @@ function () {
           })["catch"](function (err) {
             console.log(err);
           });
-        }, currency);
+        });
       })["catch"](function (err) {
         console.error(err);
       });
@@ -1764,25 +1757,24 @@ function () {
   }
 
   _createClass(PaymentConfirmation, null, [{
+    key: "updateTinyImg",
+    value: function updateTinyImg(url) {
+      $("#tiny-image").attr('src', url);
+      $("#tiny-image").css('width', '150%');
+      $("#tiny-image").css('margin-top', '20px');
+    }
+  }, {
     key: "run",
     value: function run() {
       var currency = 'USD'; // 'GBP';
 
       var currencySymbol = '$'; // '&pound;';
 
-      var modifiedImageUrl = localStorage.getItem('modifiedImageUrl'); // if (modifiedImageUrl) {
-      //     $("#tiny-image").attr('src', modifiedImageUrl);
-      //     $("#tiny-image").css('width', '150%');
-      //     $("#tiny-image").css('margin-top', '20px');
-      // }
-
       loadData().then(function (_ref) {
         var prices = _ref.prices,
             address = _ref.address,
-            job = _ref.job;
-        console.log(prices);
-        console.log(address);
-        console.log(job);
+            product = _ref.product;
+        Payment.updateTinyImg(product.toImg(false));
         $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
