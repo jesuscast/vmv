@@ -39,8 +39,10 @@ add_shortcode( 'product_list_view', 'product_list_view_func' );
 // // Uploads aren't merged in, but can be accessed separately:
 // $parameters = $request->get_file_params();
 function get_product_orders_for_user( WP_REST_Request $request ) {
-	return "okie";
-	// $url_params = $request->get_url_params();
+	// return "okie";
+	$url_params = $request->get_url_params();
+
+	return $url_params;
 	// $user_id = $url_params['user_id'];
 
 	// if (empty($user_id)) {
