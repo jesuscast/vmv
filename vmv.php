@@ -42,15 +42,18 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 	$url_params = $request->get_url_params();
 
 	$user_id = $url_params['user_id'];
-	return $user_id;
-	// if (empty($user_id)) {
-	// 	return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
-	// }
 
-	// $user = $wpdb->get_row('select * from wp_users where'
-	// 	.' user_nicename = '.$user_id
-	// 	.' or user_login = '.$user_id
-	// 	.' or user_email = '.$user_id);
+	if (empty($user_id)) {
+		return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
+	}
+
+	$query = 'select * from wp_users where';
+	$query .= ' id = "'.$user_id.'"';
+	$query .= ' user_nicename = '.$user_id;
+	$query .= ' or user_login = "'.$user_id.'"';
+	$query .= ' or user_email = "'.$user_id.'"';
+
+	$user = $wpdb->get_row($query);
 
 	// if ($wpdb->last_error) {
 	// 	return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
@@ -59,7 +62,7 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 	// if (empty($user)) {
 	// 	return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
 	// }
-	// return new WP_REST_Response($user);
+	return new WP_REST_Response($user);
 }
 
 add_action( 'rest_api_init', function () {
