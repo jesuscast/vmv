@@ -49,21 +49,21 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 
 	$query = 'select * from wp_users where';
 	$query .= ' id = "'.$user_id.'"';
-	$query .= ' user_nicename = '.$user_id;
+	$query .= ' or user_nicename = '.$user_id;
 	$query .= ' or user_login = "'.$user_id.'"';
 	$query .= ' or user_email = "'.$user_id.'"';
 
-	return $query;
-	// $user = $wpdb->get_row($query);
+	// eturn $query;
+	$user = $wpdb->get_row($query);
 
-	// if ($wpdb->last_error) {
-	// 	return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
-	// }
+	if ($wpdb->last_error) {
+		return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
+	}
 
-	// if (empty($user)) {
-	// 	return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
-	// }
-	// return new WP_REST_Response($user);
+	if (empty($user)) {
+		return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
+	}
+	return new WP_REST_Response($user);
 }
 
 add_action( 'rest_api_init', function () {
