@@ -55,7 +55,7 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 	$query .= ' or user_email = "'.$user_id.'"';
 
 	$user = $wpdb->get_row($query);
-	return "ads";
+	return $user;
 	// if ($wpdb->last_error) {
 	// 	return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
 	// }
