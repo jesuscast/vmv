@@ -51,6 +51,10 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 		.' or user_login = '.$user_id
 		.' or user_email = '.$user_id);
 
+	if ($wpdb->last_error) {
+		return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
+	}
+
 	if (empty($user)) {
 		return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
 	}
