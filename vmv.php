@@ -38,6 +38,41 @@ add_shortcode( 'product_list_view', 'product_list_view_func' );
 
 // // Uploads aren't merged in, but can be accessed separately:
 // $parameters = $request->get_file_params();
+function get_user($user_id) {
+	global $wpdb;
+	$query = 'select * from wp_users where';
+	$query .= ' id = "'.$user_id.'"';
+	$query .= ' or user_nicename = "'.$user_id.'"';
+	$query .= ' or user_login = "'.$user_id.'"';
+	$query .= ' or user_email = "'.$user_id.'"';
+
+	$user = $wpdb->get_row($query);
+	if ($wpdb->last_error) {
+		return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
+	}
+
+	if (empty($user)) {
+		return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
+	}
+	return $user;
+}
+
+function get_orders($user) {
+	global $wpdb;
+	$query = 'select * from vmv_orders where';
+	$query .= ' user_id="'.$user["ID"].'"';
+
+	$orders = $wpdb->get_results($query);
+	if ($wpdb->last_error) {
+		return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
+	}
+
+	if (empty($orders)) {
+		return new WP_Error( 'no_orders', 'User not found', array( 'status' => 404 ) );
+	}
+	return $orders;
+}
+
 function get_product_orders_for_user( WP_REST_Request $request ) {
 	global $wpdb;
 	$url_params = $request->get_url_params();
@@ -48,22 +83,10 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 		return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
 	}
 
-	$query = 'select * from wp_users where';
-	$query .= ' id = "'.$user_id.'"';
-	$query .= ' or user_nicename = "'.$user_id.'"';
-	$query .= ' or user_login = "'.$user_id.'"';
-	$query .= ' or user_email = "'.$user_id.'"';
+	$user = get_user($user_id);
+	$orders = get_orders($user);
 
-	$user = $wpdb->get_row($query);
-	return $user;
-	// if ($wpdb->last_error) {
-	// 	return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
-	// }
-
-	// if (empty($user)) {
-	// 	return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
-	// }
-	// echo json_encode($user);
+	return $orders;
 }
 
 add_action( 'rest_api_init', function () {
