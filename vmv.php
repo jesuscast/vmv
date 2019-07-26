@@ -60,7 +60,7 @@ function get_user($user_id) {
 function get_orders($user) {
 	global $wpdb;
 	$query = 'select * from vmv_orders where';
-	$query .= ' user_id="'.$user["ID"].'"';
+	$query .= ' user_id="'.$user->ID.'"';
 
 	$orders = $wpdb->get_results($query);
 	if ($wpdb->last_error) {
