@@ -41,9 +41,8 @@ add_shortcode( 'product_list_view', 'product_list_view_func' );
 function get_product_orders_for_user( WP_REST_Request $request ) {
 	$url_params = $request->get_url_params();
 
-	return $url_params;
-	// $user_id = $url_params['user_id'];
-
+	$user_id = $url_params['user_id'];
+	return $user_id;
 	// if (empty($user_id)) {
 	// 	return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
 	// }
