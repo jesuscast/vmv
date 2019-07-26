@@ -86,7 +86,7 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 	$user = get_user($user_id);
 	$orders = get_orders($user);
 
-	return $user;
+	return $orders;
 }
 
 add_action( 'rest_api_init', function () {
