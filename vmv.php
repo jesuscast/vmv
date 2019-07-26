@@ -54,7 +54,7 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 	if (empty($user)) {
 		return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
 	}
-	return json_decode($user);
+	return new WP_REST_Response($user);
 }
 
 add_action( 'rest_api_init', function () {
