@@ -1,6 +1,9 @@
 <?php
 function get_create_product_default_view() {
+    $user = wp_get_current_user();
     ?>
+
+<input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
 <div class="kite ng-scope" ng-app="kite-shopify">
 
 <!-- ngView: -->
