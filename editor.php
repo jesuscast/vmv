@@ -25,6 +25,7 @@ function get_create_editor() {
 
 function get_product_list() {
     ?>
+    <input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
     <iframe id="image-editor" src="https://viewmyvoice.net/wp-content/plugins/vmv/html/selection.html" style="
         width: 100%;
         border: 0px;
