@@ -68,7 +68,7 @@ function get_orders($user) {
 	}
 
 	if (empty($orders)) {
-		return new WP_Error( 'no_orders', 'User not found', array( 'status' => 404 ) );
+		return new WP_Error( 'no_orders', 'Orders not found', array( 'status' => 404 ) );
 	}
 	return $orders;
 }
