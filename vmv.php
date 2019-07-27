@@ -89,9 +89,19 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 	return $orders;
 }
 
+function post_product_orders_for_user(WP_REST_Request $request) {
+	$parameters = $request->get_body_params();
+
+	return $parameters;
+}
+
 add_action( 'rest_api_init', function () {
 	register_rest_route( 'vmv', '/orders', array(
 		'methods' => 'GET',
 		'callback' => 'get_product_orders_for_user',
+	));
+	register_rest_route( 'vmv', '/orders', array(
+		'methods' => 'POST',
+		'callback' => 'post_product_orders_for_user',
 	));
 });
