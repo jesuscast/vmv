@@ -83,9 +83,13 @@ function post_user($params) {
 	$query .= '"'.$params["variant"].'",';
 	$query .= $params["scale"].',';
 	$query .= '"'.$params["category"].'",';
-	$query .= '"'.$params["img"].'",';
+	$query .= '"'.$params["img"].'"';
 	$query .= ')';
-	return array($query, null);
+	$results = $wpdb->get_results($query);
+	if ($wpdb->last_error) {
+		return array(null, new WP_Error( 'insertion_error', $wpdb->last_error, array( 'status' => 500) ));
+	}
+	return array($results, null);
 }
 
 function get_orders($user) {
