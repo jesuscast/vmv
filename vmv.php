@@ -64,11 +64,28 @@ function post_user($params) {
 		empty($params["scale"]) ||
 		empty($params["category"]) ||
 		empty($params["img"])) {
-			return new WP_Error( 'missing_parameters', 'Request is missing order parameters', array( 'status' => 400 ) );
+			return array(null, new WP_Error( 'missing_parameters', 'Request is missing order parameters', array( 'status' => 400 ) ));
 		}
-	
+	if (!is_numeric($params["scale"])) {
+		return array(null, new WP_Error( 'invalid_param', 'Scale must be a numeric value', array( 'status' => 400 ) ));
+	}
 	global $wpdb;
-	$query = 'insert into vmv_orders(user_id,';
+	$userResult = get_user($params["user_id"]);
+	$user = $userResult[0];
+	$userError = $userResult[1];
+	if ($userError !== null) {
+		return array(null, $userError);
+	}
+	$query = 'insert into vmv_orders(user_id,product_id,variant,scale,category,img)';
+	$query .= ' values (';
+	$query .= $user->ID.',';
+	$query .= '"'.$params["product_id"].'",';
+	$query .= '"'.$params["variant"].'",';
+	$query .= $params["scale"].',';
+	$query .= '"'.$params["category"].'",';
+	$query .= '"'.$params["img"].'",';
+	$query .= ')';
+	return array($query, null);
 }
 
 function get_orders($user) {
@@ -114,8 +131,13 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 
 function post_product_orders_for_user(WP_REST_Request $request) {
 	$params = $request->get_body_params();
-
-	return $params;
+	$postResult = post_user($params);
+	$postError = $postResult[1];
+	$postValue = $postResult[0];
+	if ($postError !== null) {
+		return $postError;
+	}
+	return $postValue;
 }
 
 add_action( 'rest_api_init', function () {
