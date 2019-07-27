@@ -48,13 +48,27 @@ function get_user($user_id) {
 
 	$user = $wpdb->get_row($query);
 	if ($wpdb->last_error) {
-		return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
+		return array(null, new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) ));
 	}
 
 	if (empty($user)) {
-		return new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) );
+		return array(null, new WP_Error( 'no_user', 'User not found', array( 'status' => 404 ) ));
 	}
-	return $user;
+	return array($user, null);
+}
+
+function post_user($params) {
+	if (empty($params["user_id"]) ||
+		empty($params["product_id"]) ||
+		empty($params["variant"]) ||
+		empty($params["scale"]) ||
+		empty($params["category"]) ||
+		empty($params["img"])) {
+			return new WP_Error( 'missing_parameters', 'Request is missing order parameters', array( 'status' => 400 ) );
+		}
+	
+	global $wpdb;
+	$query = 'insert into vmv_orders(user_id,';
 }
 
 function get_orders($user) {
@@ -64,13 +78,13 @@ function get_orders($user) {
 
 	$orders = $wpdb->get_results($query);
 	if ($wpdb->last_error) {
-		return new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) );
+		return array(0, new WP_Error( 'selection_error', $wpdb->last_error, array( 'status' => 404 ) ));
 	}
 
 	if (empty($orders)) {
-		return new WP_Error( 'no_orders', 'Orders not found', array( 'status' => 404 ) );
+		return array(0, new WP_Error( 'no_orders', 'Orders not found', array( 'status' => 404 ) ));
 	}
-	return $orders;
+	return array($orders, null);
 }
 
 function get_product_orders_for_user( WP_REST_Request $request ) {
@@ -83,16 +97,25 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 		return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
 	}
 
-	$user = get_user($user_id);
-	$orders = get_orders($user);
-
+	$userResult = get_user($user_id);
+	$user = $userResult[0];
+	$userError = $userResult[1];
+	if ($userError !== null) {
+		return $userError;
+	}
+	$ordersResult = get_orders($user);
+	$orders = $ordersResult[0];
+	$ordersError = $ordersResult[1];
+	if ($ordersError !== null) {
+		return $ordersError;
+	}
 	return $orders;
 }
 
 function post_product_orders_for_user(WP_REST_Request $request) {
-	$parameters = $request->get_body_params();
+	$params = $request->get_body_params();
 
-	return $parameters;
+	return $params;
 }
 
 add_action( 'rest_api_init', function () {
