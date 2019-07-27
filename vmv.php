@@ -75,7 +75,7 @@ function get_orders($user) {
 
 function get_product_orders_for_user( WP_REST_Request $request ) {
 	global $wpdb;
-	$url_params = $request->get_url_params();
+	$url_params = $request->get_query_params();
 
 	$user_id = $url_params['user_id'];
 
@@ -90,7 +90,7 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 }
 
 add_action( 'rest_api_init', function () {
-	register_rest_route( 'vmv', '/orders/(?P<user_id>\d+)', array(
+	register_rest_route( 'vmv', '/orders', array(
 		'methods' => 'GET',
 		'callback' => 'get_product_orders_for_user',
 	));
