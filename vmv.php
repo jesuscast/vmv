@@ -156,7 +156,7 @@ add_action( 'rest_api_init', function () {
 	));
 	register_rest_route( 'vmv', '/user_current', array(
 		'methods' => 'GET',
-		'callback' => 'get_current_user',
+		'callback' => 'wp_get_current_user',
 	));
 	register_rest_route( 'vmv', '/orders', array(
 		'methods' => 'POST',
