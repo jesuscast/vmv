@@ -81,7 +81,7 @@ function get_product_history() {
                 userImageUrl: userImageUrl,
                 userId
             }, '*')
-        }, 200);
+        }, 2000);
     </script>
         <?php
 }
