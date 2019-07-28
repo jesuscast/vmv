@@ -84,6 +84,9 @@ function get_product_history() {
                 jQuery("#image-editor")[0].contentWindow.postMessage({
                     userId
                 }, '*');
+                if(jQuery('.woocommerce-info')) {
+                    jQuery('.woocommerce-info').remove()
+                }
             }
         }
     </script>
