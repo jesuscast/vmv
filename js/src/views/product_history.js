@@ -14,6 +14,12 @@ class ProductHistory extends Selection {
                 if (json.code === "no_user") {
                     return;
                 }
+                if (json.code === 'no_orders') {
+                    $(".kite-spinner").hide();
+                    $("#products-menu").html(`<h1>No products found for user<h1>`);
+                    return;
+                }
+
                 const products = json.map(productJSON => {
                     const found = _.find(
                         productsJSON.objects,

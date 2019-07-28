@@ -1901,6 +1901,12 @@ function (_Selection) {
             return;
           }
 
+          if (json.code === 'no_orders') {
+            $(".kite-spinner").hide();
+            $("#products-menu").html("<h1>No products found for user<h1>");
+            return;
+          }
+
           var products = json.map(function (productJSON) {
             var found = _.find(productsJSON.objects, function (json) {
               return json.available_templates[0] === productJSON.product_id;
