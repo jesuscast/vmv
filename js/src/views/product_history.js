@@ -4,7 +4,7 @@ const productsJSON = require('./selection/products.json');
 const {$scope, CORSURL} =  require('../constants');
 
 class ProductHistory extends Selection {
-    static refreshItemList() {
+    static refreshItemList(userId) {
         fetch(`${CORSURL}http://viewmyvoice.net/wp-json/vmv/orders?user_id=${userId}`, {
             method: 'GET'
         })
@@ -65,11 +65,11 @@ class ProductHistory extends Selection {
                 $scope.userIdWP = event.data.userId;
             }
             localStorage.setItem('userIdWP',  $scope.userIdWP);
-            ProductHistory.refreshItemList();
+            ProductHistory.refreshItemList($scope.userIdWP);
         }
 
         if (userId) {
-            ProductHistory.refreshItemList();
+            ProductHistory.refreshItemList(userId);
         }
     }
 }

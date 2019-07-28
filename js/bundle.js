@@ -1890,7 +1890,7 @@ function (_Selection) {
 
   _createClass(ProductHistory, null, [{
     key: "refreshItemList",
-    value: function refreshItemList() {
+    value: function refreshItemList(userId) {
       fetch("".concat(CORSURL, "http://viewmyvoice.net/wp-json/vmv/orders?user_id=").concat(userId), {
         method: 'GET'
       }).then(function (resp) {
@@ -1957,11 +1957,11 @@ function (_Selection) {
         }
 
         localStorage.setItem('userIdWP', $scope.userIdWP);
-        ProductHistory.refreshItemList();
+        ProductHistory.refreshItemList($scope.userIdWP);
       }
 
       if (userId) {
-        ProductHistory.refreshItemList();
+        ProductHistory.refreshItemList(userId);
       }
     }
   }]);
