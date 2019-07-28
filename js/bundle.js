@@ -1919,7 +1919,7 @@ function (_Selection) {
               found.tag = "Other";
             }
 
-            var product = Product.fromJSON(found, $scope.userImageUrl);
+            var product = Product.fromJSON(found, found.userImageUrl);
             return product;
           }).filter(function (product) {
             return product !== null;
@@ -1952,10 +1952,6 @@ function (_Selection) {
 
       function receiveMessage(event) {
         console.log("Received ".concat(JSON.stringify(event.data)));
-
-        if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
-          $scope.userImageUrl = event.data.userImageUrl;
-        }
 
         if (event.data.userId && event.data.userId !== "null") {
           $scope.userIdWP = event.data.userId;

@@ -30,7 +30,7 @@ class ProductHistory extends Selection {
                     } else {
                         found.tag = "Other";
                     }
-                    const product = Product.fromJSON(found, $scope.userImageUrl);
+                    const product = Product.fromJSON(found, found.userImageUrl);
                     return product;
                 }).filter(product => product !== null);
 
@@ -61,9 +61,6 @@ class ProductHistory extends Selection {
 
         function receiveMessage(event) {
             console.log(`Received ${JSON.stringify(event.data)}`);
-            if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
-                $scope.userImageUrl = event.data.userImageUrl;
-            }
             if (event.data.userId && event.data.userId !== "null") {
                 $scope.userIdWP = event.data.userId;
             }

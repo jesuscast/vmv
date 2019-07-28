@@ -70,7 +70,6 @@ function get_product_history() {
     <script>
         setTimeout(() => {
             const params = new URLSearchParams(window.location.search);
-            const userImageUrl = localStorage.getItem('img');
             const hiddenField = document.getElementById("wp-user-id");
             let userId = null;
             if (hiddenField) {
@@ -78,7 +77,6 @@ function get_product_history() {
             }
             console.log("holla");
             jQuery("#image-editor")[0].contentWindow.postMessage({
-                userImageUrl: userImageUrl,
                 userId
             }, '*')
         }, 2000);
