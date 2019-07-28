@@ -9,5 +9,9 @@ function image_editor_view_func() {
 function product_list_view_func() {
     return get_product_list();
 }
+
+function get_product_history_func() {
+    return get_product_history();
+}
 ?>
 

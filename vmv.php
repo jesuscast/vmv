@@ -18,7 +18,7 @@ function create_product_gallery_func( $atts ){
 add_shortcode( 'create_product_gallery', 'create_product_gallery_func' );
 add_shortcode( 'image_editor_view', 'image_editor_view_func' );
 add_shortcode( 'product_list_view', 'product_list_view_func' );
-
+add_shortcode( 'get_product_history', 'get_product_history_func' );
 
 // You can access parameters via direct array access on the object:
 // $param = $request['some_param'];
