@@ -14,9 +14,15 @@ function get_create_editor() {
         const params = new URLSearchParams(window.location.search);
         const product_id = params.get("product_id");
         const userImageUrl = localStorage.getItem('img');
+        const hiddenField = document.getElementById("wp-user-id");
+        let userId = null;
+        if (hiddenField) {
+            userId = hiddenField.value;
+        }
         jQuery("#image-editor")[0].contentWindow.postMessage({
             product_id: product_id,
-            userImageUrl: userImageUrl
+            userImageUrl: userImageUrl,
+            userId
         }, '*')
     }, 200);
 </script>
@@ -37,8 +43,14 @@ function get_product_list() {
         setTimeout(() => {
             const params = new URLSearchParams(window.location.search);
             const userImageUrl = localStorage.getItem('img');
+            const hiddenField = document.getElementById("wp-user-id");
+            let userId = null;
+            if (hiddenField) {
+                userId = hiddenField.value;
+            }
             jQuery("#image-editor")[0].contentWindow.postMessage({
-                userImageUrl: userImageUrl
+                userImageUrl: userImageUrl,
+                userId
             }, '*')
         }, 200);
     </script>

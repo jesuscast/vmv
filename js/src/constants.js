@@ -136,7 +136,8 @@ const $scope = {
     selectedColor: {
         name: "black",
         code: "25282B"
-    }
+    },
+    userIdWP: null
 }
 
 let windowParams = new URLSearchParams(location.search);

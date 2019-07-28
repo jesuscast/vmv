@@ -1,4 +1,4 @@
-const Product = require('./product');
+const Product = require('../../models/product');
 const products = require('./products.json');
 const toIgnore = require('./toignore.json');
 
@@ -43,29 +43,33 @@ class Selection {
         });
     }
 
-    static loadItemsIntoSelection() {
+    static loadItemsIntoSelection(productsToLoad) {
         const img =  localStorage.getItem('img');
-        const validProducts = products.objects.filter(product => 
-            (product.available_platforms.includes("Web") ||
-            product.available_platforms.includes("Shopify")) &&
-            !toIgnore.ignore.includes(product.available_templates[0])
-        ).map(product => {
-            if (product.product_tags.length > 0) {
-                product.tag = product.product_tags[0];
-            } else {
-                product.tag = "Other";
-            }
-            return product;
-        });
+
+        let validProducts = [];
+        if (productsToLoad) {
+            validProducts = productsToLoad;
+        } else {
+            validProducts = products.objects.filter(product => 
+                (product.available_platforms.includes("Web") ||
+                product.available_platforms.includes("Shopify")) &&
+                !toIgnore.ignore.includes(product.available_templates[0])
+            ).map(product => {
+                if (product.product_tags.length > 0) {
+                    product.tag = product.product_tags[0];
+                } else {
+                    product.tag = "Other";
+                }
+                return Product.fromJSON(product, img)
+            });
+        }
         if (validProducts.length === 0) {
             console.error('No valid products')
             return;
         }
 
-        const organizedProducts = _.groupBy(validProducts, 'tag');
-
+        const organizedProducts = _.groupBy(validProducts, product => product.category);
         console.log(organizedProducts);
-
         let categories = [
             "Apparel",
             "Phone & Tablet Cases",
@@ -73,14 +77,16 @@ class Selection {
             "Wall Art & Posters",
             "Homeware",
             "Other",
-        ]
+        ].map(category => Product.categoryID(category))
 
         $("#productList").html("");
         $("#products-menu").html(Product.getProductsMenuHTML(categories))
         categories.forEach(category => {
-            organizedProducts[category].forEach((productJson, i) => {
-                const product = new Product(productJson, img, category, i === 0);
-                $("#productList").append(product.getProductHTML());
+            if (!organizedProducts[category]) {
+                return;
+            }
+            organizedProducts[category].forEach((product, i) => {
+                $("#productList").append(product.getProductHTML(i === 0));
             })
         })
 
@@ -109,8 +115,12 @@ class Selection {
             console.log(`Received ${JSON.stringify(event.data)}`);
             if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
                 $scope.userImageUrl = event.data.userImageUrl;
-                Selection.loadItemsIntoSelection()
             }
+            if (event.data.userId && event.data.userId !== "null") {
+                $scope.userIdWP = event.data.userId;
+            }
+            localStorage.setItem('userIdWP',  $scope.userIdWP);
+            Selection.loadItemsIntoSelection()
         }
 
         Selection.loadItemsIntoSelection()

@@ -144,10 +144,39 @@ function post_product_orders_for_user(WP_REST_Request $request) {
 	return $postValue;
 }
 
+function get_full_user(WP_REST_Request $request) {
+	global $wpdb;
+	$url_params = $request->get_query_params();
+
+	$user_id = $url_params['user_id'];
+	if (empty($user_id)) {
+		return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
+	}
+
+	$userResult = get_user($user_id);
+	$user = $userResult[0];
+	$userError = $userResult[1];
+	if ($userError !== null) {
+		return $userError;
+	}
+
+	return array(
+		"email" => $user->user_email,
+		"name" => $user->user_nicename,
+		"username" => $user->user_login,
+		"id" => $user->ID
+	);
+
+}
+
 add_action( 'rest_api_init', function () {
 	register_rest_route( 'vmv', '/orders', array(
 		'methods' => 'GET',
 		'callback' => 'get_product_orders_for_user',
+	));
+	register_rest_route( 'vmv', '/user', array(
+		'methods' => 'GET',
+		'callback' => 'get_full_user',
 	));
 	register_rest_route( 'vmv', '/orders', array(
 		'methods' => 'POST',

@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/skin-59661fe3a3906.css" />
+</head>
+
+<body>
+    <div class="kite ng-scope" ng-app="kite-shopify">
+
+        <!-- ngView: -->
+        <div ng-view="" class="ng-scope" style="">
+            <div class="container-fluid container-kite ng-scope">
+
+                <div class="row" ng-show="!ctrl.loadingProductRangeDetail" style="">
+                    <div class="hidden-xs col-sm-3">
+                        <div>
+                            <div sticky="" offset="112" sticky-class="side-menu-sticky" class="ng-isolate-scope side-menu-sticky" style="display: block;z-index: 10;width: 290px;position: fixed;left: 51px;top: 112px;margin-top: 100px;height: 333px;">
+                                <kite-products-menu selected-category="ctrl.productFilterCategory" product-range="ctrl.selectedProductRange" class="ng-isolate-scope">
+                                    <h3 class="side-menu-header">Product Filter</h3>
+                                    <div id="products-menu">
+                                    </div>
+                                </kite-products-menu>
+                            </div>
+                            <div style="height: 333px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="row" id="productList"></div>
+                    </div>
+                </div>
+
+                <div class="row row-loading-products ng-hide" ng-show="ctrl.loadingProductRangeDetail" style="">
+                    <div class="col-xs-12">
+                        <div class="kite-spinner"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .kite-card-product {
+            box-shadow: 0 4px 10px 0 rgba(0, 0, 0, .1) !important;
+            text-align: left;
+            transform: perspective(100px) translate3d(0, 0, 0);
+            transition: ease-in-out .3s;
+            padding: 10px;
+            margin: 0px 0px 20px 0px;
+        }
+        
+        .kite-card-product table {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .product-cover-image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .visible-sm {
+            width: 50px;
+        }
+        
+        .kite-card-product {
+            width: 350px;
+        }
+        body {
+            background: #fff;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+    <script src="../js/bundle.js"></script>
+    <script>
+        console.log('Loaded through views')
+        runView('product_history');
+    </script>
+</body>
+
+</html>

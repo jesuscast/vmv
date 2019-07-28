@@ -3,13 +3,15 @@ const Editor = require('./editor');
 const PaymentConfirmation = require('./payment_confirmation');
 const Payment = require('./payment');
 const Selection = require('./selection');
+const ProductHistory = require('./product_history');
 
 const viewMappings = {
     'checkout': Checkout,
     'editor': Editor,
     'payment_confirmation': PaymentConfirmation,
     'payment': Payment,
-    'selection': Selection
+    'selection': Selection,
+    'product_history': ProductHistory
 }
 
 function create_link(url) {
