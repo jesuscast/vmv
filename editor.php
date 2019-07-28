@@ -76,6 +76,7 @@ function get_product_history() {
             if (hiddenField) {
                 userId = hiddenField.value;
             }
+            console.log("holla");
             jQuery("#image-editor")[0].contentWindow.postMessage({
                 userImageUrl: userImageUrl,
                 userId
