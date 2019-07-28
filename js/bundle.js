@@ -1919,7 +1919,7 @@ function (_Selection) {
               found.tag = "Other";
             }
 
-            var product = Product.fromJSON(found, found.img);
+            var product = Product.fromJSON(found, productJSON.img);
             return product;
           }).filter(function (product) {
             return product !== null;

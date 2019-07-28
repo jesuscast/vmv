@@ -30,7 +30,7 @@ class ProductHistory extends Selection {
                     } else {
                         found.tag = "Other";
                     }
-                    const product = Product.fromJSON(found, found.img);
+                    const product = Product.fromJSON(found, productJSON.img);
                     return product;
                 }).filter(product => product !== null);
 
