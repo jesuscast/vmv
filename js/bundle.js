@@ -1896,6 +1896,11 @@ function (_Selection) {
       }).then(function (resp) {
         resp.json().then(function (json) {
           console.log(json);
+
+          if (!json.code === "no_user") {
+            return;
+          }
+
           var products = json.map(function (productJSON) {
             var found = _.find(productsJSON.objects, function (json) {
               return json.available_templates[0] === productJSON.product_id;
