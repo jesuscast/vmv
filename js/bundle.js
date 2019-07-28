@@ -1964,6 +1964,10 @@ function (_Selection) {
       if (userId) {
         ProductHistory.refreshItemList(userId);
       }
+
+      window.parent.postMessage({
+        status: 'loaded'
+      }, '*');
     }
   }]);
 

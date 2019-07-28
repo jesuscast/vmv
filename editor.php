@@ -68,18 +68,24 @@ function get_product_history() {
         overflow: scroll;
     "></iframe>
     <script>
-        setTimeout(() => {
-            const params = new URLSearchParams(window.location.search);
-            const hiddenField = document.getElementById("wp-user-id");
-            let userId = null;
-            if (hiddenField) {
-                userId = hiddenField.value;
+
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event) {
+            console.log(`Received ${JSON.stringify(event.data)}`);
+            if (event.data.status === 'loaded') {
+                const params = new URLSearchParams(window.location.search);
+                const hiddenField = document.getElementById("wp-user-id");
+                let userId = null;
+                if (hiddenField) {
+                    userId = hiddenField.value;
+                }
+                console.log("holla");
+                jQuery("#image-editor")[0].contentWindow.postMessage({
+                    userId
+                }, '*');
             }
-            console.log("holla");
-            jQuery("#image-editor")[0].contentWindow.postMessage({
-                userId
-            }, '*')
-        }, 2000);
+        }
     </script>
         <?php
 }
