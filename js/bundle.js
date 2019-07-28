@@ -1904,7 +1904,7 @@ function (_Selection) {
           if (json.code === 'no_orders') {
             $(".kite-spinner").hide();
             $("#products-menu").html("<h1>No products found for user<h1>");
-            $(".hidden-xs").removeClasS('hidden-xs');
+            $(".hidden-xs").removeClass('hidden-xs');
             return;
           }
 
