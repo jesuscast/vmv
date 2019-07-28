@@ -50,7 +50,7 @@ class Job {
             "other": this.other,
         }
         if (!funcMappings[this.product.category]) {
-            console.error(`${this.product.category} not available as a category`);
+            console.log(`${this.product.category} not available as a category`);
             return {};
         }
         return funcMappings[this.product.category].bind(this)();

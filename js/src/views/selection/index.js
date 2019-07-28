@@ -64,7 +64,7 @@ class Selection {
             });
         }
         if (validProducts.length === 0) {
-            console.error('No valid products')
+            console.log('No valid products')
             return;
         }
 

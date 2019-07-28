@@ -254,7 +254,7 @@ function edit() {
             // userImagePromise.then((json) => {
             //     console.log(json);
             // }).catch((err) => {
-            //     console.error(err);
+            //     console.log(err);
             // })
         Promise.all([layerComponentsPromise, userImagePromise]).then(function success(results) {
             if (cancelObj.cancelled) {
@@ -268,7 +268,7 @@ function edit() {
             loading(false);
             render();
         }).catch(err => {
-            console.error(err);
+            console.log(err);
         })
         .finally(function() {
             if (cancelObj == layerComponentsLoadCancelObj) {

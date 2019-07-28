@@ -38,7 +38,7 @@ class ProductHistory extends Selection {
             })
         })
         .catch(err => {
-            console.error(err);
+            console.log(err);
         })
     }
 
@@ -46,14 +46,14 @@ class ProductHistory extends Selection {
         let userId = localStorage.getItem('userIdWP');
         let img = localStorage.getItem('img')
         if (!userId) {
-            console.error("user id not present");
+            console.log("user id not present");
             // return;
         } else {
             $scope.userIdWP = userId;
         }
 
         if (!img) {
-            console.error('no image')
+            console.log('no image')
         } else {
             $scope.userImageUrl = img;
         }

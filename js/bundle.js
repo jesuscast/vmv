@@ -665,7 +665,7 @@ function edit() {
     var layerComponentsPromise = productImage.getLayerComponents($scope.templateId, $scope.variant, setColors); // userImagePromise.then((json) => {
     //     console.log(json);
     // }).catch((err) => {
-    //     console.error(err);
+    //     console.log(err);
     // })
 
     Promise.all([layerComponentsPromise, userImagePromise]).then(function success(results) {
@@ -679,7 +679,7 @@ function edit() {
       loading(false);
       render();
     })["catch"](function (err) {
-      console.error(err);
+      console.log(err);
     })["finally"](function () {
       if (cancelObj == layerComponentsLoadCancelObj) {
         layerComponentsLoadCancelObj = null;
@@ -1033,7 +1033,7 @@ function () {
       };
 
       if (!funcMappings[this.product.category]) {
-        console.error("".concat(this.product.category, " not available as a category"));
+        console.log("".concat(this.product.category, " not available as a category"));
         return {};
       }
 
@@ -1702,7 +1702,7 @@ function create_link(url) {
 
 function runView(viewName) {
   if (!viewMappings[viewName]) {
-    console.error("".concat(viewName, " is not a valid view"));
+    console.log("".concat(viewName, " is not a valid view"));
     return;
   }
 
@@ -1784,7 +1784,7 @@ function () {
           });
         });
       })["catch"](function (err) {
-        console.error(err);
+        console.log(err);
       });
     }
   }]);
@@ -1836,7 +1836,7 @@ function () {
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
       })["catch"](function (err) {
-        console.error(err);
+        console.log(err);
       });
     }
   }]);
@@ -1927,7 +1927,7 @@ function (_Selection) {
           ProductHistory.loadItemsIntoSelection(products);
         });
       })["catch"](function (err) {
-        console.error(err);
+        console.log(err);
       });
     }
   }, {
@@ -1937,13 +1937,13 @@ function (_Selection) {
       var img = localStorage.getItem('img');
 
       if (!userId) {
-        console.error("user id not present"); // return;
+        console.log("user id not present"); // return;
       } else {
         $scope.userIdWP = userId;
       }
 
       if (!img) {
-        console.error('no image');
+        console.log('no image');
       } else {
         $scope.userImageUrl = img;
       }
@@ -2054,7 +2054,7 @@ function () {
       }
 
       if (validProducts.length === 0) {
-        console.error('No valid products');
+        console.log('No valid products');
         return;
       }
 

@@ -28,7 +28,7 @@ function create_link(url) {
 
 function runView(viewName) {
     if(!viewMappings[viewName]) {
-        console.error(`${viewName} is not a valid view`);
+        console.log(`${viewName} is not a valid view`);
         return;
     }
 

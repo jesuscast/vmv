@@ -20,7 +20,7 @@ class PaymentConfirmation {
             $("#total-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
 
         }).catch((err) => {
-            console.error(err);
+            console.log(err);
         });
     }
 }
