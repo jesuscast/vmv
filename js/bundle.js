@@ -1098,7 +1098,7 @@ function () {
   }], [{
     key: "fromJSON",
     value: function fromJSON(jsonObject, imgUrl) {
-      var product = new Product(imgUrl, jsonObject.available_templates[0], Product.getDefaultVariant(jsonObject.tag), 1.0, {
+      var product = new Product(imgUrl, jsonObject.available_templates[0], Product.getDefaultVariant(jsonObject.tag), jsonObject.scale ? jsonObject.scale : 1.0, jsonObject.translate ? jsonObject.translate : {
         x: 0,
         y: 0
       }, Product.categoryID(jsonObject.tag), true);
@@ -1938,8 +1938,11 @@ function (_Selection) {
                 return null;
               }
 
-              if (found.product_tags.length > 0) {
-                found.tag = product.product_tags[0];
+              found.scale = productJSON.scale;
+              found.translate = productJSON.translate;
+
+              if (found.product_tags && found.product_tags.length > 0) {
+                found.tag = found.product_tags[0];
               } else {
                 found.tag = "Other";
               }

@@ -49,8 +49,10 @@ class ProductHistory extends Selection {
                         if (!found) {
                             return null
                         }
-                        if (found.product_tags.length > 0) {
-                            found.tag = product.product_tags[0];
+                        found.scale = productJSON.scale;
+                        found.translate = productJSON.translate;
+                        if (found.product_tags && found.product_tags.length > 0) {
+                            found.tag = found.product_tags[0];
                         } else {
                             found.tag = "Other";
                         }

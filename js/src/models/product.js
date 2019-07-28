@@ -45,8 +45,8 @@ class Product {
             imgUrl,
             jsonObject.available_templates[0],
             Product.getDefaultVariant(jsonObject.tag),
-            1.0,
-            {x: 0, y: 0},
+            jsonObject.scale ? jsonObject.scale : 1.0,
+            jsonObject.translate ? jsonObject.translate : {x: 0, y: 0},
             Product.categoryID(jsonObject.tag),
             true
         )
