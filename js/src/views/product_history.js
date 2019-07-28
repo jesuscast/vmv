@@ -11,7 +11,7 @@ class ProductHistory extends Selection {
         .then(resp => {
             resp.json().then(json => {
                 console.log(json);
-                if (!json.code === "no_user") {
+                if (json.code === "no_user") {
                     return;
                 }
                 const products = json.map(productJSON => {

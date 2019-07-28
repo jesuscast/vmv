@@ -1897,7 +1897,7 @@ function (_Selection) {
         resp.json().then(function (json) {
           console.log(json);
 
-          if (!json.code === "no_user") {
+          if (json.code === "no_user") {
             return;
           }
 
