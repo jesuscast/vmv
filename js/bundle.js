@@ -1889,6 +1889,43 @@ function (_Selection) {
   }
 
   _createClass(ProductHistory, null, [{
+    key: "refreshItemList",
+    value: function refreshItemList() {
+      fetch("".concat(CORSURL, "http://viewmyvoice.net/wp-json/vmv/orders?user_id=").concat(userId), {
+        method: 'GET'
+      }).then(function (resp) {
+        resp.json().then(function (json) {
+          console.log(json);
+          var products = json.map(function (productJSON) {
+            var found = _.find(productsJSON.objects, function (json) {
+              return json.available_templates[0] === productJSON.product_id;
+            });
+
+            if (!found) {
+              return null;
+            }
+
+            found.scale = productJSON.scale;
+            found.translate = productJSON.translate;
+
+            if (found.product_tags && found.product_tags.length > 0) {
+              found.tag = found.product_tags[0];
+            } else {
+              found.tag = "Other";
+            }
+
+            var product = Product.fromJSON(found, $scope.userImageUrl);
+            return product;
+          }).filter(function (product) {
+            return product !== null;
+          });
+          ProductHistory.loadItemsIntoSelection(products);
+        });
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    }
+  }, {
     key: "run",
     value: function run() {
       var userId = localStorage.getItem('userIdWP');
@@ -1920,43 +1957,11 @@ function (_Selection) {
         }
 
         localStorage.setItem('userIdWP', $scope.userIdWP);
-        ProductHistory.loadItemsIntoSelection([]);
+        ProductHistory.refreshItemList();
       }
 
       if (userId) {
-        fetch("".concat(CORSURL, "http://viewmyvoice.net/wp-json/vmv/orders?user_id=").concat(userId), {
-          method: 'GET'
-        }).then(function (resp) {
-          resp.json().then(function (json) {
-            console.log(json);
-            var products = json.map(function (productJSON) {
-              var found = _.find(productsJSON.objects, function (json) {
-                return json.available_templates[0] === productJSON.product_id;
-              });
-
-              if (!found) {
-                return null;
-              }
-
-              found.scale = productJSON.scale;
-              found.translate = productJSON.translate;
-
-              if (found.product_tags && found.product_tags.length > 0) {
-                found.tag = found.product_tags[0];
-              } else {
-                found.tag = "Other";
-              }
-
-              var product = Product.fromJSON(found, $scope.userImageUrl);
-              return product;
-            }).filter(function (product) {
-              return product !== null;
-            });
-            ProductHistory.loadItemsIntoSelection(products);
-          });
-        })["catch"](function (err) {
-          console.error(err);
-        });
+        ProductHistory.refreshItemList();
       }
     }
   }]);
