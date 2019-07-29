@@ -136,6 +136,12 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 
 function post_product_orders_for_user(WP_REST_Request $request) {
 	$params = $request->get_body_params();
+	if (empty($params)) {
+		$params = $request->get_json_params();
+	}
+	if (empty($params)) {
+		return new WP_Error( 'no_params', 'No params received', array( 'status' => 400 ) );
+	}
 	$postResult = post_user($params);
 	$postError = $postResult[1];
 	$postValue = $postResult[0];
