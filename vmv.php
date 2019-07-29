@@ -58,7 +58,13 @@ function get_user($user_id) {
 }
 
 function post_user($params) {
-	return array(empty($params["user_id"]), null);
+	$missingParams = (empty($params["user_id"]) ||
+		empty($params["product_id"]) ||
+		empty($params["variant"]) ||
+		empty($params["scale"]) ||
+		empty($params["category"]) ||
+		empty($params["img"]));
+	return array($missingParams, null);
 	// if (empty($params["user_id"]) ||
 	// 	empty($params["product_id"]) ||
 	// 	empty($params["variant"]) ||

@@ -1,3 +1,5 @@
+const {CORSURL} = require('../constants');
+
 // ctrl.imageGeneratorEndpoint + "/render/?image=" + image.url_preview
 //         + "&product_id=" + coverVariant.template_id + "&variant="
 //         + variantName + "&format=jpg&debug=false&background="
@@ -38,6 +40,27 @@ class Product {
         "&mirror=false"+
         `&translate=${this.translate.x},${this.translate.y}`+
         "&print_image="+ (print ? "true" : "false");
+    }
+
+    postProduct(user_id, cb, cbError) {
+        fetch(`${CORSURL}http://viewmyvoice.net/wp-json/vmv/orders`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: user_id,
+                product_id: this.product_id,
+                variant: this.variant,
+                scale: this.scale,
+                category: this.category,
+                img: this.img
+            })
+        }).then((result) => {
+            result.json().then(cb).catch(cbError);
+        }).catch(cbError => {
+            cbError.json().then(cbError).catch(cbError);
+        });
     }
 
     static fromJSON(jsonObject, imgUrl) {

@@ -27,6 +27,25 @@ function create_link(url) {
 }
 
 function runView(viewName) {
+    window.addEventListener("message", receiveMessageGlobal, false);
+
+    function receiveMessageGlobal(event) {
+        console.log(`Received ${JSON.stringify(event.data)}`);
+        if (event.data.userId && event.data.userId !== "null") {
+            $scope.userIdWP = event.data.userId;
+            localStorage.setItem('userIdWP',  $scope.userIdWP);
+        }
+        if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
+            $scope.userImageUrl = event.data.userImageUrl;
+            localStorage.setItem('img',  $scope.userImageUrl);
+        }
+        if (viewName == 'product_history' && $scope.userIdWP) {
+            ProductHistory.refreshItemList($scope.userIdWP);
+        } else if (viewName == 'selection') {
+            Selection.loadItemsIntoSelection();
+        }
+    }
+
     if(!viewMappings[viewName]) {
         console.log(`${viewName} is not a valid view`);
         return;
@@ -39,6 +58,7 @@ function runView(viewName) {
     
     $(document).ready(function(){
         view.run();
+        window.parent.postMessage({status: 'loaded'}, '*');
     });
 }
 

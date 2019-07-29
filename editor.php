@@ -1,9 +1,14 @@
 <?php
 function get_create_editor() {
     $user = wp_get_current_user();
-    ?>
+    if ( 0 == $current_user->ID ) {
+        ?>
+        <input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
+        <?php
+    } else {
 
-<input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
+    }
+    ?>
 <iframe id="image-editor" src="https://viewmyvoice.net/wp-content/plugins/vmv/html/editor.html" style="
     width: 100%;
     height: 800px;
@@ -31,8 +36,14 @@ function get_create_editor() {
 
 function get_product_list() {
     $user = wp_get_current_user();
+    if ( 0 == $current_user->ID ) {
+        ?>
+        <input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
+        <?php
+    } else {
+
+    }
     ?>
-    <input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
     <iframe id="image-editor" src="https://viewmyvoice.net/wp-content/plugins/vmv/html/selection.html" style="
         width: 100%;
         border: 0px;
@@ -40,27 +51,42 @@ function get_product_list() {
         overflow: scroll;
     "></iframe>
     <script>
-        setTimeout(() => {
-            const params = new URLSearchParams(window.location.search);
-            const userImageUrl = localStorage.getItem('img');
-            const hiddenField = document.getElementById("wp-user-id");
-            let userId = null;
-            if (hiddenField) {
-                userId = hiddenField.value;
+        window.addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event) {
+            console.log(`Received ${JSON.stringify(event.data)}`);
+            if (event.data.status === 'loaded') {
+                const params = new URLSearchParams(window.location.search);
+                const hiddenField = document.getElementById("wp-user-id");
+                const userImageUrl = localStorage.getItem('img');
+                let userId = null;
+                if (hiddenField) {
+                    userId = hiddenField.value;
+                }
+                console.log("holla");
+                jQuery("#image-editor")[0].contentWindow.postMessage({
+                    userImageUrl,
+                    userId
+                }, '*');
+                if(jQuery('.woocommerce-info')) {
+                    jQuery('.woocommerce-info').remove()
+                }
             }
-            jQuery("#image-editor")[0].contentWindow.postMessage({
-                userImageUrl: userImageUrl,
-                userId
-            }, '*')
-        }, 200);
+        }
     </script>
         <?php
 }
 
 function get_product_history() {
     $user = wp_get_current_user();
+    if ( 0 == $current_user->ID ) {
+        ?>
+        <input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
+        <?php
+    } else {
+
+    }
     ?>
-    <input type="hidden" value="<?php echo $user->ID ?>" id="wp-user-id" />
     <iframe id="image-editor" src="https://viewmyvoice.net/wp-content/plugins/vmv/html/product_history.html" style="
         width: 100%;
         border: 0px;

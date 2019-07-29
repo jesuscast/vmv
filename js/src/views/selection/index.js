@@ -109,20 +109,6 @@ class Selection {
         })
     }
     static run() {
-        window.addEventListener("message", receiveMessage, false);
-
-        function receiveMessage(event) {
-            console.log(`Received ${JSON.stringify(event.data)}`);
-            if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
-                $scope.userImageUrl = event.data.userImageUrl;
-            }
-            if (event.data.userId && event.data.userId !== "null") {
-                $scope.userIdWP = event.data.userId;
-            }
-            localStorage.setItem('userIdWP',  $scope.userIdWP);
-            Selection.loadItemsIntoSelection()
-        }
-
         Selection.loadItemsIntoSelection()
     }
 }

@@ -1055,12 +1055,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// ctrl.imageGeneratorEndpoint + "/render/?image=" + image.url_preview
+var _require = require('../constants'),
+    CORSURL = _require.CORSURL; // ctrl.imageGeneratorEndpoint + "/render/?image=" + image.url_preview
 //         + "&product_id=" + coverVariant.template_id + "&variant="
 //         + variantName + "&format=jpg&debug=false&background="
 //         + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + image.scale
 //         + "&rotate=" + image.rotate_degrees + "&mirror=" + image.mirror
 //         + "&translate=" + image.tx + "," + image.ty + "&print_image="+ image.print_image;
+
+
 var Product =
 /*#__PURE__*/
 function () {
@@ -1086,6 +1089,28 @@ function () {
     key: "toImg",
     value: function toImg(print) {
       return "https://image.kite.ly/render/" + "?image=" + this.img + "&product_id=" + this.product_id + "&variant=" + this.variant + "&format=jpg" + "&debug=false" + "&background=ffffff" + "&size=628x452" + "&fill_mode=fit" + "&padding=20" + "&scale=" + this.scale + "&rotate=0" + "&mirror=false" + "&translate=".concat(this.translate.x, ",").concat(this.translate.y) + "&print_image=" + (print ? "true" : "false");
+    }
+  }, {
+    key: "postProduct",
+    value: function postProduct(user_id, cb, cbError) {
+      fetch("".concat(CORSURL, "http://viewmyvoice.net/wp-json/vmv/orders"), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          product_id: this.product_id,
+          variant: this.variant,
+          scale: this.scale,
+          category: this.category,
+          img: this.img
+        })
+      }).then(function (result) {
+        result.json().then(cb)["catch"](cbError);
+      })["catch"](function (cbError) {
+        cbError.json().then(cbError)["catch"](cbError);
+      });
     }
   }, {
     key: "getProductHTML",
@@ -1140,7 +1165,7 @@ function () {
 
 module.exports = Product;
 
-},{}],10:[function(require,module,exports){
+},{"../constants":2}],10:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1701,6 +1726,28 @@ function create_link(url) {
 }
 
 function runView(viewName) {
+  window.addEventListener("message", receiveMessageGlobal, false);
+
+  function receiveMessageGlobal(event) {
+    console.log("Received ".concat(JSON.stringify(event.data)));
+
+    if (event.data.userId && event.data.userId !== "null") {
+      $scope.userIdWP = event.data.userId;
+      localStorage.setItem('userIdWP', $scope.userIdWP);
+    }
+
+    if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
+      $scope.userImageUrl = event.data.userImageUrl;
+      localStorage.setItem('img', $scope.userImageUrl);
+    }
+
+    if (viewName == 'product_history' && $scope.userIdWP) {
+      ProductHistory.refreshItemList($scope.userIdWP);
+    } else if (viewName == 'selection') {
+      Selection.loadItemsIntoSelection();
+    }
+  }
+
   if (!viewMappings[viewName]) {
     console.log("".concat(viewName, " is not a valid view"));
     return;
@@ -1711,6 +1758,9 @@ function runView(viewName) {
   create_link('../css/kitely.css');
   $(document).ready(function () {
     view.run();
+    window.parent.postMessage({
+      status: 'loaded'
+    }, '*');
   });
 }
 
@@ -1771,6 +1821,16 @@ function () {
         $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total[currency]));
+        var userId = localStorage.getItem('userIdWP');
+
+        if (userId) {
+          product.postProduct(userId, function (result) {
+            console.log(result);
+          }, function (err) {
+            console.log(err);
+          });
+        }
+
         create_script("https://www.paypal.com/sdk/js?client-id  =" + creds.paypalClientId);
         processPaypalPayment(prices, currency, function (transaction) {
           placeOrder(address, job, {
@@ -1955,26 +2015,9 @@ function (_Selection) {
         $scope.userImageUrl = img;
       }
 
-      window.addEventListener("message", receiveMessage, false);
-
-      function receiveMessage(event) {
-        console.log("Received ".concat(JSON.stringify(event.data)));
-
-        if (event.data.userId && event.data.userId !== "null") {
-          $scope.userIdWP = event.data.userId;
-        }
-
-        localStorage.setItem('userIdWP', $scope.userIdWP);
-        ProductHistory.refreshItemList($scope.userIdWP);
-      }
-
       if (userId) {
         ProductHistory.refreshItemList(userId);
       }
-
-      window.parent.postMessage({
-        status: 'loaded'
-      }, '*');
     }
   }]);
 
@@ -2103,23 +2146,6 @@ function () {
   }, {
     key: "run",
     value: function run() {
-      window.addEventListener("message", receiveMessage, false);
-
-      function receiveMessage(event) {
-        console.log("Received ".concat(JSON.stringify(event.data)));
-
-        if (event.data.userImageUrl && event.data.userImageUrl !== "null") {
-          $scope.userImageUrl = event.data.userImageUrl;
-        }
-
-        if (event.data.userId && event.data.userId !== "null") {
-          $scope.userIdWP = event.data.userId;
-        }
-
-        localStorage.setItem('userIdWP', $scope.userIdWP);
-        Selection.loadItemsIntoSelection();
-      }
-
       Selection.loadItemsIntoSelection();
     }
   }]);

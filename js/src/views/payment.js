@@ -25,6 +25,14 @@ class Payment {
             $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
             $("#total-cost").html(`${currencySymbol} ${prices.total[currency]}`);
 
+            const userId = localStorage.getItem('userIdWP');
+            if (userId) {
+                product.postProduct(userId, (result) => {
+                    console.log(result);
+                }, (err) => {
+                    console.log(err);
+                })
+            }
             create_script("https://www.paypal.com/sdk/js?client-id  ="+creds.paypalClientId)
 
             processPaypalPayment(prices, currency, (transaction) => {

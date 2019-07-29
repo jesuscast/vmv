@@ -64,22 +64,10 @@ class ProductHistory extends Selection {
         } else {
             $scope.userImageUrl = img;
         }
-        window.addEventListener("message", receiveMessage, false);
-
-        function receiveMessage(event) {
-            console.log(`Received ${JSON.stringify(event.data)}`);
-            if (event.data.userId && event.data.userId !== "null") {
-                $scope.userIdWP = event.data.userId;
-            }
-            localStorage.setItem('userIdWP',  $scope.userIdWP);
-            ProductHistory.refreshItemList($scope.userIdWP);
-        }
 
         if (userId) {
             ProductHistory.refreshItemList(userId);
         }
-
-        window.parent.postMessage({status: 'loaded'}, '*');
     }
 }
 
