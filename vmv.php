@@ -139,16 +139,17 @@ function post_product_orders_for_user(WP_REST_Request $request) {
 	if (empty($params)) {
 		$params = $request->get_json_params();
 	}
-	if (empty($params)) {
-		return new WP_Error( 'no_params', 'No params received', array( 'status' => 400 ) );
-	}
-	$postResult = post_user($params);
-	$postError = $postResult[1];
-	$postValue = $postResult[0];
-	if ($postError !== null) {
-		return $postError;
-	}
-	return $postValue;
+	return $params;
+	// if (empty($params)) {
+	// 	return new WP_Error( 'no_params', 'No params received', array( 'status' => 400 ) );
+	// }
+	// $postResult = post_user($params);
+	// $postError = $postResult[1];
+	// $postValue = $postResult[0];
+	// if ($postError !== null) {
+	// 	return $postError;
+	// }
+	// return $postValue;
 }
 
 function get_full_user(WP_REST_Request $request) {
