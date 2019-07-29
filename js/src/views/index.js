@@ -4,7 +4,7 @@ const PaymentConfirmation = require('./payment_confirmation');
 const Payment = require('./payment');
 const Selection = require('./selection');
 const ProductHistory = require('./product_history');
-const {$scope} =  require('./constants');
+const {$scope} =  require('../constants');
 
 const viewMappings = {
     'checkout': Checkout,
