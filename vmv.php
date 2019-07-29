@@ -58,38 +58,39 @@ function get_user($user_id) {
 }
 
 function post_user($params) {
-	if (empty($params["user_id"]) ||
-		empty($params["product_id"]) ||
-		empty($params["variant"]) ||
-		empty($params["scale"]) ||
-		empty($params["category"]) ||
-		empty($params["img"])) {
-			return array(null, new WP_Error( 'missing_parameters', $params, array( 'status' => 400 ) ));
-		}
-	if (!is_numeric($params["scale"])) {
-		return array(null, new WP_Error( 'invalid_param', 'Scale must be a numeric value', array( 'status' => 400 ) ));
-	}
-	global $wpdb;
-	$userResult = get_user($params["user_id"]);
-	$user = $userResult[0];
-	$userError = $userResult[1];
-	if ($userError !== null) {
-		return array(null, $userError);
-	}
-	$query = 'insert into vmv_orders(user_id,product_id,variant,scale,category,img)';
-	$query .= ' values (';
-	$query .= $user->ID.',';
-	$query .= '"'.$params["product_id"].'",';
-	$query .= '"'.$params["variant"].'",';
-	$query .= $params["scale"].',';
-	$query .= '"'.$params["category"].'",';
-	$query .= '"'.$params["img"].'"';
-	$query .= ')';
-	$results = $wpdb->get_results($query);
-	if ($wpdb->last_error) {
-		return array(null, new WP_Error( 'insertion_error', $wpdb->last_error, array( 'status' => 500) ));
-	}
-	return array($results, null);
+	return array($params, null);
+	// if (empty($params["user_id"]) ||
+	// 	empty($params["product_id"]) ||
+	// 	empty($params["variant"]) ||
+	// 	empty($params["scale"]) ||
+	// 	empty($params["category"]) ||
+	// 	empty($params["img"])) {
+	// 		return array(null, new WP_Error( 'missing_parameters', $params, array( 'status' => 400 ) ));
+	// 	}
+	// if (!is_numeric($params["scale"])) {
+	// 	return array(null, new WP_Error( 'invalid_param', 'Scale must be a numeric value', array( 'status' => 400 ) ));
+	// }
+	// global $wpdb;
+	// $userResult = get_user($params["user_id"]);
+	// $user = $userResult[0];
+	// $userError = $userResult[1];
+	// if ($userError !== null) {
+	// 	return array(null, $userError);
+	// }
+	// $query = 'insert into vmv_orders(user_id,product_id,variant,scale,category,img)';
+	// $query .= ' values (';
+	// $query .= $user->ID.',';
+	// $query .= '"'.$params["product_id"].'",';
+	// $query .= '"'.$params["variant"].'",';
+	// $query .= $params["scale"].',';
+	// $query .= '"'.$params["category"].'",';
+	// $query .= '"'.$params["img"].'"';
+	// $query .= ')';
+	// $results = $wpdb->get_results($query);
+	// if ($wpdb->last_error) {
+	// 	return array(null, new WP_Error( 'insertion_error', $wpdb->last_error, array( 'status' => 500) ));
+	// }
+	// return array($results, null);
 }
 
 function get_orders($user) {
