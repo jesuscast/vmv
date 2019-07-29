@@ -109,16 +109,7 @@ function get_orders($user) {
 	return array($orders, null);
 }
 
-function get_product_orders_for_user( WP_REST_Request $request ) {
-	global $wpdb;
-	$url_params = $request->get_query_params();
-
-	$user_id = $url_params['user_id'];
-
-	if (empty($user_id)) {
-		return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
-	}
-
+function get_orders_for_user($user_id) {
 	$userResult = get_user($user_id);
 	$user = $userResult[0];
 	$userError = $userResult[1];
@@ -134,7 +125,20 @@ function get_product_orders_for_user( WP_REST_Request $request ) {
 	return $orders;
 }
 
-function post_product_orders_for_user(WP_REST_Request $request) {
+function get_orders_for_user_endpoint( WP_REST_Request $request ) {
+	global $wpdb;
+	$url_params = $request->get_query_params();
+
+	$user_id = $url_params['user_id'];
+
+	if (empty($user_id)) {
+		return new WP_Error( 'no_user', 'Invalid user', array( 'status' => 400 ) );
+	}
+
+	return get_orders_for_user($user_id);
+}
+
+function post_product_orders_for_user_endpoint(WP_REST_Request $request) {
 	$params = $request->get_body_params();
 	if (empty($params)) {
 		$params = $request->get_json_params();
@@ -148,10 +152,10 @@ function post_product_orders_for_user(WP_REST_Request $request) {
 	if ($postError !== null) {
 		return $postError;
 	}
-	return $postValue;
+	return get_orders_for_user($params['user_id']);
 }
 
-function get_full_user(WP_REST_Request $request) {
+function get_full_user_endpoint(WP_REST_Request $request) {
 	global $wpdb;
 	$url_params = $request->get_query_params();
 
@@ -179,14 +183,14 @@ function get_full_user(WP_REST_Request $request) {
 add_action( 'rest_api_init', function () {
 	register_rest_route( 'vmv', '/orders', array(
 		'methods' => 'GET',
-		'callback' => 'get_product_orders_for_user',
+		'callback' => 'get_orders_for_user_endpoint',
 	));
 	register_rest_route( 'vmv', '/user', array(
 		'methods' => 'GET',
-		'callback' => 'get_full_user',
+		'callback' => 'get_full_user_endpoint',
 	));
 	register_rest_route( 'vmv', '/orders', array(
 		'methods' => 'POST',
-		'callback' => 'post_product_orders_for_user',
+		'callback' => 'post_product_orders_for_user_endpoint',
 	));
 });
