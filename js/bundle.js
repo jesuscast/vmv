@@ -1980,16 +1980,21 @@ function (_Selection) {
               return null;
             }
 
-            found.scale = productJSON.scale;
-            found.translate = productJSON.translate;
+            var product = new Product(productJSON.img, productJSON.product_id, productJSON.variant, productJSON.scale, {
+              x: 0,
+              y: 0
+            }, productJSON.category, false);
+            product.name = found.name;
+            product.branch = found.product_brand;
+            product.prices = found.wholesale_cost;
+            product.product_tags = found.product_tags;
 
-            if (found.product_tags && found.product_tags.length > 0) {
-              found.tag = found.product_tags[0];
+            if (product.product_tags && product.product_tags.length > 0) {
+              product.tag = product.product_tags[0];
             } else {
-              found.tag = "Other";
+              product.tag = "Other";
             }
 
-            var product = Product.fromJSON(found, productJSON.img);
             return product;
           }).filter(function (product) {
             return product !== null;
