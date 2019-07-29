@@ -68,7 +68,7 @@ function post_user($params) {
 			// return array(null, new WP_Error( 'missing_parameters', 'Request is missing order parameters', array( 'status' => 400 ) ));
 		}
 	if (!is_numeric($params["scale"])) {
-		return array(null, new WP_Error( 'invalid_param', 'Scale must be a numeric value', array( 'status' => 400 ) ));
+		return array(null, new WP_Error( 'invalid_param', $params, array( 'status' => 400 ) ));
 	}
 	global $wpdb;
 	$userResult = get_user($params["user_id"]);
@@ -139,17 +139,16 @@ function post_product_orders_for_user(WP_REST_Request $request) {
 	if (empty($params)) {
 		$params = $request->get_json_params();
 	}
-	return $params;
-	// if (empty($params)) {
-	// 	return new WP_Error( 'no_params', 'No params received', array( 'status' => 400 ) );
-	// }
-	// $postResult = post_user($params);
-	// $postError = $postResult[1];
-	// $postValue = $postResult[0];
-	// if ($postError !== null) {
-	// 	return $postError;
-	// }
-	// return $postValue;
+	if (empty($params)) {
+		return new WP_Error( 'no_params', 'No params received', array( 'status' => 400 ) );
+	}
+	$postResult = post_user($params);
+	$postError = $postResult[1];
+	$postValue = $postResult[0];
+	if ($postError !== null) {
+		return $postError;
+	}
+	return $postValue;
 }
 
 function get_full_user(WP_REST_Request $request) {
