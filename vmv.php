@@ -58,7 +58,7 @@ function get_user($user_id) {
 }
 
 function post_user($params) {
-	return array($params, null);
+	return array(empty($params["user_id"]), null);
 	// if (empty($params["user_id"]) ||
 	// 	empty($params["product_id"]) ||
 	// 	empty($params["variant"]) ||
