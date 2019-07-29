@@ -64,7 +64,8 @@ function post_user($params) {
 		empty($params["scale"]) ||
 		empty($params["category"]) ||
 		empty($params["img"])) {
-			return array(null, new WP_Error( 'missing_parameters', 'Request is missing order parameters', array( 'status' => 400 ) ));
+			return array(null, $params);
+			// return array(null, new WP_Error( 'missing_parameters', 'Request is missing order parameters', array( 'status' => 400 ) ));
 		}
 	if (!is_numeric($params["scale"])) {
 		return array(null, new WP_Error( 'invalid_param', 'Scale must be a numeric value', array( 'status' => 400 ) ));
