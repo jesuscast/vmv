@@ -1834,7 +1834,7 @@ function () {
           });
         }
 
-        create_script("https://www.paypal.com/sdk/js?client-id  =" + creds.paypalClientId);
+        create_script("https://www.paypal.com/sdk/js?client-id=" + creds.paypalClientId);
         processPaypalPayment(prices, currency, function (transaction) {
           placeOrder(address, job, {
             total: 1,

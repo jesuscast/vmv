@@ -33,7 +33,7 @@ class Payment {
                     console.log(err);
                 })
             }
-            create_script("https://www.paypal.com/sdk/js?client-id  ="+creds.paypalClientId)
+            create_script("https://www.paypal.com/sdk/js?client-id="+creds.paypalClientId)
 
             processPaypalPayment(prices, currency, (transaction) => {
                 placeOrder(address, job, {
