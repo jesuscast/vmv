@@ -34,6 +34,9 @@ function getAddress() {
             addressLine1: $("#address-line-1").val(),
             addressLine2:$("#address-line-2").val(),
             zip: $("#zip").val(),
+            recipient_name: $("#recipient_name").val(),
+            recipient_email: $("#recipient_email").val(),
+            recipient_phone_number: $("#recipient_phone_number").val()
         };
         Address.build(fields).then((address) => {
             resolve(address);
@@ -84,7 +87,7 @@ function placeOrder(address, job, price, paypalId) {
         const body = {
             "proof_of_payment": paypalId,
             "shipping_address": {
-                "recipient_name": "Deon Botha", // TODO: Use real costumer data
+                "recipient_name": address.recipient_name, // TODO: Use real costumer data
                 "address_line_1": address.addressLine1,
                 "address_line_2": address.addressLine2,
                 "city": address.city,
@@ -92,8 +95,8 @@ function placeOrder(address, job, price, paypalId) {
                 "postcode": address.zip,
                 "country_code": address.country.iso3
             },
-            "customer_email": "andres@iisac.mx",
-            "customer_phone": "+44 (0)784297 1234",
+            "customer_email": address.recipient_email,
+            "customer_phone": address.recipient_phone_number,
             "customer_payment": {
                 "amount": price.total,
                 "currency": price.currency

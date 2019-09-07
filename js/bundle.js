@@ -111,7 +111,7 @@ var sampleTransaction = {
     "title": "GET"
   }]
 };
-var env = 'test';
+var env = 'prod';
 var creds = rawCreds[env];
 var ctrl = {
   loading: false,
@@ -877,6 +877,9 @@ function () {
     this.addressLine1 = fields.addressLine1;
     this.addressLine2 = fields.addressLine2;
     this.zip = fields.zip;
+    this.recipient_name = fields.recipient_name;
+    this.recipient_email = fields.recipient_email || 'andres@iisac.mx';
+    this.recipient_phone_number = fields.recipient_phone_number || '014157861530';
   }
 
   _createClass(Address, null, [{
@@ -904,7 +907,7 @@ function () {
   return Address;
 }();
 
-Address.requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
+Address.requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip', 'recipient_name'];
 module.exports = Address;
 
 },{"../constants":2,"./country":6}],6:[function(require,module,exports){
@@ -1360,7 +1363,10 @@ function getAddress() {
       region: $("#region").val(),
       addressLine1: $("#address-line-1").val(),
       addressLine2: $("#address-line-2").val(),
-      zip: $("#zip").val()
+      zip: $("#zip").val(),
+      recipient_name: $("#recipient_name").val(),
+      recipient_email: $("#recipient_email").val(),
+      recipient_phone_number: $("#recipient_phone_number").val()
     };
     Address.build(fields).then(function (address) {
       resolve(address);
@@ -1409,7 +1415,7 @@ function placeOrder(address, job, price, paypalId) {
     var body = {
       "proof_of_payment": paypalId,
       "shipping_address": {
-        "recipient_name": "Deon Botha",
+        "recipient_name": address.recipient_name,
         // TODO: Use real costumer data
         "address_line_1": address.addressLine1,
         "address_line_2": address.addressLine2,
@@ -1418,8 +1424,8 @@ function placeOrder(address, job, price, paypalId) {
         "postcode": address.zip,
         "country_code": address.country.iso3
       },
-      "customer_email": "andres@iisac.mx",
-      "customer_phone": "+44 (0)784297 1234",
+      "customer_email": address.recipient_email,
+      "customer_phone": address.recipient_phone_number,
       "customer_payment": {
         "amount": price.total,
         "currency": price.currency

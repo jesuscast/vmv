@@ -20,7 +20,7 @@ function findCountryByName(countryName) {
     return null;
 }
 class Address {
-    static requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip'];
+    static requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip', 'recipient_name'];
 
     constructor(fields) {
         this.city = fields.city;
@@ -33,6 +33,9 @@ class Address {
         this.addressLine1 = fields.addressLine1;
         this.addressLine2 = fields.addressLine2;
         this.zip = fields.zip;
+        this.recipient_name = fields.recipient_name;
+        this.recipient_email = fields.recipient_email || 'andres@iisac.mx';
+        this.recipient_phone_number = fields.recipient_phone_number || '014157861530';
     }
 
     static build(fields) {

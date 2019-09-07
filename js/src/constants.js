@@ -110,7 +110,7 @@ const sampleTransaction = {
        }
     ]
  };
-const env = 'test';
+const env = 'prod';
 const creds = rawCreds[env];
 
 const ctrl = {
