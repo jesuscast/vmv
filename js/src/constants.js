@@ -9,7 +9,7 @@ const rawCreds = {
     prod: {
         paypalHost: 'api.paypal.com',
         paypalClientId: 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
-        pubKey: '',
+        pubKey: 'pk_live_9824d80c1e0e4ce7449d3165df6f81cc745a4c0d',
     },
 };
 const sampleTransaction = {
