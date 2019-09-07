@@ -12,7 +12,7 @@ window.runView = runView;
 },{"./src/constants":2,"./src/views":14}],2:[function(require,module,exports){
 "use strict";
 
-var CORSURL = "https://secret-ocean-49799.herokuapp.com/";
+var CORSURL = "https://cors-anywhere.herokuapp.com/";
 var CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
 var rawCreds = {
   test: {

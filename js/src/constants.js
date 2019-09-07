@@ -1,4 +1,4 @@
-const CORSURL = "https://secret-ocean-49799.herokuapp.com/"
+const CORSURL = "https://cors-anywhere.herokuapp.com/"
 const CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
 const rawCreds = {
     test: {
