@@ -85,6 +85,7 @@ class Selection {
             if (!organizedProducts[category]) {
                 return;
             }
+            organizedProducts[category] = organizedProducts[category].filter(product => product.prices !== 'n/a')
             organizedProducts[category].forEach((product, i) => {
                 $("#productList").append(product.getProductHTML(i === 0));
             })

@@ -1,5 +1,5 @@
 const {CORSURL} = require('../constants');
-
+const price_data = require('../views/selection/price_data.json')
 // ctrl.imageGeneratorEndpoint + "/render/?image=" + image.url_preview
 //         + "&product_id=" + coverVariant.template_id + "&variant="
 //         + variantName + "&format=jpg&debug=false&background="
@@ -75,7 +75,8 @@ class Product {
         )
         product.name = jsonObject.name;
         product.brand = jsonObject.product_brand;
-        product.prices = jsonObject.wholesale_cost;
+        console.log(`[product] ${product.product_id}`)
+        product.prices = price_data[product.product_id] || 'n/a';
         product.product_tags = jsonObject.product_tags;
         return product;
     }
@@ -139,7 +140,7 @@ class Product {
                     <tbody>
                         <tr>
                             <td class="visible-sm">Price</td>
-                            <td class="visible-sm">$${this.prices.USD}</td>
+                            <td class="visible-sm">${this.prices.formatted}</td>
                         </tr>
                     </tbody>
                 </table>

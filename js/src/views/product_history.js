@@ -1,6 +1,7 @@
 const Selection = require('./selection');
 const Product = require('../models/product');
 const productsJSON = require('./selection/products.json');
+const price_data = require('./selection/price_data.json')
 const {$scope, CORSURL} =  require('../constants');
 
 class ProductHistory extends Selection {
@@ -41,7 +42,7 @@ class ProductHistory extends Selection {
                     )
                     product.name = found.name;
                     product.branch = found.product_brand;
-                    product.prices = found.wholesale_cost;
+                    product.prices = price_data[productJSON.product_id];
                     product.product_tags = found.product_tags;
                     if (product.product_tags && product.product_tags.length > 0) {
                         product.tag = product.product_tags[0];
