@@ -1,5 +1,5 @@
 price_data.json was obtained by calling the following GET endpoint https://api.kite.ly/v4.0/template/?limit=125
-
+with the correct Authorization header
 
 then doing the following processing:
 ```js
