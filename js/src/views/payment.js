@@ -21,6 +21,7 @@ class Payment {
             console.log(product.toImg(false));
             Payment.updateTinyImg(product.toImg(false));
             console.log(job.toDict());
+            console.log(`[payment] ${JSON.stringify(prices)}`)
             $("#product-cost").html(`${currencySymbol} ${prices.total_product_cost[currency]}`);
             $("#shipping-cost").html(`${currencySymbol} ${prices.total_shipping_cost[currency]}`);
             $("#total-cost").html(`${currencySymbol} ${prices.total[currency]}`);

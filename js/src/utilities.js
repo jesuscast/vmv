@@ -46,13 +46,18 @@ function getAddress() {
 
 function getPrices(address) {
     return new Promise((resolve, reject) => {
+        const templateId = localStorage.getItem('template');
+        if (!templateId) {
+            console.log(`[utilities] Template id is empty`);
+            return reject();
+        }
         const body = {
             "basket":[
                 {
                     "country_code": address.country.iso3,
                     "job_id":-1,
                     "quantity":1,
-                    "template_id": $scope.templateId
+                    "template_id": templateId
                 }
             ],
             "pay_in_store":0,
@@ -75,7 +80,7 @@ function getPrices(address) {
             cache: 'no-cache', 
         }).then((response) => {
             response.json().then(json => {
-                console.log(json);
+                console.log(`[utilities] ${JSON.stringify(json)}`);
                 resolve(json);
             });
         }).catch(reject);

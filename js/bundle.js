@@ -1377,12 +1377,19 @@ function getAddress() {
 
 function getPrices(address) {
   return new Promise(function (resolve, reject) {
+    var templateId = localStorage.getItem('template');
+
+    if (!templateId) {
+      console.log("[utilities] Template id is empty");
+      return reject();
+    }
+
     var body = {
       "basket": [{
         "country_code": address.country.iso3,
         "job_id": -1,
         "quantity": 1,
-        "template_id": $scope.templateId
+        "template_id": templateId
       }],
       "pay_in_store": 0,
       "payment_gateway": "PAYPAL",
@@ -1403,7 +1410,7 @@ function getPrices(address) {
       cache: 'no-cache'
     }).then(function (response) {
       response.json().then(function (json) {
-        console.log(json);
+        console.log("[utilities] ".concat(JSON.stringify(json)));
         resolve(json);
       });
     })["catch"](reject);
@@ -1834,6 +1841,7 @@ function () {
         console.log(product.toImg(false));
         Payment.updateTinyImg(product.toImg(false));
         console.log(job.toDict());
+        console.log("[payment] ".concat(JSON.stringify(prices)));
         $("#product-cost").html("".concat(currencySymbol, " ").concat(prices.total_product_cost[currency]));
         $("#shipping-cost").html("".concat(currencySymbol, " ").concat(prices.total_shipping_cost[currency]));
         $("#total-cost").html("".concat(currencySymbol, " ").concat(prices.total[currency]));
