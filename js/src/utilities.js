@@ -200,12 +200,17 @@ function processPaypalPayment(prices, currency, callback) {
     }, 500);
 }
 
-function create_script(url) {
+function create_script(url, id) {
+    if (document.getElementById(id)) {
+        console.log(`[create_script] ${id} already exists`);
+        return;
+    }
     /* create the link element */
     var linkElement = document.createElement('script');
 
     /* add attributes */
     linkElement.setAttribute('src', url);
+    linkElement.setAttribute('id', id);
 
     /* attach to the document body */
     document.getElementsByTagName('body')[0].appendChild(linkElement);
