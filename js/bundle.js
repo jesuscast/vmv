@@ -1403,7 +1403,7 @@ function getPrices(address) {
       "payment_gateway": "PAYPAL",
       "promo_code": "",
       "ship_to_store": 0,
-      "shipping_country_code": address.country.iso2
+      "shipping_country_code": address.country.iso3
     };
     fetch("".concat(CORSURL, "https://api.kite.ly/v3.0/price/"), {
       method: 'POST',
