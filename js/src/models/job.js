@@ -39,6 +39,9 @@ class Job {
     other() {
         return this.default();
     }
+    cases() {
+        return this.default();
+    }
 
     toDict() {
         const funcMappings = {

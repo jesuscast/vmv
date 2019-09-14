@@ -1024,6 +1024,11 @@ function () {
       return this["default"]();
     }
   }, {
+    key: "cases",
+    value: function cases() {
+      return this["default"]();
+    }
+  }, {
     key: "toDict",
     value: function toDict() {
       var funcMappings = {
