@@ -1100,7 +1100,7 @@ function () {
     value: function toImg(print) {
       var variant = "&variant=" + this.variant;
 
-      if (this.product_id.indexOf('_case') !== -1) {
+      if (this.product_id.indexOf('_case') !== -1 || this.product_id.indexOf('greeting_cards') !== -1) {
         variant = '';
       }
 
