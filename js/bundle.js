@@ -1098,7 +1098,13 @@ function () {
   _createClass(Product, [{
     key: "toImg",
     value: function toImg(print) {
-      return "https://image.kite.ly/render/" + "?image=" + this.img + "&product_id=" + this.product_id + "&variant=" + this.variant + "&format=jpg" + "&debug=false" + "&background=ffffff" + "&size=628x452" + "&fill_mode=fit" + "&padding=20" + "&scale=" + this.scale + "&rotate=0" + "&mirror=false" + "&translate=".concat(this.translate.x, ",").concat(this.translate.y) + "&print_image=" + (print ? "true" : "false");
+      var variant = "&variant=" + this.variant;
+
+      if (this.product_id.indexOf('_case') !== -1) {
+        variant = '';
+      }
+
+      return "https://image.kite.ly/render/" + "?image=" + this.img + "&product_id=" + this.product_id + variant + "&format=jpg" + "&debug=false" + "&background=ffffff" + "&size=628x452" + "&fill_mode=fit" + "&padding=20" + "&scale=" + this.scale + "&rotate=0" + "&mirror=false" + "&translate=".concat(this.translate.x, ",").concat(this.translate.y) + "&print_image=" + (print ? "true" : "false");
     }
   }, {
     key: "postProduct",

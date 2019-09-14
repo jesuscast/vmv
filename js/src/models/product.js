@@ -25,10 +25,14 @@ class Product {
     }
 
     toImg(print) {
+        let variant = "&variant="+this.variant;
+        if (this.product_id.indexOf('_case') !== -1) {
+            variant = '';
+        }
         return "https://image.kite.ly/render/"+
         "?image="+this.img+
         "&product_id="+this.product_id+
-        "&variant="+this.variant+
+        variant+
         "&format=jpg"+
         "&debug=false"+
         "&background=ffffff"+
