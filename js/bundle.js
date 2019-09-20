@@ -111,7 +111,7 @@ var sampleTransaction = {
     "title": "GET"
   }]
 };
-var env = 'prod';
+var env = 'test';
 var creds = rawCreds[env];
 var ctrl = {
   loading: false,
