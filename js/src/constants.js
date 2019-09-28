@@ -3,15 +3,19 @@ const CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
 const rawCreds = {
     test: {
         paypalHost: 'api.sandbox.paypal.com',
-        paypalClientId: 'AcEcBRDxqcCKiikjm05FyD4Sfi4pkNP98AYN67sr3_yZdBe23xEk0qhdhZLM',
+        paypalClientId: 'AfHdh9uRx1ChUX3-FHLizsTNBEdFHCkOwW2OeKc4SXM83CC-28RM7m4jNyj9c9qWAOO62ts5Kqat2762',
         pubKey: 'pk_test_6700fc5332e3d7460dc24b04f5ad77b4d74a96da',
+        privKey: 'sk_test_e44824f5b7f6fc73f32f0bc973db8f1414ee2102'
     },
     prod: {
         paypalHost: 'api.paypal.com',
         paypalClientId: 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
         pubKey: 'pk_live_9824d80c1e0e4ce7449d3165df6f81cc745a4c0d',
+        privKey: 'sk_live_c0933bccc9890ee8fa43fa21f09aa6cc229107ba'
     },
 };
+const env = 'prod';
+const creds = rawCreds[env];
 const sampleTransaction = {
     "create_time":"2019-06-06T00:19:46Z",
     "update_time":"2019-06-06T00:19:46Z",
@@ -110,8 +114,6 @@ const sampleTransaction = {
        }
     ]
  };
-const env = 'test';
-const creds = rawCreds[env];
 
 const ctrl = {
     loading: false,

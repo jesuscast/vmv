@@ -17,15 +17,19 @@ var CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
 var rawCreds = {
   test: {
     paypalHost: 'api.sandbox.paypal.com',
-    paypalClientId: 'AcEcBRDxqcCKiikjm05FyD4Sfi4pkNP98AYN67sr3_yZdBe23xEk0qhdhZLM',
-    pubKey: 'pk_test_6700fc5332e3d7460dc24b04f5ad77b4d74a96da'
+    paypalClientId: 'AfHdh9uRx1ChUX3-FHLizsTNBEdFHCkOwW2OeKc4SXM83CC-28RM7m4jNyj9c9qWAOO62ts5Kqat2762',
+    pubKey: 'pk_test_6700fc5332e3d7460dc24b04f5ad77b4d74a96da',
+    privKey: 'sk_test_e44824f5b7f6fc73f32f0bc973db8f1414ee2102'
   },
   prod: {
     paypalHost: 'api.paypal.com',
     paypalClientId: 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
-    pubKey: 'pk_live_9824d80c1e0e4ce7449d3165df6f81cc745a4c0d'
+    pubKey: 'pk_live_9824d80c1e0e4ce7449d3165df6f81cc745a4c0d',
+    privKey: 'sk_live_c0933bccc9890ee8fa43fa21f09aa6cc229107ba'
   }
 };
+var env = 'prod';
+var creds = rawCreds[env];
 var sampleTransaction = {
   "create_time": "2019-06-06T00:19:46Z",
   "update_time": "2019-06-06T00:19:46Z",
@@ -111,8 +115,6 @@ var sampleTransaction = {
     "title": "GET"
   }]
 };
-var env = 'test';
-var creds = rawCreds[env];
 var ctrl = {
   loading: false,
   dragging: false,
@@ -1415,7 +1417,7 @@ function getPrices(address) {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
-        'Authorization': "ApiKey ".concat(creds.pubKey),
+        'Authorization': "ApiKey ".concat(creds.pubKey, ":").concat(creds.privKey),
         'Content-Type': 'application/json',
         "User-Agent": "Kite SDK Android v5.8.9"
       },
@@ -1458,7 +1460,7 @@ function placeOrder(address, job, price, paypalId) {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
-        'Authorization': "ApiKey ".concat(creds.pubKey),
+        'Authorization': "ApiKey ".concat(creds.pubKey, ":").concat(creds.privKey),
         'Content-Type': 'application/json',
         "User-Agent": "Kite SDK Android v5.8.9"
       },
@@ -1869,8 +1871,8 @@ function () {
           });
         }
 
-        console.log('why am I being created multiple times');
-        create_script("https://www.paypal.com/sdk/js?client-id=" + creds.paypalClientId, "paypal-inserted-script");
+        console.log('why am I being created multiple times'); // create_script("https://www.paypal.com/sdk/js?client-id="+creds.paypalClientId, "paypal-inserted-script")
+
         processPaypalPayment(prices, currency, function (transaction) {
           placeOrder(address, job, {
             total: 1,

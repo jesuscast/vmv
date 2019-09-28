@@ -72,7 +72,7 @@ function getPrices(address) {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
-                'Authorization': `ApiKey ${creds.pubKey}`,
+                'Authorization': `ApiKey ${creds.pubKey}:${creds.privKey}`,
                 'Content-Type': 'application/json',
                 "User-Agent": "Kite SDK Android v5.8.9"
             },
@@ -114,7 +114,7 @@ function placeOrder(address, job, price, paypalId) {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
-                'Authorization': `ApiKey ${creds.pubKey}`,
+                'Authorization': `ApiKey ${creds.pubKey}:${creds.privKey}`,
                 'Content-Type': 'application/json',
                 "User-Agent": "Kite SDK Android v5.8.9"
             },

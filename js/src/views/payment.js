@@ -35,7 +35,7 @@ class Payment {
                 })
             }
             console.log('why am I being created multiple times')
-            create_script("https://www.paypal.com/sdk/js?client-id="+creds.paypalClientId, "paypal-inserted-script")
+            // create_script("https://www.paypal.com/sdk/js?client-id="+creds.paypalClientId, "paypal-inserted-script")
 
             processPaypalPayment(prices, currency, (transaction) => {
                 placeOrder(address, job, {
