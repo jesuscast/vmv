@@ -18,7 +18,7 @@ class Job {
                 "garment_color": this.product.variant
             },
             "assets": {
-                "center_chest": this.product.toImg(true)
+                "center_chest": 'https://s3.amazonaws.com/kiteshopify/02dc6018-f4cb-4734-a323-24c358132113.png' //this.product.toImg(true)
             },
             "template_id": this.product.product_id
         }
