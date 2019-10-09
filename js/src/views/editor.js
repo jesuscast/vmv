@@ -1,4 +1,4 @@
-const {$scope} =  require('../constants');
+const {$scope, saveScope} =  require('../constants');
 const {render, edit} = require("../edit");
 
 class Editor {
@@ -45,7 +45,7 @@ class Editor {
             }
         });
 
-        function doSomething(values, handle, unencoded, tap, positions) {
+        function onUpdateSlider(values, handle, unencoded, tap, positions) {
             // values: Current slider values (array);
             // handle: Handle that caused the event (number);
             // unencoded: Slider values without formatting (array);
@@ -56,12 +56,14 @@ class Editor {
         }
 
         // Binding signature
-        slider.noUiSlider.on('update', doSomething);
+        slider.noUiSlider.on('update', onUpdateSlider);
 
         // Binding namespaced events
         slider.noUiSlider.on('set.one', function() {});
 
         $("#checkout-btn").on('click', function() {
+            $scope.size = $("size").val();
+            saveScope($scope);
             document.location.href = document.location.href.replace('editor.html', 'checkout.html');
         });
 

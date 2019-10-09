@@ -153,7 +153,8 @@ function loadData() {
             scopeJSON.scale, {
                 x: scopeJSON.translateX, y: scopeJSON.translateY
             },
-            category);
+            category,
+            scopeJSON.size);
         
         const job = new Job(product);
         Address.build(addressJSON).then((address) => {

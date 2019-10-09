@@ -14,7 +14,7 @@ class Job {
         return {
             "options": {
                 // TODO: Collect and send the actual size here
-                "garment_size": "M",
+                "garment_size": this.product.size,
                 "garment_color": this.product.variant
             },
             "assets": {

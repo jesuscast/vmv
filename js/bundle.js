@@ -138,8 +138,20 @@ var $scope = {
     name: "black",
     code: "25282B"
   },
+  size: 'm',
   userIdWP: null
 };
+
+function saveScope(scope) {
+  $scope = scope;
+  localStorage.setItem('scope', JSON.stringify($scope));
+}
+
+function getScope() {
+  $scope = JSON.parse(localStorage.getItem('scope'));
+  return $scope;
+}
+
 var windowParams = new URLSearchParams(location.search);
 
 if (windowParams.get("img")) {
@@ -435,7 +447,9 @@ module.exports = {
   CORSURL: CORSURL,
   ctrl: ctrl,
   env: env,
-  $scope: $scope
+  $scope: $scope,
+  saveScope: saveScope,
+  getScope: getScope
 };
 
 },{}],3:[function(require,module,exports){
@@ -996,7 +1010,7 @@ function () {
       return {
         "options": {
           // TODO: Collect and send the actual size here
-          "garment_size": "M",
+          "garment_size": this.product.size,
           "garment_color": this.product.variant
         },
         "assets": {
@@ -1080,7 +1094,7 @@ var price_data = require('../views/selection/price_data.json'); // ctrl.imageGen
 var Product =
 /*#__PURE__*/
 function () {
-  function Product(img, product_id, variant, scale, translate, category, fromJSON) {
+  function Product(img, product_id, variant, scale, translate, category, size, fromJSON) {
     _classCallCheck(this, Product);
 
     this.img = img;
@@ -1089,6 +1103,7 @@ function () {
     this.scale = scale;
     this.translate = translate;
     this.category = category;
+    this.size = size;
     this.fromJSON = fromJSON;
     this.name = "";
     this.brand = "";
@@ -1495,7 +1510,7 @@ function loadData() {
     var product = new Product(scopeJSON.userImageUrl, scopeJSON.templateId, scopeJSON.selectedColor.name, scopeJSON.scale, {
       x: scopeJSON.translateX,
       y: scopeJSON.translateY
-    }, category);
+    }, category, scopeJSON.size);
     var job = new Job(product);
     Address.build(addressJSON).then(function (address) {
       resolve({
@@ -1589,6 +1604,9 @@ var _require = require("../utilities"),
     getPrices = _require.getPrices,
     getAddress = _require.getAddress;
 
+var _require2 = require("../constants"),
+    getScope = _require2.getScope;
+
 var Checkout =
 /*#__PURE__*/
 function () {
@@ -1606,6 +1624,7 @@ function () {
       //     $("#tiny-image").css('margin-top', '20px');
       // }
 
+      getScope();
       $("#checkout-btn").on('click', function () {
         getAddress().then(function (address) {
           getPrices(address).then(function (prices) {
@@ -1625,7 +1644,7 @@ function () {
 
 module.exports = Checkout;
 
-},{"../utilities":11}],13:[function(require,module,exports){
+},{"../constants":2,"../utilities":11}],13:[function(require,module,exports){
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1635,7 +1654,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var _require = require('../constants'),
-    $scope = _require.$scope;
+    $scope = _require.$scope,
+    saveScope = _require.saveScope;
 
 var _require2 = require("../edit"),
     render = _require2.render,
@@ -1694,7 +1714,7 @@ function () {
         }
       });
 
-      function doSomething(values, handle, unencoded, tap, positions) {
+      function onUpdateSlider(values, handle, unencoded, tap, positions) {
         // values: Current slider values (array);
         // handle: Handle that caused the event (number);
         // unencoded: Slider values without formatting (array);
@@ -1705,10 +1725,12 @@ function () {
       } // Binding signature
 
 
-      slider.noUiSlider.on('update', doSomething); // Binding namespaced events
+      slider.noUiSlider.on('update', onUpdateSlider); // Binding namespaced events
 
       slider.noUiSlider.on('set.one', function () {});
       $("#checkout-btn").on('click', function () {
+        $scope.size = $("size").val();
+        saveScope($scope);
         document.location.href = document.location.href.replace('editor.html', 'checkout.html');
       });
       $(".side-btn").on('click', function (btn) {

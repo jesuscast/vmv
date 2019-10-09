@@ -1,4 +1,5 @@
 const {getPrices, getAddress} = require("../utilities");
+const  {getScope} = require("../constants");
 
 class Checkout {
     static run() {
@@ -9,7 +10,7 @@ class Checkout {
         //     $("#tiny-image").css('width', '150%');
         //     $("#tiny-image").css('margin-top', '20px');
         // }
-
+        getScope();
 
         $("#checkout-btn").on('click',  function() {
             getAddress().then((address) => {

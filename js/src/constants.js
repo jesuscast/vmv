@@ -122,7 +122,7 @@ const ctrl = {
     imageGeneratorEndpoint: CLEAN_IMAGE_ENDPOINT
 };
 
-const $scope = {
+let $scope = {
     templateId: "aa_mens_tshirt",
     variant: null,
     userImageUrl: "https://s3.amazonaws.com/kiteshopify/1f65b7b0-ed5e-46f6-8e2c-e3a6dce124a1.png",
@@ -139,7 +139,18 @@ const $scope = {
         name: "black",
         code: "25282B"
     },
+    size: 'm',
     userIdWP: null
+}
+
+function saveScope(scope) {
+    $scope = scope;
+    localStorage.setItem('scope', JSON.stringify($scope))
+}
+
+function getScope() {
+    $scope = JSON.parse(localStorage.getItem('scope'));
+    return $scope;
 }
 
 let windowParams = new URLSearchParams(location.search);
@@ -528,5 +539,7 @@ module.exports = {
     CORSURL,
     ctrl,
     env,
-    $scope
+    $scope,
+    saveScope,
+    getScope
 }

@@ -8,13 +8,14 @@ const price_data = require('../views/selection/price_data.json')
 //         + "&translate=" + image.tx + "," + image.ty + "&print_image="+ image.print_image;
 
 class Product {
-    constructor(img, product_id, variant, scale, translate, category, fromJSON) {
+    constructor(img, product_id, variant, scale, translate, category, size, fromJSON) {
         this.img = img;
         this.product_id = product_id;
         this.variant = variant;
         this.scale = scale;
         this.translate = translate;
         this.category = category;
+        this.size = size;
         this.fromJSON = fromJSON;
         this.name = "";
         this.brand = "";
