@@ -1023,7 +1023,16 @@ function () {
   }, {
     key: "posters",
     value: function posters() {
-      return this["default"]();
+      var URL = this.product.toImg(true);
+      return {
+        "assets": {
+          "back_image": URL,
+          "front_image": URL,
+          "inside_left_image": URL,
+          "inside_right_image": URL
+        },
+        "template_id": this.product.product_id
+      };
     }
   }, {
     key: "wallart",
