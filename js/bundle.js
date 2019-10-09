@@ -31,6 +31,7 @@ var rawCreds = {
   }
 };
 var env = 'prod';
+console.log("[env] ".concat(env));
 var creds = rawCreds[env];
 var sampleTransaction = {
   "create_time": "2019-06-06T00:19:46Z",
@@ -1025,7 +1026,7 @@ function () {
   }, {
     key: "posters",
     value: function posters() {
-      var URL = this.product.toImg(true);
+      var URL = this.product.toImg(false);
       return {
         "assets": {
           "back_image": URL,

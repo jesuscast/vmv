@@ -15,6 +15,7 @@ const rawCreds = {
     },
 };
 const env = 'prod';
+console.log(`[env] ${env}`)
 const creds = rawCreds[env];
 const sampleTransaction = {
     "create_time":"2019-06-06T00:19:46Z",

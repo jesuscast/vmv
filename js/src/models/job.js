@@ -26,7 +26,7 @@ class Job {
     }
 
     posters() {
-        const URL = this.product.toImg(true);
+        const URL = this.product.toImg(false);
         return {
             "assets":{
                 "back_image": URL,
