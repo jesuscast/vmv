@@ -22,8 +22,10 @@ var rawCreds = {
     privKey: 'sk_test_e44824f5b7f6fc73f32f0bc973db8f1414ee2102'
   },
   prod: {
-    paypalHost: 'api.paypal.com',
-    paypalClientId: 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
+    paypalHost: 'api.sandbox.paypal.com',
+    //'api.paypal.com',
+    paypalClientId: 'AfHdh9uRx1ChUX3-FHLizsTNBEdFHCkOwW2OeKc4SXM83CC-28RM7m4jNyj9c9qWAOO62ts5Kqat2762',
+    // 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
     pubKey: 'pk_live_9824d80c1e0e4ce7449d3165df6f81cc745a4c0d',
     privKey: 'sk_live_c0933bccc9890ee8fa43fa21f09aa6cc229107ba'
   }
@@ -1015,8 +1017,7 @@ function () {
           "garment_color": this.product.variant
         },
         "assets": {
-          "center_chest": 'https://pbs.twimg.com/media/DudKrLwUUAAiffQ.jpg' //this.product.toImg(true)
-
+          "center_chest": this.product.toImg(true)
         },
         "template_id": this.product.product_id
       };
@@ -1739,7 +1740,8 @@ function () {
 
       slider.noUiSlider.on('set.one', function () {});
       $("#checkout-btn").on('click', function () {
-        $scope.size = $("size").val();
+        $scope.size = $("#size").val();
+        console.log("[scope] Saving scope size: ".concat($scope.size));
         saveScope($scope);
         document.location.href = document.location.href.replace('editor.html', 'checkout.html');
       });

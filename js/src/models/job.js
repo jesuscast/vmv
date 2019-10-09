@@ -19,7 +19,7 @@ class Job {
                 "garment_color": this.product.variant
             },
             "assets": {
-                "center_chest": 'https://pbs.twimg.com/media/DudKrLwUUAAiffQ.jpg' //this.product.toImg(true)
+                "center_chest": this.product.toImg(true)
             },
             "template_id": this.product.product_id
         }

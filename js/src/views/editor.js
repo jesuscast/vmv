@@ -62,7 +62,8 @@ class Editor {
         slider.noUiSlider.on('set.one', function() {});
 
         $("#checkout-btn").on('click', function() {
-            $scope.size = $("size").val();
+            $scope.size = $("#size").val();
+            console.log(`[scope] Saving scope size: ${$scope.size}`);
             saveScope($scope);
             document.location.href = document.location.href.replace('editor.html', 'checkout.html');
         });
