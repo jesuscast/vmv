@@ -11,6 +11,7 @@ class Job {
     }
 
     apparel() {
+        console.log(this.product)
         return {
             "options": {
                 // TODO: Collect and send the actual size here

@@ -1,5 +1,5 @@
 const {loadData} = require('../utilities');
-
+const Payment = require('./payment');
 class PaymentConfirmation {
     static updateTinyImg(url) {
         $("#tiny-image").attr('src', url);

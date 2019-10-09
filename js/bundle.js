@@ -1007,6 +1007,7 @@ function () {
   }, {
     key: "apparel",
     value: function apparel() {
+      console.log(this.product);
       return {
         "options": {
           // TODO: Collect and send the actual size here
@@ -1939,6 +1940,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var _require = require('../utilities'),
     loadData = _require.loadData;
 
+var Payment = require('./payment');
+
 var PaymentConfirmation =
 /*#__PURE__*/
 function () {
@@ -1979,7 +1982,7 @@ function () {
 
 module.exports = PaymentConfirmation;
 
-},{"../utilities":11}],17:[function(require,module,exports){
+},{"../utilities":11,"./payment":15}],17:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
