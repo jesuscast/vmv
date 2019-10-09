@@ -28,7 +28,7 @@ var rawCreds = {
     privKey: 'sk_live_c0933bccc9890ee8fa43fa21f09aa6cc229107ba'
   }
 };
-var env = 'prod';
+var env = 'test';
 var creds = rawCreds[env];
 var sampleTransaction = {
   "create_time": "2019-06-06T00:19:46Z",
