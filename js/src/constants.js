@@ -14,7 +14,7 @@ const rawCreds = {
         privKey: 'sk_live_c0933bccc9890ee8fa43fa21f09aa6cc229107ba'
     },
 };
-const env = 'prod';
+const env = 'test';
 console.log(`[env] ${env}`)
 const creds = rawCreds[env];
 const sampleTransaction = {
