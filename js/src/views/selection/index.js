@@ -4,7 +4,7 @@ const toIgnore = require('./toignore.json');
 const {countriesRaw, country_to_region_mapping} = require('../../constants');
 const products_prices = require('./products_prices.json');
 
-let country = null;
+window.country = null;
 
 class Selection {
     static oldReplacement() {
@@ -48,11 +48,11 @@ class Selection {
     }
     static loadProductCountries() {
         const countries = Object.keys(countriesRaw).map(key => countriesRaw[key]);
-        country = countries[0][2];
+        country = countriesRaw.UK[2];
         console.log(`[country] ${JSON.stringify(countries)}`);
         $("#shipping_country_select").html(`
         <select id="shipping_country_select">
-            ${countries.map(country => `<option value="${country[2]}">${country[0]}</option>`)}
+            ${countries.map(country => `<option value="${country[2]}" ${country[0] === "United Kingdom" ? "selected":""}>${country[0]}</option>`)}
         </select>
         `);
         $("#shipping_country_select").on("change", function(val) {
