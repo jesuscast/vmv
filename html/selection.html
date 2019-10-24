@@ -26,6 +26,15 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-9">
+                        <div class="row" id="shipping_country">
+                                Shipping to
+                                <select id="shipping_country_select">
+                                        <option value="volvo">Volvo</option>
+                                        <option value="saab">Saab</option>
+                                        <option value="mercedes">Mercedes</option>
+                                        <option value="audi">Audi</option>
+                                      </select>
+                        </div>
                         <div class="row" id="productList"></div>
                     </div>
                 </div>
@@ -70,6 +79,19 @@
         }
         body {
             background: #fff;
+        }
+        #shipping_country {
+            font-family: Montserrat, sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            position: relative;
+            white-space: nowrap;
+            padding: 40px;
+        }
+        #shipping_country_select {
+            margin-left: 10px;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

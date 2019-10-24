@@ -1,6 +1,10 @@
 const Product = require('../../models/product');
 const products = require('./products.json');
 const toIgnore = require('./toignore.json');
+const {countriesRaw, country_to_region_mapping} = require('../../constants');
+const products_prices = require('./products_prices.json');
+
+let country = null;
 
 class Selection {
     static oldReplacement() {
@@ -42,6 +46,22 @@ class Selection {
             });
         });
     }
+    static loadProductCountries() {
+        const countries = Object.keys(countriesRaw).map(key => countriesRaw[key]);
+        country = countries[0][2];
+        console.log(`[country] ${JSON.stringify(countries)}`);
+        $("#shipping_country_select").html(`
+        <select id="shipping_country_select">
+            ${countries.map(country => `<option value="${country[2]}">${country[0]}</option>`)}
+        </select>
+        `);
+        $("#shipping_country_select").on("change", function(val) {
+            const value = $("#shipping_country_select").val();
+            console.log(`[country] ${value}`);
+            country = value;
+            Selection.loadItemsIntoSelection()
+        });
+    }
 
     static loadItemsIntoSelection(productsToLoad) {
         const img =  localStorage.getItem('img');
@@ -55,13 +75,24 @@ class Selection {
                 product.available_platforms.includes("Shopify")) &&
                 !toIgnore.ignore.includes(product.available_templates[0])
             ).map(product => {
+                const products_price = _.find(products_prices.objects, p => p.template_id === product.available_templates[0]);
+                if (!products_price) {
+                    console.log('[region] not found')
+                } else {
+                    const region = products_price.country_to_region_mapping[country];
+                    console.log(`[region] ${region} [country] ${country}`);
+                    if (!products_price.shipping_regions[region]) {
+                        console.log(`[region] ${product.available_templates[0]} not available in region ${region} country ${country}`);
+                        return null;
+                    }
+                }
                 if (product.product_tags.length > 0) {
                     product.tag = product.product_tags[0];
                 } else {
                     product.tag = "Other";
                 }
                 return Product.fromJSON(product, img)
-            });
+            }).filter(v => v !== null);
         }
         if (validProducts.length === 0) {
             console.log('No valid products')
@@ -110,6 +141,7 @@ class Selection {
         })
     }
     static run() {
+        Selection.loadProductCountries()
         Selection.loadItemsIntoSelection()
     }
 }
