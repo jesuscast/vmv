@@ -3,18 +3,18 @@ const CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
 const rawCreds = {
     test: {
         paypalHost: 'api.sandbox.paypal.com',
-        paypalClientId: 'AfHdh9uRx1ChUX3-FHLizsTNBEdFHCkOwW2OeKc4SXM83CC-28RM7m4jNyj9c9qWAOO62ts5Kqat2762',
+        paypalClientId: 'AYDGBLUcQ9-VRQow2awzj24n2C6JLeoKZ5LDMxWMvX3VT9w0cZ2EBTiCdhjSwzvS6msPsNpr6jLPYfCu',
         pubKey: 'pk_test_6700fc5332e3d7460dc24b04f5ad77b4d74a96da',
         privKey: 'sk_test_e44824f5b7f6fc73f32f0bc973db8f1414ee2102'
     },
     prod: {
-        paypalHost:  'api.sandbox.paypal.com',//'api.paypal.com',
-        paypalClientId: 'AfHdh9uRx1ChUX3-FHLizsTNBEdFHCkOwW2OeKc4SXM83CC-28RM7m4jNyj9c9qWAOO62ts5Kqat2762', // 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
+        paypalHost:  'api.paypal.com',
+        paypalClientId: 'AYDGBLUcQ9-VRQow2awzj24n2C6JLeoKZ5LDMxWMvX3VT9w0cZ2EBTiCdhjSwzvS6msPsNpr6jLPYfCu', // 'ASYVBBCHF_KwVUstugKy4qvpQaPlUeE_5beKRJHpIP2d3SA_jZrsaUDTmLQY',
         pubKey: 'pk_live_9824d80c1e0e4ce7449d3165df6f81cc745a4c0d',
         privKey: 'sk_live_c0933bccc9890ee8fa43fa21f09aa6cc229107ba'
     },
 };
-const env = 'test';
+const env = 'prod';
 console.log(`[env] ${env}`)
 const creds = rawCreds[env];
 const sampleTransaction = {
