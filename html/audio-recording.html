@@ -1,6 +1,10 @@
 <html>
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+        <link href="../lib/video.js/dist/video-js.min.css" rel="stylesheet">
+        <link href="../lib/videojs-wavesurfer/dist/css/videojs.wavesurfer.min.css" rel="stylesheet">
+        <link href="../lib/videojs-record-3.8.0/dist/css/videojs.record.css" rel="stylesheet">
+        <link href="../lib/videojs-record-3.8.0/examples/assets/css/examples.css" rel="stylesheet">
     
 </head>
 
@@ -25,8 +29,15 @@
     <hr>
     <div><audio controls autoplay playsinline></audio></div>
     
+    <audio id="myClip" class="video-js vjs-default-skin"></audio>
     <!-- recommended -->
     <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+    <!-- <script src="wavesurfer.min.js"></script>
+    <script src="videojs.wavesurfer.js"></script> -->
+    <script src="../lib/video.js/dist/video.min.js"></script>
+    <script src="../lib/wavesurfer.js/dist/wavesurfer.min.js"></script>
+    <script src="../lib/videojs-wavesurfer/dist/videojs.wavesurfer.min.js"></script>
+
 
     <script>
     var audio = document.querySelector('audio');
@@ -201,18 +212,20 @@
         this.disabled = true;
         if(!recorder || !recorder.getBlob()) return;
     
-        if(isSafari) {
-            recorder.getDataURL(function(dataURL) {
-                SaveToDisk(dataURL, getFileName('mp3'));
-            });
-            return;
-        }
-    
-        var blob = recorder.getBlob();
-        var file = new File([blob], getFileName('mp3'), {
-            type: 'audio/mp3'
+        recorder.getDataURL(function(dataURL) {
+            showWave(dataURL)
         });
-        invokeSaveAsDialog(file);
+        // if(isSafari) {
+        //     recorder.getDataURL(function(dataURL) {
+        //         SaveToDisk(dataURL, getFileName('mp3'));
+        //     });
+        //     return;
+        // }
+        // var blob = recorder.getBlob();
+        // var file = new File([blob], getFileName('mp3'), {
+        //     type: 'audio/mp3'
+        // });
+        // invokeSaveAsDialog(file);
     };
     
     function click(el) {
@@ -271,6 +284,28 @@
             _window.document.execCommand('SaveAs', true, fileName || fileURL)
             _window.close();
         }
+    }
+
+    function showWave(fileURL) {
+        var player = videojs('myClip', {
+            controls: true,
+            autoplay: true,
+            loop: false,
+            fluid: false,
+            width: 600,
+            height: 300,
+            plugins: {
+                wavesurfer: {
+                    src: fileURL,
+                    msDisplayMax: 10,
+                    debug: true,
+                    waveColor: 'grey',
+                    progressColor: 'black',
+                    cursorColor: 'black',
+                    hideScrollbar: true
+                }
+            }
+        });
     }
     </script>
     
