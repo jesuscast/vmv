@@ -1,0 +1,29 @@
+# osx
+.DS_Store
+
+# IDE
+.project
+.pydevproject
+
+# examples
+*.phar
+*.lock
+composer.json
+php.ini
+vendor
+uploads/
+
+# Dependency-related directories
+node_modules
+bower_components
+
+# Build-related
+*.log
+dist/
+docs/
+tmp
+coverage/
+.build_cache/
+
+# Test
+.chrome/
