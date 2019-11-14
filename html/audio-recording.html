@@ -14,22 +14,237 @@
             margin: 0!important;
             padding: 0!important;
         }
+        .container {
+            padding: 20px;
+        }
+        #myClip {
+            margin-top: 30px;
+        }
+        .voice-recorder {
+            display: flex;
+            justify-content: center;
+            
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            min-height: 400px;
+            position: relative;
+            background: radial-gradient(ellipse at center,rgba(123,0,199,.1) 0%,rgba(255,255,255,0) 70%) 25% 60px no-repeat,radial-gradient(ellipse at center,rgba(0,252,255,.1) 0%,rgba(0,252,255,0) 70%) 75% -130px no-repeat,radial-gradient(ellipse at center,#1a2f7d 0%,#232b56 100%);
+            background-size: 480px 480px,430px 430px,cover;
+            border-radius: 20px;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -khtml-user-drag: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -moz-user-select: -moz-none;
+            -ms-user-select: none;
+            user-select: none;
+            font-size: 0;
+        }
+        .flex-center {
+            justify-content: center;
+        }
+
+        .flex-1 {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        .btn-record {
+            cursor: pointer;
+            border-radius: 50%;
+            min-width: 60px;
+            height: 60px;
+            background-color: rgba(0,0,0,.3);
+            box-sizing: border-box;
+            transition: all .2s;
+            position: relative;
+            font-size: 0;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        .icn-record {
+            font-size: 0;
+            display: block;
+            padding: 0;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: #f03;
+            box-sizing: border-box;
+            transition: background-color .2s,opacity .2s,transform .2s;
+            transform-origin: center center;
+            transform: translate(-50%,-50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+        }
+        .icn-record-inner {
+            position: absolute;
+            transform: translate(-50%,-50%);
+            transform-origin: center center;
+            top: 50%;
+            left: 50%;
+            transition: all .2s;
+            width: 24px;
+            height: 24px;
+            background-color: transparent;
+            border-radius: 2px;
+        }
+        .icn-record svg {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            transition: opacity .2s;
+            opacity: 1;
+        }
+        .voice-recorder.active .btn-record {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+        }
+        .btn-record.active {
+            min-width: 94px;
+            border-radius: 35px;
+            background-color: rgba(0,0,0,.3);
+            margin-left: 0;
+            height: 46px;
+        }
+        .btn-record.active .record-timer {
+            opacity: 1;
+        }
+        .voice-recorder.active .btn-record .record-timer {
+            position: initial;
+            transform: none;
+            top: initial;
+            left: initial;
+            right: initial;
+            margin-left: 5px;
+        }
+        .record-timer {
+            position: absolute;
+            transform: translate(0,-50%);
+            top: 50%;
+            right: 10px;
+            left: 44px;
+            text-align: center;
+            opacity: 0;
+            font-size: 13px;
+            font-weight: 400;
+            color: #f03;
+            transition: opacity .2s;
+        }
+        .processing-info {
+            transition: all .2s;
+            height: 46px;
+            max-width: 0;
+            border-radius: 22.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        .processing-info-inner {
+            position: absolute;
+            left: -46px;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(-65deg,#e8e8e9,#e8e8e9 10px,#fff 10px,#fff 20px);
+            animation-name: PROCESSING-ANIMATION;
+            animation-duration: 1000ms;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        .processing-text {
+            font-size: 14px;
+            color: #272a30;
+            white-space: nowrap;
+            line-height: 46px;
+            position: relative;
+            height: 46px;
+        }
+        .the-text {
+            opacity: .6;
+            padding-left: 22px;
+            padding-right: 11px;
+            float: left;
+            position: relative;
+        }
+        .btn-record.active .icn-record {
+            transform: translate(0,-50%);
+            left: 10px;
+            width: 28px;
+            height: 28px;
+        }
+        .btn-record.active .icn-record svg {
+            opacity: 0;
+        }
+        .voice-recorder.active .btn-record .icn-record {
+            transition: background-color .2s,opacity .2s!important;
+            transform: none!important;
+            position: relative!important;
+            top: initial!important;
+            left: initial!important;
+        }
+        .video-js {
+            background-color: #fff;
+        }
+        h2 {
+            color: #fff;
+    /* position: absolute; */
+    font-size: 30px;
+        }
     </style>
     
     <title>Audio Recording | RecordRTC</title>
-    <h1>Simple Audio Recording using RecordRTC</h1>
 
     <br>
-    
-    <button id="btn-start-recording">Start Recording</button>
+    <div class="container">
+    <div class="voice-recorder">
+            <h2>Wave Recording</h2>
+            <div><div><audio id="myClip" class="video-js vjs-default-skin"></audio></div></div>
+        <div class="flex-1 flex-center">
+            <div class="btn-record btn-start-recording"> <i class="icn-record"> <i class="icn-record-inner"></i> <svg width="14px" height="19px" viewBox="0 0 14 19" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <path d="M7,12 C8.66,12 9.99,10.66 9.99,9 L10,3 C10,1.34 8.66,0 7,0 C5.34,0 4,1.34 4,3 L4,9 C4,10.66 5.34,12 7,12 Z M12.3,9 C12.3,12 9.76,14.1 7,14.1 C4.24,14.1 1.7,12 1.7,9 L0,9 C0,12.41 2.72,15.23 6,15.72 L6,19 L8,19 L8,15.72 C11.28,15.24 14,12.42 14,9 L12.3,9 Z" id="mic" fill="#FFFFFF" fill-rule="nonzero"></path>
+                        </g>
+                    </svg> </i>
+                <div class="record-timer">00:00</div>
+                <div class="processing-info">
+                    <div class="processing-info-inner"> </div>
+                    <div class="processing-text"> <span class="the-text">Processing...</span> </div>
+                </div>
+            </div>
+             <!-- <button type="button" class="btn-pause-record active"> <i class="icn-pause-record"> <svg width="12px" height="15px" viewBox="0 0 12 15" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <defs></defs>
+                        <g id="webcamera.io" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="ui_kit" transform="translate(-117.000000, -695.000000)" fill="#FFFFFF">
+                                <g id="Group-3" transform="translate(100.000000, 680.000000)">
+                                    <g id="record_pause" transform="translate(17.000000, 15.000000)">
+                                        <rect id="Rectangle-6" x="0" y="0" width="4" height="15" rx="1"></rect>
+                                        <rect id="Rectangle-6-Copy-2" x="8" y="0" width="4" height="15" rx="1"></rect>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg> </i> 
+                </button> -->
+        </div>
+    </div>
+</div>
+    <!-- <button id="btn-start-recording">Start Recording</button>
     <button id="btn-stop-recording" disabled>Stop Recording</button>
-    <button id="btn-release-microphone" disabled>Release Microphone</button>
-    <button id="btn-download-recording" disabled>See image</button>
+    <button id="btn-release-microphone" disabled>Release Microphone</button> -->
+    <!-- <button id="btn-download-recording" disabled>See image</button> -->
     
-    <hr>
-    <div><audio controls autoplay playsinline></audio></div>
+   
+    <!-- <div><audio className="audio" controls autoplay playsinline></audio></div> -->
     
-    <audio id="myClip" class="video-js vjs-default-skin"></audio>
+   
+    <script src="./jquery-3.4.1.min.js"></script>
     <!-- recommended -->
     <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
     <!-- <script src="wavesurfer.min.js"></script>
@@ -40,10 +255,10 @@
 
 
     <script>
-    var audio = document.querySelector('audio');
+    var audio = document.querySelector('.audio');
     
     function captureMicrophone(callback) {
-        btnReleaseMicrophone.disabled = false;
+        // btnReleaseMicrophone.disabled = false;
     
         if(microphone) {
             callback(microphone);
@@ -71,44 +286,45 @@
     }
     
     function replaceAudio(src) {
-        var newAudio = document.createElement('audio');
-        newAudio.controls = true;
-        newAudio.autoplay = true;
+        // var newAudio = document.createElement('audio');
+        // newAudio.controls = true;
+        // newAudio.autoplay = true;
     
-        if(src) {
-            newAudio.src = src;
-        }
+        // if(src) {
+        //     newAudio.src = src;
+        // }
         
-        var parentNode = audio.parentNode;
-        parentNode.innerHTML = '';
-        parentNode.appendChild(newAudio);
+        // var parentNode = audio.parentNode;
+        // parentNode.innerHTML = '';
+        // parentNode.appendChild(newAudio);
     
-        audio = newAudio;
+        // audio = newAudio;
     }
     
     function stopRecordingCallback() {
         replaceAudio(URL.createObjectURL(recorder.getBlob()));
     
-        btnStartRecording.disabled = false;
+        // btnStartRecording.disabled = false;
     
-        setTimeout(function() {
-            if(!audio.paused) return;
+        // setTimeout(function() {
+        //     if(!audio.paused) return;
     
-            setTimeout(function() {
-                if(!audio.paused) return;
-                audio.play();
-            }, 1000);
+        //     setTimeout(function() {
+        //         if(!audio.paused) return;
+        //         audio.play();
+        //     }, 1000);
             
-            audio.play();
-        }, 300);
+        //     audio.play();
+        // }, 300);
     
-        audio.play();
+        // audio.play();
     
-        btnDownloadRecording.disabled = false;
+        // btnDownloadRecording.disabled = false;
     
         if(isSafari) {
-            click(btnReleaseMicrophone);
+            // click(btnReleaseMicrophone);
         }
+        showWaveOnClick();
     }
     
     var isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
@@ -117,43 +333,42 @@
     var recorder; // globally accessible
     var microphone;
     
-    var btnStartRecording = document.getElementById('btn-start-recording');
-    var btnStopRecording = document.getElementById('btn-stop-recording');
-    var btnReleaseMicrophone = document.querySelector('#btn-release-microphone');
-    var btnDownloadRecording = document.getElementById('btn-download-recording');
+    // var btnStartRecording = document.getElementById('btn-start-recording');
+    // var btnStopRecording = document.getElementById('btn-stop-recording');
+    // var btnReleaseMicrophone = document.querySelector('#btn-release-microphone');
+    // var btnDownloadRecording = document.getElementById('btn-download-recording');
     
-    btnStartRecording.onclick = function() {
+    var audioCounterSec = 0;
+    var intervalAudioCounterSec = null;
+    
+    function str_pad_left(string,pad,length) {
+        return (new Array(length+1).join(pad)+string).slice(-length);
+    }
+
+    function incrementAudioCounter() {
+        audioCounterSec += 1;
+        console.log(audioCounterSec);
+        var minutes = Math.floor(audioCounterSec / 60);
+        var seconds = audioCounterSec - minutes * 60;
+        var timeStr = str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2);
+        $(".record-timer").html(timeStr);
+    }
+
+
+    $(".btn-start-recording").click(function() {
+        if(intervalAudioCounterSec !== null) {
+            console.log("[recorder] Already started");
+            stopRecording();
+            return;
+        }
         this.disabled = true;
         this.style.border = '';
         this.style.fontSize = '';
     
-        if (!microphone) {
-            captureMicrophone(function(mic) {
-                microphone = mic;
-    
-                if(isSafari) {
-                    replaceAudio();
-    
-                    audio.muted = true;
-                    audio.srcObject = microphone;
-    
-                    btnStartRecording.disabled = false;
-                    btnStartRecording.style.border = '1px solid red';
-                    btnStartRecording.style.fontSize = '150%';
-    
-                    alert('Please click startRecording button again. First time we tried to access your microphone. Now we will record it.');
-                    return;
-                }
-    
-                click(btnStartRecording);
-            });
-            return;
-        }
-    
         replaceAudio();
     
-        audio.muted = true;
-        audio.srcObject = microphone;
+        // audio.muted = true;
+        // audio.srcObject = microphone;
     
         var options = {
             type: 'audio',
@@ -185,31 +400,43 @@
     
         recorder.startRecording();
     
-        btnStopRecording.disabled = false;
-        btnDownloadRecording.disabled = true;
-    };
+        // btnStopRecording.disabled = false;
+        // btnDownloadRecording.disabled = true;
+        intervalAudioCounterSec = setInterval(incrementAudioCounter, 1000);
+        $(".btn-record").addClass("active");
+        $(".voice-recorder").addClass("active");
+    });
     
-    btnStopRecording.onclick = function() {
+    function stopRecording() {
         this.disabled = true;
         recorder.stopRecording(stopRecordingCallback);
+        clearInterval(intervalAudioCounterSec);
+        intervalAudioCounterSec = null;
+        audioCounterSec = 0;
+        $(".btn-record").removeClass("active");
+        $(".voice-recorder").removeClass("active");
     };
+
+    // btnStopRecording.onclick = function() {
+    //     stopRecording();
+    // };
     
-    btnReleaseMicrophone.onclick = function() {
-        this.disabled = true;
-        btnStartRecording.disabled = false;
+    // btnReleaseMicrophone.onclick = function() {
+    //     this.disabled = true;
+    //     // btnStartRecording.disabled = false;
     
-        if(microphone) {
-            microphone.stop();
-            microphone = null;
-        }
+    //     if(microphone) {
+    //         microphone.stop();
+    //         microphone = null;
+    //     }
     
-        if(recorder) {
-            // click(btnStopRecording);
-        }
-    };
+    //     if(recorder) {
+    //         // click(btnStopRecording);
+    //     }
+    // };
     
-    btnDownloadRecording.onclick = function() {
-        this.disabled = true;
+    function showWaveOnClick() {
+        // this.disabled = true;
         if(!recorder || !recorder.getBlob()) return;
     
         recorder.getDataURL(function(dataURL) {
@@ -227,6 +454,9 @@
         // });
         // invokeSaveAsDialog(file);
     };
+    // btnDownloadRecording.onclick = function() {
+    //     showWaveOnClick();
+    // };
     
     function click(el) {
         el.disabled = false; // make sure that element is not disabled
@@ -299,7 +529,7 @@
                     src: fileURL,
                     msDisplayMax: 10,
                     debug: true,
-                    waveColor: 'grey',
+                    waveColor: '#189a3a',
                     progressColor: 'black',
                     cursorColor: 'black',
                     hideScrollbar: true
@@ -307,6 +537,31 @@
             }
         });
     }
+
+    if (!microphone) {
+        captureMicrophone(function(mic) {
+            microphone = mic;
+
+            if(isSafari) {
+                replaceAudio();
+
+                // audio.muted = true;
+                // audio.srcObject = microphone;
+
+                // btnStartRecording.disabled = false;
+                // btnStartRecording.style.border = '1px solid red';
+                // btnStartRecording.style.fontSize = '150%';
+
+                alert('Please click startRecording button again. First time we tried to access your microphone. Now we will record it.');
+                return;
+            }
+
+            // click(btnStartRecording);
+        });
+    }
+
+    // TODO: Remove when setting actual timer
+    // audioCounterSec = setInterval(incrementAudioCounter, 1000);
     </script>
     
     <footer style="margin-top: 20px;"><small id="send-message"></small></footer>
