@@ -512,27 +512,29 @@
         }
 
         function canvasToImg(cb) {
-            let waves = $("wave");
-            html2canvas(waves[0], {
-                height: 270,
-                width: 600,
-                timeout: 0,
-                logging: false,
-                onrendered: function(canvas) {
-                    var toImg = canvas.toDataURL('image/png');
+            // let waves = $("wave");
+            // html2canvas(waves[0], {
+            //     height: 270,
+            //     width: 600,
+            //     timeout: 0,
+            //     logging: false,
+            //     onrendered: function(canvas) {
+            //         var toImg = canvas.toDataURL('image/png');
 
-                    // console.log('imagedata => ' + toImg);
+            //         // console.log('imagedata => ' + toImg);
 
-                    var span = document.createElement('span');
-                    span.setAttribute('id', 'renderedImg');
-                    span.dataset.base = toImg;
-                    document.body.appendChild(span);
-                    window.toImg = toImg;
-                    if (cb) {
-                        cb(toImg);
-                    }
-                },
-            });
+            //         var span = document.createElement('span');
+            //         span.setAttribute('id', 'renderedImg');
+            //         span.dataset.base = toImg;
+            //         document.body.appendChild(span);
+            //         window.toImg = toImg;
+            //         if (cb) {
+            //             cb(toImg);
+            //         }
+            //     },
+            // });
+            var toImg = recorder.exportImage('image/png');
+            console.log(toImg)
         }
         //return a promise that resolves with a File instance
         function urltoFile(url, filename, mimeType){
@@ -601,8 +603,8 @@
                         msDisplayMax: 10,
                         debug: true,
                         waveColor: '#189a3a',
-                        progressColor: 'black',
-                        cursorColor: 'black',
+                        progressColor: '#189a3a',
+                        cursorColor: '#189a3a',
                         hideScrollbar: true,
                         normalize: true
                     }
