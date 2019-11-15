@@ -28,7 +28,7 @@
         .voice-recorder {
             display: flex;
             justify-content: center;
-            
+            height: 90%;
             flex-direction: column;
             align-items: center;
             width: 100%;
@@ -210,7 +210,7 @@
     <div class="container">
     <div class="voice-recorder">
             <h2>Wave Recording</h2>
-            <div><div><audio id="myClip" class="video-js vjs-default-skin"></audio></div></div>
+            <div id="player-container"></div>
         <div class="flex-1 flex-center">
             <div class="btn-record btn-start-recording"> <i class="icn-record"> <i class="icn-record-inner"></i> <svg width="14px" height="19px" viewBox="0 0 14 19" version="1.1" xmlns="http://www.w3.org/2000/svg">
                         <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -261,7 +261,7 @@
 
     <script>
     var audio = document.querySelector('.audio');
-    
+    let player = null;
     function captureMicrophone(callback) {
         // btnReleaseMicrophone.disabled = false;
     
@@ -366,6 +366,10 @@
             stopRecording();
             return;
         }
+        if (player !== null) {
+            player.wavesurfer().destroy();
+        }
+        $("#player-container").html(`<audio id="myClip" class="video-js vjs-default-skin"></audio>`);
         this.disabled = true;
         this.style.border = '';
         this.style.fontSize = '';
@@ -522,7 +526,7 @@
     }
 
     function showWave(fileURL) {
-        var player = videojs('myClip', {
+        player = videojs('myClip', {
             controls: true,
             autoplay: true,
             loop: false,
@@ -557,7 +561,7 @@
                 // btnStartRecording.style.border = '1px solid red';
                 // btnStartRecording.style.fontSize = '150%';
 
-                alert('Please click startRecording button again. First time we tried to access your microphone. Now we will record it.');
+                // alert('Please click startRecording button again. First time we tried to access your microphone. Now we will record it.');
                 return;
             }
 
