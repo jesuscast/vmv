@@ -243,6 +243,30 @@
         .voice-recorder.retry .record-icon {
             display: none;
         }
+        .circle {
+            border-radius: 50%;
+            background-color: deepskyblue;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            opacity: 0;
+            margin-left: 5px;
+            top: 150px;
+            
+        }
+        .voice-recorder.active .circle {
+            animation: scaleIn 4s infinite cubic-bezier(.36, .11, .89, .32);
+        }
+        @keyframes scaleIn {
+            from {
+                transform: scale(.5, .5);
+                opacity: .5;
+            }
+            to {
+                transform: scale(2.5, 2.5);
+                opacity: 0;
+            }
+        }
     </style>
 
     <title>Audio Recording | RecordRTC</title>
@@ -252,8 +276,12 @@
         <div class="voice-recorder">
             <h2>Wave Recording</h2>
             <div id="player-container"></div>
-
+            
             <div class="flex-1 flex-center btn-record-container">
+                    <div class="circle" style="animation-delay: 0s"></div>
+                    <div class="circle" style="animation-delay: 1s"></div>
+                    <div class="circle" style="animation-delay: 2s"></div>
+                    <div class="circle" style="animation-delay: 3s"></div>
                 <div class="btn-record btn-start-recording">
                     <i class="icn-record">
                         <i class="icn-record-inner"></i>
