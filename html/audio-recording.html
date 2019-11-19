@@ -561,8 +561,11 @@
             //         }
             //     },
             // });
-            var toImg = recorder.exportImage('image/png');
+            var toImg = player.wavesurfer().exportImage('image/png');
             console.log(toImg)
+            if (cb) {
+                cb(toImg);
+            }
         }
         //return a promise that resolves with a File instance
         function urltoFile(url, filename, mimeType){
