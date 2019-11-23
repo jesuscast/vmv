@@ -1,13 +1,18 @@
 <html>
 
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head><meta name="viewport" content="width=device-width, initial-scale = 1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="stylesheet" href="../css/nouislider.css">
 
 </head>
 
 <body>
     <style>
+        html, body {
+        overflow-x: hidden;
+        }
+        body {
+        position: relative
+        }
         html {
             background: #fff;
         }    
@@ -17,7 +22,7 @@
         }
 
         body {
-            min-width: 400px !important;
+            min-width: 300px !important;
         }
         .c-product-edit[_ngcontent-c21] {
             display: flex;
@@ -25,6 +30,22 @@
         @media (max-width: 600px) {
             .c-product-edit[_ngcontent-c21] {
                 flex-direction: column;
+            }
+            .c-product-options__content {
+                padding: 0;
+                margin-left: 5%;
+            }
+            .c-product-options {
+                top: 0px;
+            }  
+            .c-product-edit__options[_ngcontent-c21] {
+                overflow-x: hidden;
+            }
+            /* .c-product-edit__options__main[_ngcontent-c21] {
+                width: 345px;
+            } */
+            .c-product-edit__image-editor-wrapper[_ngcontent-c21] {
+                padding: 0px;
             }
         }
     </style>

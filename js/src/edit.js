@@ -309,8 +309,8 @@ function edit() {
 
 
     /*
-        * Handle user dragging/reposition their image on the product
-        */
+    * Handle user dragging/reposition their image on the product
+    */
     ctrl.dragging = false;
     var lastClientX = 0;
     var lastClientY = 0;
@@ -349,6 +349,23 @@ function edit() {
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('mouseup', onMouseUp);
+    
+    const editorContainer = document.getElementById("image-editor-container");
+    editorContainer.addEventListener('touchstart', function(e) {
+        var touchLocation = e.targetTouches[0];
+        ctrl.dragging = true;
+        lastClientX = touchLocation.clientX;
+        lastClientY = touchLocation.clientY;
+    });
+    editorContainer.addEventListener('touchmove', function(e) {
+        // grab the location of touch
+        var touchLocation = e.targetTouches[0];
+        onMouseMove(touchLocation);
+    });
+    editorContainer.addEventListener('touchend', function(e) {
+        ctrl.dragging = false;
+    });
+    console.log(document.getElementById("image-editor-container"))
 }
 
 module.exports = {

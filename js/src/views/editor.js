@@ -16,7 +16,6 @@ class Editor {
         }
     }
     static run() {
-
         setTimeout(() => {
             Editor.getValuesFromStorage();
         }, 200);
