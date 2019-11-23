@@ -9,6 +9,35 @@
 </head>
 
 <body>
+        <style>
+                html {
+                    overflow-x: hidden;
+                    background: #fff;
+                }
+                .c-product-edit[_ngcontent-c21] {
+                    overflow-x: hidden;
+                }
+                #country  {
+                    max-width: 150px !important;
+                }
+                .c-product-options__content {
+                    margin-left: 0px;
+                    min-height: 0px !important;
+                }
+                body {
+                    min-width: 400px !important;
+                }
+                .c-product-edit__image-editor-wrapper[_ngcontent-c21] {
+                    margin-top: 0px;
+                    padding: 0 51px;
+                }
+                @media (max-width: 600px) {
+                .c-product-edit[_ngcontent-c21] {
+                    flex-direction: column;
+                }
+            }
+            </style>
+    
     <product-edit-component style="display:block;0:display;display:block;" _nghost-c21="" class="ng-tns-c21-28 ng-trigger ng-trigger-fadeInAnimation ng-star-inserted">
         <notice-bar-component _ngcontent-c21="" class="c-product-edit__notice-bar ng-tns-c7-29" _nghost-c7="">
             <!---->
@@ -19,38 +48,8 @@
                 <!---->
             </error-bar-component>
             <!---->
-            <div _ngcontent-c21="" class="c-product-edit__header ng-tns-c21-28 ng-star-inserted" style="">
-                <button _ngcontent-c21="" class="c-product-edit__header__back-link c-btn c-btn--bare c-text-m">
-                    <svg _ngcontent-c21="" class="c-icon c-product-edit__header__back-link__icon">
-                        <use _ngcontent-c21="" class="ng-tns-c21-28" xlink:href="#chevron"></use>
-                    </svg><span _ngcontent-c21="" class="c-product-edit__header__back-link__text">BACK</span></button>
-                <div _ngcontent-c21="" class="ng-tns-c21-28">
-                    <!---->
-                    <!---->
-                </div>
-            </div>
             <product-options-component _ngcontent-c21="" class="c-product-edit__options ng-tns-c22-31 ng-tns-c21-28 ng-star-inserted" style="">
                 <div class="c-product-options">
-                    <div class="c-product-options__tabs">
-                        <div class="c-product-options__tab c-product-options__tab--selected" title="Design &amp; Edit">
-                            <svg class="c-icon u-center-in-parent c-product-options__tab__icon">
-                                <use class="ng-tns-c22-31" xlink:href="#pencil"></use>
-                            </svg>
-                            <!---->
-                        </div>
-                        <div class="c-product-options__tab" title="Configure">
-                            <svg class="c-icon u-center-in-parent c-product-options__tab__icon">
-                                <use class="ng-tns-c22-31" xlink:href="#tune-icon"></use>
-                            </svg>
-                            <!---->
-                        </div>
-                        <div class="c-product-options__tab" title="Information">
-                            <svg class="c-icon u-center-in-parent c-product-options__tab__icon">
-                                <use class="ng-tns-c22-31" xlink:href="#info-form"></use>
-                            </svg>
-                            <!---->
-                        </div>
-                    </div>
                     <div class="c-product-options__content">
                         <!---->
                         <product-options-edit-component class="c-product-options__sub-component ng-tns-c22-31 ng-trigger ng-trigger-fadeInAnimation ng-star-inserted" _nghost-c24="" style="">

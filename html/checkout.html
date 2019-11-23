@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/nouislider.css" />
     <link rel="stylesheet" href="../css/checkout.css" />
 </head>
@@ -11,6 +12,28 @@
                 overflow-x: hidden;
                 background: #fff;
             }
+            .c-product-edit[_ngcontent-c21] {
+                overflow-x: hidden;
+            }
+            #country  {
+                max-width: 150px !important;
+            }
+            .c-product-options__content {
+                margin-left: 0px;
+                min-height: 0px !important;
+            }
+            body {
+                min-width: 400px !important;
+            }
+            .c-product-edit__image-editor-wrapper[_ngcontent-c21] {
+                margin-top: 0px;
+                padding: 0 51px;
+            }
+            @media (max-width: 600px) {
+            .c-product-edit[_ngcontent-c21] {
+                flex-direction: column;
+            }
+        }
         </style>
 
     <product-edit-component style="display:block;0:display;display:block;" _nghost-c21="" class="ng-tns-c21-28 ng-trigger ng-trigger-fadeInAnimation ng-star-inserted">
@@ -23,16 +46,6 @@
                 <!---->
             </error-bar-component>
             <!---->
-            <div _ngcontent-c21="" class="c-product-edit__header ng-tns-c21-28 ng-star-inserted" style="">
-                <button _ngcontent-c21="" class="c-product-edit__header__back-link c-btn c-btn--bare c-text-m">
-                    <svg _ngcontent-c21="" class="c-icon c-product-edit__header__back-link__icon">
-                        <use _ngcontent-c21="" class="ng-tns-c21-28" xlink:href="#chevron"></use>
-                    </svg><span _ngcontent-c21="" class="c-product-edit__header__back-link__text">BACK</span></button>
-                <div _ngcontent-c21="" class="ng-tns-c21-28">
-                    <!---->
-                    <!---->
-                </div>
-            </div>
             <product-options-component _ngcontent-c21="" class="c-product-edit__options ng-tns-c22-31 ng-tns-c21-28 ng-star-inserted" style="">
                 <div class="c-product-options">
                     <div class="c-product-options__content">
@@ -110,6 +123,10 @@
                                         <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">City</span></div>
     
                                         <input type="text" id="city" />
+                                     </div>
+                            </fulfilment-field-control-component>
+                            <fulfilment-field-control-component _ngcontent-c33="" _nghost-c34="" class="ng-star-inserted" style="">
+                                    <div _ngcontent-c34="" class="c-fulfilment-field-control-component">
                                         <div _ngcontent-c34="" class="c-fulfilment-field-control-component__field-info c-fulfilment-field-control-component__field-info--not-current ng-star-inserted "><span _ngcontent-c34="" class="c-text-m">Country</span></div>
     
                                         <select class="crs-country" id="country" data-region-id="region"></select>
