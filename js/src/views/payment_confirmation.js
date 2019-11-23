@@ -3,7 +3,7 @@ const Payment = require('./payment');
 class PaymentConfirmation {
     static updateTinyImg(url) {
         $("#tiny-image").attr('src', url);
-        $("#tiny-image").css('width', '150%');
+        $("#tiny-image").css('width', '100%');
         $("#tiny-image").css('margin-top', '20px');
     }
     static run() {
