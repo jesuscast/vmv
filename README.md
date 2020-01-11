@@ -3,12 +3,18 @@
 # First commit changes,
 git add -A .
 git commit -m "Describe changes here"
+git push
 
 # Then, ssh into the server.
 ssh jesus_cast_sosa@35.193.246.216
-
+# Change user
+sudo su daemon
+# Find the folder
+cd apps/wordpress/htdocs/wp-content/plugins/vmv/
 # Now inside the other server, pull the changes
 git pull
+# Exit the server
+exit && exit
 ```
 
 # How to develop
