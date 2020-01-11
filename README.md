@@ -1,3 +1,10 @@
+# Viewmyvoice.net
+This project contains a wordpress plugin that has the entire record and store process of viewmyvoice.net,
+
+The plugin itself is structured as an independent Javascript app with most of the code under the folders `html/`, `css/`, and `js/`. The javascript app is exported as a wordpress shortcut in the files on `php/`.
+
+The plugin is deployed to a server by pushing the changes to git, then pulling the changes from inside the server. It assumes that the server has cloned the git repo under `apps/wordpress/htdocs/wp-content/plugins/vmv/`. This is true for the current server that runs viewmyvoice.net on IP 35.193.246.216
+
 # How to deploy
 ```bash
 # First commit changes,
@@ -7,7 +14,7 @@ git push
 
 # Then, ssh into the server.
 ssh jesus_cast_sosa@35.193.246.216
-# Change user
+# Change user, this is necessary since wordpress is installed under this user.
 sudo su daemon
 # Find the folder
 cd apps/wordpress/htdocs/wp-content/plugins/vmv/
