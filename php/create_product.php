@@ -1,6 +1,6 @@
 <?php
-include 'create_product_default_view.php';
-include 'editor.php';
+include './create_product_default_view.php';
+include './editor.php';
 
 function image_editor_view_func() {
     return get_create_editor();

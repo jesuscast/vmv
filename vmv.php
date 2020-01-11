@@ -8,7 +8,7 @@
  * Author URI: https://viewmyvoice.net
  */
 
-include 'create_product.php';
+include './php/create_product.php';
 
 // [create_product_gallery]
 function create_product_gallery_func( $atts ){
