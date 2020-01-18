@@ -1,12 +1,10 @@
 const {CORSURL} = require('../constants');
 const price_data = require('../views/selection/price_data.json')
-// ctrl.imageGeneratorEndpoint + "/render/?image=" + image.url_preview
-//         + "&product_id=" + coverVariant.template_id + "&variant="
-//         + variantName + "&format=jpg&debug=false&background="
-//         + "eeedec&size=628x452&fill_mode=fit&padding=20&&scale=" + image.scale
-//         + "&rotate=" + image.rotate_degrees + "&mirror=" + image.mirror
-//         + "&translate=" + image.tx + "," + image.ty + "&print_image="+ image.print_image;
 
+/**
+ * Class with utility functions to render products and pass data of products along,
+ * including their manipulated images from the editor
+ */
 class Product {
     constructor(img, product_id, variant, scale, translate, category, size, fromJSON) {
         this.img = img;
@@ -25,6 +23,12 @@ class Product {
         this.product_tags = [];
     }
 
+    /**
+     * Returns the rendered image of the product using kite.ly render endpoint.
+     * Here, we can process the horizontal / vertical alterations of the image done in the
+     * editor.
+     * @param {boolean} print Defines whether the image is for displaying in website or for sending a job "print" order.
+     */
     toImg(print) {
         let variant = "&variant="+this.variant;
         if (this.product_id.indexOf('_case') !== -1 || this.product_id.indexOf('greeting_cards') !== -1) {
@@ -47,6 +51,12 @@ class Product {
         "&print_image="+ (print ? "true" : "false");
     }
 
+    /**
+     * Saves the product order into local database of view my voice.
+     * @param {string} user_id 
+     * @param {fn} cb 
+     * @param {fn} cbError 
+     */
     postProduct(user_id, cb, cbError) {
         fetch(`${CORSURL}http://viewmyvoice.net/wp-json/vmv/orders`, {
             method: 'POST',
@@ -68,6 +78,11 @@ class Product {
         });
     }
 
+    /**
+     * Parses a product object from JSON.
+     * @param {dict} jsonObject 
+     * @param {string} imgUrl 
+     */
     static fromJSON(jsonObject, imgUrl) {
         const product = new Product(
             imgUrl,

@@ -1,5 +1,24 @@
+/**
+ * Define the environment as "prod" or "test"
+ * Running in "test" will use paypal and kite.ly in sandbox mode,
+ * Running in "prod" will use live paypal and live kite.ly.
+ */
+const env = 'prod';
+console.log(`[env] ${env}`)
+
+/**
+ * Required to avoid CORS errors
+ */
 const CORSURL = "https://cors-anywhere.herokuapp.com/"
+
+/**
+ * Used to upload images to kitely for the image editor
+ */
 const CLEAN_IMAGE_ENDPOINT = "https://image.kite.ly";
+
+/**
+ * Contains the paypal credentials to make transactions.
+ */
 const rawCreds = {
     test: {
         paypalHost: 'api.sandbox.paypal.com',
@@ -14,108 +33,11 @@ const rawCreds = {
         privKey: 'sk_live_c0933bccc9890ee8fa43fa21f09aa6cc229107ba'
     },
 };
-const env = 'prod';
-console.log(`[env] ${env}`)
 const creds = rawCreds[env];
-const sampleTransaction = {
-    "create_time":"2019-06-06T00:19:46Z",
-    "update_time":"2019-06-06T00:19:46Z",
-    "id":"8B2968046V6357949",
-    "intent":"CAPTURE",
-    "status":"COMPLETED",
-    "payer":{
-       "email_address":"jesus.cast.sosa@gmail.com",
-       "payer_id":"S2V2YVZ7LR9Q6",
-       "address":{
-          "country_code":"US"
-       },
-       "name":{
-          "given_name":"Jesus",
-          "surname":"Castaneda"
-       }
-    },
-    "purchase_units":[
-       {
-          "reference_id":"default",
-          "soft_descriptor":"PAYPAL *CHARLIECARP",
-          "amount":{
-             "value":"1.00",
-             "currency_code":"USD"
-          },
-          "payee":{
-             "email_address":"sandbox-merchant@kite.ly",
-             "merchant_id":"D5JH5T7M8JMBU"
-          },
-          "shipping":{
-             "name":{
-                "full_name":"Jesus Castaneda"
-             },
-             "address":{
-                "address_line_1":"33 8th St",
-                "address_line_2":"701",
-                "admin_area_2":"San Francisco",
-                "admin_area_1":"CA",
-                "postal_code":"94103",
-                "country_code":"US"
-             }
-          },
-          "payments":{
-             "captures":[
-                {
-                   "status":"PENDING",
-                   "id":"5YW653669E606423P",
-                   "final_capture":true,
-                   "create_time":"2019-06-06T00:19:46Z",
-                   "update_time":"2019-06-06T00:19:46Z",
-                   "amount":{
-                      "value":"1.00",
-                      "currency_code":"USD"
-                   },
-                   "seller_protection":{
-                      "status":"ELIGIBLE",
-                      "dispute_categories":[
-                         "ITEM_NOT_RECEIVED",
-                         "UNAUTHORIZED_TRANSACTION"
-                      ]
-                   },
-                   "status_details":{
-                      "reason":"RECEIVING_PREFERENCE_MANDATES_MANUAL_ACTION"
-                   },
-                   "links":[
-                      {
-                         "href":"https://api.sandbox.paypal.com/v2/payments/captures/5YW653669E606423P",
-                         "rel":"self",
-                         "method":"GET",
-                         "title":"GET"
-                      },
-                      {
-                         "href":"https://api.sandbox.paypal.com/v2/payments/captures/5YW653669E606423P/refund",
-                         "rel":"refund",
-                         "method":"POST",
-                         "title":"POST"
-                      },
-                      {
-                         "href":"https://api.sandbox.paypal.com/v2/checkout/orders/8B2968046V6357949",
-                         "rel":"up",
-                         "method":"GET",
-                         "title":"GET"
-                      }
-                   ]
-                }
-             ]
-          }
-       }
-    ],
-    "links":[
-       {
-          "href":"https://api.sandbox.paypal.com/v2/checkout/orders/8B2968046V6357949",
-          "rel":"self",
-          "method":"GET",
-          "title":"GET"
-       }
-    ]
- };
 
+/**
+ * Used for holding context while manipulating images in the editor.js view
+ */
 const ctrl = {
     loading: false,
     dragging: false,
@@ -123,6 +45,11 @@ const ctrl = {
     imageGeneratorEndpoint: CLEAN_IMAGE_ENDPOINT
 };
 
+/**
+ * Global object holding context across views.
+ * We serialize and deserilize this object from localStorage
+ * to pass values across views.
+ */
 let $scope = {
     templateId: "aa_mens_tshirt",
     variant: null,
@@ -144,21 +71,36 @@ let $scope = {
     userIdWP: null
 }
 
+/**
+ * Serializes scope to local storage.
+ * @param {scope} scope 
+ */
 function saveScope(scope) {
     $scope = scope;
     localStorage.setItem('scope', JSON.stringify($scope))
 }
 
+/**
+ * Deserializes scope to local storage.
+ * @param {scope} scope 
+ */
 function getScope() {
     $scope = JSON.parse(localStorage.getItem('scope'));
     return $scope;
 }
 
+/**
+ * Grab the url search parameters. We use this to pass along the address of the image
+ */
 let windowParams = new URLSearchParams(location.search);
 if (windowParams.get("img")) {
     $scope.userImageUrl = windowParams.get("img")
 }
 
+/**
+ * List of available products. This may need to be updated from the kitely api
+ * Every couple of months.
+ */
 const products = [
     "magnets",
     "squares",
@@ -252,7 +194,11 @@ const products = [
     "square_invitations_15x15cm_10pack"
 ]
 
-// Country name, iso2, iso3, iso3 currency, is in europe.
+/**
+ * List of countries with the following values:
+ * name, iso2, iso3, iso3 currency, inEurope.
+ * We use this to pass the shipping address in a format available to kite.ly
+ */
 const countriesRaw = {
     ALAND_ISLANDS                     : ["Åland Islands", "AX", "ALA", "EUR", true ],
     AFGHANISTAN                       : ["Afghanistan", "AF", "AFG", "AFN", false ],
@@ -502,6 +448,9 @@ const countriesRaw = {
     ZIMBABWE                          : ["Zimbabwe", "ZW", "ZWE", "ZWL", false],
 };
 
+/**
+ * List of colors for the editor.
+ */
 const colorMappings = {
     "brown": '560B14', // Brick Red
     "heather_grey": "ADBDBF",
@@ -530,6 +479,9 @@ const colorMappings = {
     "digital blue": "#283352"
 };
 
+/**
+ * Maps a country to a shipping region
+ */
 const country_to_region_mapping =
    { ABW: 'ROW',
      AFG: 'ROW',
@@ -781,6 +733,8 @@ const country_to_region_mapping =
      ZAF: 'ROW',
      ZMB: 'ROW',
      ZWE: 'ROW' }
+
+
 module.exports = {
     creds,
     products,

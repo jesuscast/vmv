@@ -1,3 +1,6 @@
+/**
+ * Hold the correct JSON data format for creating kite.ly jobs
+ */
 class Job {
     constructor(product) {
         this.product = product;
@@ -10,6 +13,9 @@ class Job {
         }
     }
 
+    /**
+     * Returns the apparel job description for kite.ly
+     */
     apparel() {
         console.log(this.product)
         return {
@@ -53,6 +59,10 @@ class Job {
         return this.default();
     }
 
+    /**
+     * Transform the instance into a valid JSON with the right format
+     * to create jobs in kite.ly
+     */
     toDict() {
         const funcMappings = {
             "apparel": this.apparel,

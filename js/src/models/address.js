@@ -1,4 +1,7 @@
-const {CORSURL, creds, countriesRaw, $scope, sampleTransaction}  = require('../constants');
+/**
+ * Import the list of countries.
+ */
+const {countriesRaw}  = require('../constants');
 const Country = require('./country')
 const countries = [];
 
@@ -8,7 +11,10 @@ for(let i = 0; i < countriesKeys.length; i++) {
     countries.push(new Country(country))
 }
 
-
+/**
+ * Returns the country with the matching name
+ * @param {string} countryName 
+ */
 function findCountryByName(countryName) {
     const countriesKeys = Object.keys(countries);
     for(let i = 0; i < countriesKeys.length; i++) {
@@ -19,7 +25,12 @@ function findCountryByName(countryName) {
     }
     return null;
 }
+
 class Address {
+    /**
+     * Required fields to create an address object.
+     * Without those the build method throws an exception
+     */
     static requiredFields = ['city', 'country', 'region', 'addressLine1', 'zip', 'recipient_name'];
 
     constructor(fields) {
@@ -38,6 +49,11 @@ class Address {
         this.recipient_phone_number = fields.recipient_phone_number || '014157861530';
     }
 
+    /**
+     * Returns an Address object by receiving a dictionary of address fields and values.
+     * If requiredFields are not present, this method will throw an exception.
+     * @param {dictionary} fields 
+     */
     static build(fields) {
         return new Promise((resolve, reject) => {
             const fieldNames = Address.requiredFields;
